@@ -1,0 +1,20 @@
+{
+  "name": "@nexora/dev-db",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./index.mjs",
+  "exports": {
+    ".": "./index.mjs"
+  },
+  "bin": {
+    "dev-db": "./index.mjs"
+  },
+  "scripts": {
+    "start": "node index.mjs start"
+  },
+  "dependencies": {
+    "embedded-postgres": "^18.4.0-beta.17",
+    "pg": "^8.13.1"
+  }
+}

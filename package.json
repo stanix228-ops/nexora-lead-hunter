@@ -1,0 +1,27 @@
+{
+  "name": "nexora-whatsapp-hub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Nexora WhatsApp Hub — unified command center for WhatsApp accounts, lead CRM, campaigns, analytics and risk monitoring.",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev:infra": "node infrastructure/dev-db/index.mjs start",
+    "dev": "pnpm run dev:infra && pnpm --parallel --filter @nexora/api --filter @nexora/web dev",
+    "build": "pnpm --filter @nexora/database build && pnpm --filter @nexora/types --filter @nexora/utils build && pnpm --filter @nexora/api build && pnpm --filter @nexora/web build",
+    "db:migrate": "pnpm --filter @nexora/database db:migrate",
+    "db:seed": "pnpm --filter @nexora/database db:seed",
+    "db:reset": "pnpm --filter @nexora/database db:reset",
+    "test": "pnpm -r test",
+    "desktop:dev": "pnpm --filter @nexora/desktop dev",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "@prisma/client": "6.19.3",
+    "prisma": "6.19.3",
+    "typescript": "^5.6.3",
+    "prettier": "^3.3.3"
+  }
+}

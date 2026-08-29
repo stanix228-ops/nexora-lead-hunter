@@ -1,0 +1,37 @@
+{
+  "name": "@nexora/database",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "prisma generate --schema ../../prisma/schema.prisma && tsc -p tsconfig.json && node -e \"require('node:fs').cpSync('./generated', './dist/generated', { recursive: true })\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "db:generate": "prisma generate --schema ../../prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev --schema ../../prisma/schema.prisma",
+    "db:deploy": "prisma migrate deploy --schema ../../prisma/schema.prisma",
+    "db:seed": "tsx src/seed.ts",
+    "db:reset": "prisma migrate reset --force --schema ../../prisma/schema.prisma"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.3",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@nexora/types": "workspace:*",
+    "@nexora/utils": "workspace:*",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.10.5",
+    "prisma": "6.19.3",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}

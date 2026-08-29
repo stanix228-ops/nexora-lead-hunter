@@ -1,0 +1,328 @@
+// ============================================================
+// Nexora WhatsApp Hub — Prisma schema
+// Provider: PostgreSQL
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../packages/database/src/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ------------------------------------------------ Enums
+enum AccountStatus {
+  ONLINE
+  OFFLINE
+  PAUSED
+  ATTENTION
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  REPLIED
+  INTERESTED
+  NEGOTIATION
+  CLIENT
+  NO_RESPONSE
+}
+
+enum ConversationStatus {
+  NEW
+  UNREAD
+  REPLIED
+  INTERESTED
+  NEGOTIATION
+  CLIENT
+  NO_RESPONSE
+}
+
+enum LeadSource {
+  WA_LINK
+  PHONE
+  INSTAGRAM
+  WEBSITE
+  CSV
+  MANUAL
+}
+
+enum CampaignStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  COMPLETED
+}
+
+enum MessageDirection {
+  INBOUND
+  OUTBOUND
+}
+
+/// Provenance of a recorded value. TRACKED = read from a real source,
+/// MANUAL = recorded by the user, UNAVAILABLE = nothing real to attach.
+enum DataProvenance {
+  TRACKED
+  MANUAL
+  UNAVAILABLE
+}
+
+enum MessageEventType {
+  MESSAGE_CREATED
+  MESSAGE_SENT
+  MESSAGE_DELIVERED
+  MESSAGE_READ
+  MESSAGE_FAILED
+  MESSAGE_RECEIVED
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+// ------------------------------------------------ Core
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  isAdmin      Boolean  @default(false)
+  isDemo       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  accounts  WhatsAppAccount[]
+  leads     Lead[]
+  campaigns Campaign[]
+  tags      Tag[]
+  activity  ActivityEvent[]
+  settings  Setting[]
+}
+
+model WhatsAppAccount {
+  id           String        @id @default(cuid())
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  phone        String
+  phoneMasked  String
+  countryCode  String?
+  status       AccountStatus @default(OFFLINE)
+  position     Int           @default(0)
+  lastActiveAt DateTime?
+  isDemo       Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  conversations Conversation[]
+  metrics       AccountMetric[]
+  riskEvents    RiskEvent[]
+  leads         Lead[]
+
+  @@index([userId, status])
+}
+
+model Lead {
+  id                String           @id @default(cuid())
+  userId            String
+  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName       String?
+  phone             String?
+  whatsappUrl       String?
+  instagramUrl      String?
+  website           String?
+  city              String?
+  niche             String?
+  source            LeadSource       @default(MANUAL)
+  status            LeadStatus       @default(NEW)
+  notes             String?
+  assignedAccountId String?
+  assignedAccount   WhatsAppAccount? @relation(fields: [assignedAccountId], references: [id], onDelete: SetNull)
+  isDemo            Boolean          @default(false)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  conversations Conversation[]
+  tags          LeadTag[]
+  campaigns     CampaignLead[]
+  activity      ActivityEvent[]
+
+  @@index([userId, status])
+  @@index([userId, assignedAccountId])
+  @@index([userId, createdAt])
+  @@index([companyName])
+}
+
+model Campaign {
+  id          String         @id @default(cuid())
+  userId      String
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  niche       String?
+  city        String?
+  source      String?
+  status      CampaignStatus @default(DRAFT)
+  isDemo      Boolean        @default(false)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  leads CampaignLead[]
+
+  @@index([userId, status])
+}
+
+model CampaignLead {
+  id         String   @id @default(cuid())
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  leadId     String
+  lead       Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  addedAt    DateTime @default(now())
+
+  @@unique([campaignId, leadId])
+  @@index([leadId])
+}
+
+// ------------------------------------------------ Conversations & messages
+model Conversation {
+  id                 String             @id @default(cuid())
+  userId             String
+  accountId          String
+  account            WhatsAppAccount    @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  leadId             String
+  lead               Lead               @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  status             ConversationStatus @default(NEW)
+  unreadCount        Int                @default(0)
+  lastMessageAt      DateTime?
+  lastMessagePreview String?
+  isDemo             Boolean            @default(false)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  messages Message[]
+
+  @@index([accountId, status])
+  @@index([leadId])
+  @@index([userId, lastMessageAt])
+}
+
+model Message {
+  id             String           @id @default(cuid())
+  conversationId String
+  conversation   Conversation     @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  direction      MessageDirection
+  body           String
+  /// TRACKED = pulled from the WhatsApp client, MANUAL = user recorded,
+  /// UNAVAILABLE = no real event source connected.
+  provenance     DataProvenance   @default(MANUAL)
+  recordedAt     DateTime         @default(now())
+  opId           String?
+
+  events MessageEvent[]
+
+  @@index([conversationId, recordedAt])
+  @@index([recordedAt])
+}
+
+model MessageEvent {
+  id         String           @id @default(cuid())
+  messageId  String
+  message    Message          @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  type       MessageEventType
+  name       String
+  at         DateTime         @default(now())
+  provenance DataProvenance   @default(MANUAL)
+
+  @@index([messageId])
+}
+
+// ------------------------------------------------ Metrics & risk
+model AccountMetric {
+  id                  String          @id @default(cuid())
+  accountId           String
+  account             WhatsAppAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  day                 DateTime
+  messagesSent        Int             @default(0)
+  messagesReceived    Int             @default(0)
+  replies             Int             @default(0)
+  responseRate        Float?
+  errors              Int             @default(0)
+  negativeEvents      Int             @default(0)
+  messageFailures     Int             @default(0)
+  activeConversations Int             @default(0)
+  isDemo              Boolean         @default(false)
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+
+  @@unique([accountId, day])
+  @@index([day])
+}
+
+model RiskEvent {
+  id        String          @id @default(cuid())
+  accountId String
+  account   WhatsAppAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  level     RiskLevel       @default(LOW)
+  message   String
+  metadata  Json?
+  isDemo    Boolean         @default(false)
+  createdAt DateTime        @default(now())
+
+  @@index([accountId, createdAt])
+}
+
+// ------------------------------------------------ Tags & activity
+model Tag {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name   String
+  color  String @default("#7C3AED")
+
+  leads LeadTag[]
+
+  @@unique([userId, name])
+}
+
+model LeadTag {
+  leadId String
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  tagId  String
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([leadId, tagId])
+  @@index([tagId])
+}
+
+model ActivityEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leadId    String?
+  lead      Lead?    @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  action    String
+  entity    String
+  entityId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([leadId])
+}
+
+model Setting {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  key    String
+  value  String
+
+  @@unique([userId, key])
+}

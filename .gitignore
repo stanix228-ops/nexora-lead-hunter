@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+.next/
+out/
+.turbo/
+
+# Environment
+.env
+.env.local
+.env*.local
+
+# Local database (embedded dev postgres)
+infrastructure/.pg/
+infrastructure/.pg-data/
+*.pid
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Prisma
+prisma/*.db
+
+# Generated Prisma client
+packages/database/generated/
+
+# Desktop build artifacts
+apps/desktop/release/
+apps/desktop/out/
+
+# IDE
+.vscode/
+.idea/
