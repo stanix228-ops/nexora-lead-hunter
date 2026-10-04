@@ -4,7 +4,7 @@ import type {
   MessageDirection,
   MessageEventType,
 } from '@nexora/database';
-import { maskPhone, buildWaLink } from '@nexora/utils';
+import { maskPhone, buildWaLink, normalizePhone } from '@nexora/utils';
 import { AppError, NotFoundError } from '../../common/errors';
 import { recordActivity } from '../../common/activity/recorder';
 import { emitToUser } from '../../common/realtime/socket';
@@ -12,15 +12,11 @@ import { emitToUser } from '../../common/realtime/socket';
 /** The maximum allowed accounts per workspace. */
 export const MAX_ACCOUNTS = 7;
 
-/** Clean JID / phone string to normalized digits (e.g. 77051234567:45@s.whatsapp.net -> 77051234567) */
+/** Clean JID / phone string to normalized digits (e.g. 14155552671@s.whatsapp.net -> 14155552671, 77051234567:45@s.whatsapp.net -> 77051234567) */
 export function cleanJidToPhone(jid: string): string {
   const withoutDomain = (jid || '').split('@')[0] || '';
   const withoutDevice = withoutDomain.split(':')[0] || '';
-  let digits = withoutDevice.replace(/\D/g, '');
-  if (digits.startsWith('8') && digits.length === 11) {
-    digits = '7' + digits.slice(1);
-  }
-  return digits;
+  return normalizePhone(withoutDevice);
 }
 
 /**

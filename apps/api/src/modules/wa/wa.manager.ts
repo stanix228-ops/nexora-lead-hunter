@@ -21,7 +21,7 @@ import makeWASocket, {
 import QRCode from 'qrcode';
 import { prisma } from '@nexora/database';
 import type { GatewayStatus, AccountStatus } from '@nexora/database';
-import { maskPhone } from '@nexora/utils';
+import { maskPhone, normalizePhone } from '@nexora/utils';
 import { logger, pinoLogger } from '../../common/logger';
 import { emitToUser } from '../../common/realtime/socket';
 import { handleInbound, handleOutboundSynced, syncWaHistory, cleanJidToPhone } from '../gateway/gateway.service';
@@ -47,21 +47,22 @@ const sessionsDir = path.resolve(process.cwd(), '.sessions');
 
 /** The jid suffix for plain phones in Baileys. */
 function toWaJid(phone: string): string {
-  const digits = phone.replace(/[^\d]/g, '').replace(/^8/, '7');
+  if (!phone) return '';
+  if (phone.includes('@s.whatsapp.net') || phone.includes('@g.us')) {
+    return phone.split(':')[0] + (phone.includes('@g.us') ? '@g.us' : '@s.whatsapp.net');
+  }
+  const digits = normalizePhone(phone);
   return `${digits}@s.whatsapp.net`;
 }
 
 function jidToPhone(jid: string): string {
-  return jid.split('@')[0]?.split(':')[0] ?? jid;
+  const withoutDomain = jid.split('@')[0]?.split(':')[0] ?? jid;
+  return normalizePhone(withoutDomain) || withoutDomain.replace(/\D/g, '');
 }
 
 /** Clean phone string to international digits. */
 export function sanitizePhone(phone: string): string {
-  let digits = phone.replace(/[^\d]/g, '');
-  if (digits.startsWith('8') && digits.length === 11) {
-    digits = '7' + digits.slice(1);
-  }
-  return digits;
+  return normalizePhone(phone);
 }
 
 /** Write the real phone number from the linked account into the DB record. */
@@ -840,7 +841,33 @@ export async function sendWaText(
   if (!ctx || ctx.closed || ctx.state !== 'CONNECTED') {
     throw new Error('WA_SESSION_NOT_CONNECTED');
   }
-  const result = await ctx.socket.sendMessage(toWaJid(phone), { text: body });
+
+  const primaryJid = toWaJid(phone);
+  let targetJid = primaryJid;
+
+  try {
+    const checkCandidates = [primaryJid];
+    const rawDigits = phone.replace(/\D/g, '');
+    if (rawDigits.length === 10 && rawDigits.startsWith('9')) {
+      checkCandidates.push(`1${rawDigits}@s.whatsapp.net`);
+      checkCandidates.push(`7${rawDigits}@s.whatsapp.net`);
+    }
+
+    const checks = await ctx.socket.onWhatsApp(...checkCandidates);
+    const valid = checks?.find((c) => c && c.exists && c.jid);
+    if (valid?.jid) {
+      targetJid = valid.jid;
+    } else if (checks && checks.length > 0 && checks.every((c) => c && c.exists === false)) {
+      throw new Error(`Номер ${phone} не зарегистрирован в WhatsApp (возможно, это городской или офисный номер)`);
+    }
+  } catch (err: any) {
+    if (err.message && err.message.includes('не зарегистрирован в WhatsApp')) {
+      throw err;
+    }
+    logger.debug('onWhatsApp check fallback to primaryJid', { phone, primaryJid, error: (err as Error).message });
+  }
+
+  const result = await ctx.socket.sendMessage(targetJid, { text: body });
   return { opId: result?.key?.id ?? '' };
 }
 

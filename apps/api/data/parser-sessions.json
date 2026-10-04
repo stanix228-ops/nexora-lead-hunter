@@ -1,5 +1,1918 @@
 [
   {
+    "id": "6564d133-b5ff-4854-8a13-73807b67ca3e",
+    "userId": "cmsz3ykci0000tw2kz4532cwb",
+    "title": "маникюр New York City 05.10.26",
+    "niche": "маникюр",
+    "city": "New York City",
+    "country": "USA",
+    "createdAt": "2026-10-04T20:36:41.418Z",
+    "updatedAt": "2026-10-04T20:36:41.418Z",
+    "totalFound": 112,
+    "withSiteCount": 103,
+    "withoutSiteCount": 9,
+    "whatsappCount": 108,
+    "phonesCount": 108,
+    "items": [
+      {
+        "id": "gm_TmFpbHMgTGFzaGVz",
+        "name": "Nails Lashes NYC - Russian Manicure Manhattan",
+        "address": "165 Madison Ave 6 floor 601 unit, New York, NY 10016",
+        "phone": "+1 (646) 276-1852",
+        "allPhones": [
+          "+1 (646) 276-1852"
+        ],
+        "whatsapp": "https://wa.me/16462761852",
+        "instagram": null,
+        "email": "adeliya.nusupekova@gmail.com",
+        "site": "https://book.squareup.com/appointments/lako32ycmwwd6w/location/LZR06EMS2TJTB/services?fbclid=PAdGRleANshxhleHRuA2FlbQIxMQABp6yD6Mvnnw_IvFzqA_UxNGeFEPUUMy7phI7_PxKecfySHqMlGVpIFKad2GQd_aem_JwfFoSA43VWQj7jTWge1Uw",
+        "schedule": "Open",
+        "rating": 4.9,
+        "reviewsCount": 391,
+        "profileLink": "https://www.google.com/maps/place/Nails+Lashes+NYC+-+Russian+Manicure+Manhattan/data=!4m7!3m6!1s0x89c259f98c3537df:0x802500fe99537784!8m2!3d40.7468738!4d-73.9833056!16s%2Fg%2F11wn51c1pw!19sChIJ3zc1jPlZwokRhHdTmf4AJYA?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TS4gU1RVRElPaHR0",
+        "name": "M. STUDIO",
+        "address": "34 W 37th St, New York, NY 10018",
+        "phone": null,
+        "allPhones": [],
+        "whatsapp": null,
+        "instagram": null,
+        "email": "mstudio.talks@gmail.com",
+        "site": "https://mstudio-nyc.com/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 1523,
+        "profileLink": "https://www.google.com/maps/place/M.+STUDIO/data=!4m7!3m6!1s0x89c259df54c02fab:0xbbde4a8e526b1c75!8m2!3d40.7508462!4d-73.9850001!16s%2Fg%2F11mp_nm817!19sChIJqy_AVN9ZwokRdRxrUo5K3rs?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TmFpbHMgJiBTcGEg",
+        "name": "Nails & Spa Salon Midtown, NYC",
+        "address": "44 W 55th St, New York, NY 10019",
+        "phone": "+1 (646) 472-7908",
+        "allPhones": [
+          "+1 (646) 472-7908"
+        ],
+        "whatsapp": "https://wa.me/16464727908",
+        "instagram": null,
+        "email": null,
+        "site": "https://midtown-nails-spa-nyc.ggunj739.chatgpt.site/",
+        "schedule": "Open",
+        "rating": 4.7,
+        "reviewsCount": 1551,
+        "profileLink": "https://www.google.com/maps/place/Nails+%26+Spa+Salon+Midtown,+NYC/data=!4m7!3m6!1s0x89c259c7b2686727:0xca664bbbcd7b6711!8m2!3d40.762288!4d-73.9768915!16s%2Fg%2F11s5p0r5f1!19sChIJJ2dossdZwokREWd7zbtLZso?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_UlVTU0lBTiBNQU5J",
+        "name": "RUSSIAN MANICURE | Nail studio",
+        "address": "40 W 38th St Fl 5, New York, NY 10018",
+        "phone": "+1 (929) 428-6681",
+        "allPhones": [
+          "+1 (929) 428-6681"
+        ],
+        "whatsapp": "https://wa.me/19294286681",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.instagram.com/russianmanicure_nyc/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 441,
+        "profileLink": "https://www.google.com/maps/place/RUSSIAN+MANICURE+%7C+Nail+studio/data=!4m7!3m6!1s0x47e5a64d860daf95:0x8984bde01b7e4415!8m2!3d40.7515198!4d-73.9846637!16s%2Fg%2F11q8k445nh!19sChIJla8Nhk2m5UcRFUR-G-C9hIk?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TE9WRSBZT1UgTkFJ",
+        "name": "LOVE YOU NAIL SALON NYC",
+        "address": "148 W 37th St, New York, NY 10018",
+        "phone": "+1 (917) 969-9767",
+        "allPhones": [
+          "+1 (917) 969-9767"
+        ],
+        "whatsapp": "https://wa.me/19179699767",
+        "instagram": null,
+        "email": "loveyounailsalon@gmail.com",
+        "site": "https://www.loveyou.club/en",
+        "schedule": "Open",
+        "rating": 4.9,
+        "reviewsCount": 578,
+        "profileLink": "https://www.google.com/maps/place/LOVE+YOU+NAIL+SALON+NYC/data=!4m7!3m6!1s0x89c25900747ad21d:0x210f92c254fde56e!8m2!3d40.7525375!4d-73.9889891!16s%2Fg%2F11mcw_3ycl!19sChIJHdJ6dABZwokRbuX9VMKSDyE?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_R2xvd2x5KzE2NDY2",
+        "name": "Glowly",
+        "address": "6 Maiden Ln 4th floor, New York, NY 10038",
+        "phone": "+1 (646) 630-4114",
+        "allPhones": [
+          "+1 (646) 630-4114"
+        ],
+        "whatsapp": "https://wa.me/16466304114",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.glowlyusa.com/",
+        "schedule": "Open",
+        "rating": 4.7,
+        "reviewsCount": 500,
+        "profileLink": "https://www.google.com/maps/place/Glowly/data=!4m7!3m6!1s0x89c25b621bb6a57d:0xc03a58c0d14d63f2!8m2!3d40.7095181!4d-74.0095675!16s%2Fg%2F11jskkxgbc!19sChIJfaW2G2JbwokR8mNN0cBYOsA?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_UlVTU0lBTiBNQU5J",
+        "name": "RUSSIAN MANICURE ZORI NAILS",
+        "address": "315 5th Ave, New York, NY 10016",
+        "phone": "+1 (929) 245-5640",
+        "allPhones": [
+          "+1 (929) 245-5640"
+        ],
+        "whatsapp": "https://wa.me/19292455640",
+        "instagram": null,
+        "email": "hi@mystore.com",
+        "site": "https://www.zorinails.com/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 436,
+        "profileLink": "https://www.google.com/maps/place/RUSSIAN+MANICURE+ZORI+NAILS/data=!4m7!3m6!1s0x89c259c0d20cfd63:0xeaf44baa1d16c23f!8m2!3d40.7468841!4d-73.9853674!16s%2Fg%2F11v3m2jfz3!19sChIJY_0M0sBZwokRP8IWHapL9Oo?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_QW5uYSBOWUMgTmFp",
+        "name": "Anna NYC Nails",
+        "address": "Dial 123, 17-19 W 45th St Floor 7, Suite 705, New York, NY 10036",
+        "phone": "+1 (347) 495-2660",
+        "allPhones": [
+          "+1 (347) 495-2660"
+        ],
+        "whatsapp": "https://wa.me/13474952660",
+        "instagram": null,
+        "email": null,
+        "site": "http://www.annanycnails.com/",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 126,
+        "profileLink": "https://www.google.com/maps/place/Anna+NYC+Nails/data=!4m7!3m6!1s0x89c259f2e9a3aea9:0xb9cbd6f25aa85eab!8m2!3d40.7559694!4d-73.980329!16s%2Fg%2F11vf5hc70r!19sChIJqa6j6fJZwokRq16oWvLWy7k?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TWFuaGF0dGFuIE5h",
+        "name": "Manhattan Nails Salon",
+        "address": "128 W 36th St. 3rd floor, New York, NY 10018",
+        "phone": "+1 (201) 969-7640",
+        "allPhones": [
+          "+1 (201) 969-7640"
+        ],
+        "whatsapp": "https://wa.me/12019697640",
+        "instagram": null,
+        "email": "manhattannailssalon@gmail.com",
+        "site": "https://manhattannailssalon.com/",
+        "schedule": "Open",
+        "rating": 4.4,
+        "reviewsCount": 394,
+        "profileLink": "https://www.google.com/maps/place/Manhattan+Nails+Salon/data=!4m7!3m6!1s0x89c2599ec13766c1:0x7dd28b423e83139c!8m2!3d40.7514895!4d-73.9883528!16s%2Fg%2F11fv4gvs1f!19sChIJwWY3wZ5ZwokRnBODPkKL0n0?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_WmFyYSBOYWlscyBO",
+        "name": "Zara Nails NYC",
+        "address": "109 W 38th St 9th Floor Suite 902, New York, NY 10018",
+        "phone": "+1 (646) 490-2323",
+        "allPhones": [
+          "+1 (646) 490-2323"
+        ],
+        "whatsapp": "https://wa.me/16464902323",
+        "instagram": null,
+        "email": "zaranailsnyc@gmail.com",
+        "site": "http://zaranails.com/",
+        "schedule": "Open",
+        "rating": 4.6,
+        "reviewsCount": 73,
+        "profileLink": "https://www.google.com/maps/place/Zara+Nails+NYC/data=!4m7!3m6!1s0x89c259087939284b:0x3930d154f90ed68e!8m2!3d40.7527077!4d-73.9863856!16s%2Fg%2F11sq32m1sx!19sChIJSyg5eQhZwokRjtYO-VTRMDk?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_RUxGIE5haWxzIExh",
+        "name": "ELF Nails Lab NYC",
+        "address": "315 5th Ave Ste 903, 9th Floor, New York, NY 10016",
+        "phone": "+1 (646) 243-9138",
+        "allPhones": [
+          "+1 (646) 243-9138"
+        ],
+        "whatsapp": "https://wa.me/16462439138",
+        "instagram": null,
+        "email": "elfnailsnyc@gmail.com",
+        "site": "https://www.elfnailslab.com/?utm_campaign=gmb&utm_content=listing&utm_medium=organic&utm_source=google_business_profile",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 276,
+        "profileLink": "https://www.google.com/maps/place/ELF+Nails+Lab+NYC/data=!4m7!3m6!1s0x89c259c2a3dd8c8f:0x4cf5deed3e390cdb!8m2!3d40.7468841!4d-73.9853674!16s%2Fg%2F11m68tp9j2!19sChIJj4zdo8JZwokR2ww5Pu3e9Uw?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_UG9saXNoZWQgTllD",
+        "name": "Polished NYC",
+        "address": "108 Greenwich St 5th Floor, New York, NY 10006",
+        "phone": "+1 (929) 634-2823",
+        "allPhones": [
+          "+1 (929) 634-2823"
+        ],
+        "whatsapp": "https://wa.me/19296342823",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.polished-nyc.com/",
+        "schedule": "Open",
+        "rating": 4.9,
+        "reviewsCount": 388,
+        "profileLink": "https://www.google.com/maps/place/Polished+NYC/data=!4m7!3m6!1s0x604fc385f00a6e99:0x4a04f9c855fc2102!8m2!3d40.708603!4d-74.013599!16s%2Fg%2F11trpfg9k3!19sChIJmW4K8IXDT2ARAiH8Vcj5BEo?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_UlVTU0lBTiBNQU5J",
+        "name": "RUSSIAN MANICURE CELEBRITY NAILS",
+        "address": "1011 6th Ave 2nd floor, New York, NY 10018",
+        "phone": "+1 (347) 888-3757",
+        "allPhones": [
+          "+1 (347) 888-3757"
+        ],
+        "whatsapp": "https://wa.me/13478883757",
+        "instagram": null,
+        "email": "hi@mystore.com",
+        "site": "http://www.celebritynails.nyc/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 430,
+        "profileLink": "https://www.google.com/maps/place/RUSSIAN+MANICURE+CELEBRITY+NAILS/data=!4m7!3m6!1s0x89c25992deec8851:0x2072aae66a4fd278!8m2!3d40.7521738!4d-73.9864314!16s%2Fg%2F11vrrgg0kt!19sChIJUYjs3pJZwokReNJPauaqciA?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_UmVkIFNxdWFyZSBO",
+        "name": "Red Square Nails",
+        "address": "390 5th Ave Ste 811, New York, NY 10018",
+        "phone": "+1 (929) 884-2284",
+        "allPhones": [
+          "+1 (929) 884-2284"
+        ],
+        "whatsapp": "https://wa.me/19298842284",
+        "instagram": null,
+        "email": "admin@redsquarebeauty.com",
+        "site": "https://redsquarebeauty.com/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 360,
+        "profileLink": "https://www.google.com/maps/place/Red+Square+Nails/data=!4m7!3m6!1s0x89c2592e73cee0f7:0x143dbf67d84b7487!8m2!3d40.7498324!4d-73.9841399!16s%2Fg%2F11x8qzhq_v!19sChIJ9-DOcy5ZwokRh3RL2Ge_PRQ?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TWlyYSBOYWlscyBO",
+        "name": "Mira Nails NYC",
+        "address": "1032 6th Ave Unit 202, New York, NY 10018",
+        "phone": "+1 (929) 640-9404",
+        "allPhones": [
+          "+1 (929) 640-9404"
+        ],
+        "whatsapp": "https://wa.me/19296409404",
+        "instagram": null,
+        "email": "miramirzomamadova@gmail.com",
+        "site": "https://miranailsnyc.com/",
+        "schedule": "Open",
+        "rating": 4.7,
+        "reviewsCount": 54,
+        "profileLink": "https://www.google.com/maps/place/Mira+Nails+NYC/data=!4m7!3m6!1s0x89c259460a5ec799:0xa2996134d9501ec3!8m2!3d40.752731!4d-73.985415!16s%2Fg%2F11y4954xjc!19sChIJmcdeCkZZwokRwx5Q2TRhmaI?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TWFycyBOYWlscysx",
+        "name": "Mars Nails",
+        "address": "11 Broadway Ste 804, New York, NY 10004",
+        "phone": "+1 (929) 727-4089",
+        "allPhones": [
+          "+1 (929) 727-4089"
+        ],
+        "whatsapp": "https://wa.me/19297274089",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.marsnails.com/",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 155,
+        "profileLink": "https://www.google.com/maps/place/Mars+Nails/data=!4m7!3m6!1s0x89c25be572803177:0x9337f5e3d0fef791!8m2!3d40.7052673!4d-74.013972!16s%2Fg%2F11vyqv59qx!19sChIJdzGAcuVbwokRkff-0OP1N5M?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_QWxsdXJlIE5haWxz",
+        "name": "Allure Nails NYC",
+        "address": "11 Hanover Square Ste 702, New York, NY 10005",
+        "phone": "+1 (929) 417-9072",
+        "allPhones": [
+          "+1 (929) 417-9072"
+        ],
+        "whatsapp": "https://wa.me/19294179072",
+        "instagram": null,
+        "email": null,
+        "site": "http://allurenailsnyc.com/",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 32,
+        "profileLink": "https://www.google.com/maps/place/Allure+Nails+NYC/data=!4m7!3m6!1s0x89c25bcefc4c2c25:0x36cf28c97461c866!8m2!3d40.7052636!4d-74.0088519!16s%2Fg%2F11lm6c611y!19sChIJJSxM_M5bwokRZshhdMkozzY?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_YXNoIHN0dWRpbyBu",
+        "name": "ash studio nyc",
+        "address": "347 5th Ave suite 906 room 4, New York, NY 10016",
+        "phone": "+1 (646) 294-6602",
+        "allPhones": [
+          "+1 (646) 294-6602"
+        ],
+        "whatsapp": "https://wa.me/16462946602",
+        "instagram": null,
+        "email": "ashstudionyc@gmail.com",
+        "site": "https://ashstudionyc.glossgenius.com/",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 35,
+        "profileLink": "https://www.google.com/maps/place/ash+studio+nyc/data=!4m7!3m6!1s0x89c259af8bd604d1:0xe135a43a26922d61!8m2!3d40.7481279!4d-73.9845523!16s%2Fg%2F11zgm0b43w!19sChIJ0QTWi69ZwokRYS2SJjqkNeE?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TlkgU1RVRElPIEFU",
+        "name": "NY STUDIO ATELIER",
+        "address": "325 W 38th St floor 10 suite 1002, New York, NY 10018",
+        "phone": "+1 (347) 401-6917",
+        "allPhones": [
+          "+1 (347) 401-6917"
+        ],
+        "whatsapp": "https://wa.me/13474016917",
+        "instagram": null,
+        "email": null,
+        "site": "https://nystudioatelier.com/",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 174,
+        "profileLink": "https://www.google.com/maps/place/NY+STUDIO+ATELIER/data=!4m7!3m6!1s0x89c2592b22212af9:0x6912cc55dde4f656!8m2!3d40.7553565!4d-73.9928!16s%2Fg%2F11y19qgcgv!19sChIJ-SohIitZwokRVvbk3VXMEmk?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TllDIExPRlQgTkFJ",
+        "name": "NYC LOFT NAILS",
+        "address": "37 W 26th St #312, New York, NY 10010",
+        "phone": "+1 (917) 971-7779",
+        "allPhones": [
+          "+1 (917) 971-7779"
+        ],
+        "whatsapp": "https://wa.me/19179717779",
+        "instagram": null,
+        "email": null,
+        "site": "https://instagram.com/nyc.loft.nails?utm_medium=copy_link",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 24,
+        "profileLink": "https://www.google.com/maps/place/NYC+LOFT+NAILS/data=!4m7!3m6!1s0x89c25909ecc54bcf:0x119c78e3ba30c686!8m2!3d40.7445977!4d-73.9904622!16s%2Fg%2F11rv5jk9yh!19sChIJz0vF7AlZwokRhsYwuuN4nBE?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_Tm96YW5haWxzKzEz",
+        "name": "Nozanails",
+        "address": "86 Brighton 1st Pl, Brooklyn, NY 11235",
+        "phone": "+1 (347) 861-1008",
+        "allPhones": [
+          "+1 (347) 861-1008"
+        ],
+        "whatsapp": "https://wa.me/13478611008",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.instagram.com/nozanailsss/",
+        "schedule": "Open",
+        "rating": 4.3,
+        "reviewsCount": 172,
+        "profileLink": "https://www.google.com/maps/place/Nozanails/data=!4m7!3m6!1s0x8591c0d7315d1add:0x7e4192ac343638c0!8m2!3d40.577154!4d-73.966037!16s%2Fg%2F11v9_wmhgg!19sChIJ3RpdMdfAkYURwDg2NKySQX4?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TC5BLksgTmFpbCBT",
+        "name": "L.A.K Nail Salon",
+        "address": "176 Lafayette St, New York, NY 10013",
+        "phone": "+1 (646) 755-0959",
+        "allPhones": [
+          "+1 (646) 755-0959"
+        ],
+        "whatsapp": "https://wa.me/16467550959",
+        "instagram": null,
+        "email": "605a7baede844d278b89dc95ae0a9123@sentry-next.wixpress.com",
+        "site": "http://l-a-k-nailsalonnyc.com/",
+        "schedule": "Open",
+        "rating": 4.4,
+        "reviewsCount": 339,
+        "profileLink": "https://www.google.com/maps/place/L.A.K+Nail+Salon/data=!4m7!3m6!1s0x89c259c83319f4d9:0xea4d618b5437c1d9!8m2!3d40.720491!4d-73.998846!16s%2Fg%2F11t5t3yc7r!19sChIJ2fQZM8hZwokR2cE3VIthTeo?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_S1JBU0lWTyBOYWls",
+        "name": "KRASIVO Nails & Lashes",
+        "address": "126 W 25th St, New York, NY 10001",
+        "phone": "+1 (646) 995-8485",
+        "allPhones": [
+          "+1 (646) 995-8485"
+        ],
+        "whatsapp": "https://wa.me/16469958485",
+        "instagram": null,
+        "email": "krasivonyc@gmail.com",
+        "site": "https://www.krasivonyc.com/",
+        "schedule": "Open",
+        "rating": 4.9,
+        "reviewsCount": 217,
+        "profileLink": "https://www.google.com/maps/place/KRASIVO+Nails+%26+Lashes/data=!4m7!3m6!1s0x89c259290f38ef89:0xa18b794f78e72b56!8m2!3d40.7445172!4d-73.9931318!16s%2Fg%2F11h0z9vs8d!19sChIJie84DylZwokRVivneE95i6E?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TSZNIHN0dWRpbyBu",
+        "name": "M&M studio nyc Nails and Eyelashes",
+        "address": "45 W 29th St #201, New York, NY 10001",
+        "phone": "+1 (201) 948-9924",
+        "allPhones": [
+          "+1 (201) 948-9924"
+        ],
+        "whatsapp": "https://wa.me/12019489924",
+        "instagram": null,
+        "email": "mmstudionyc@gmail.com",
+        "site": "http://www.mmstudionyc.com/",
+        "schedule": "Open",
+        "rating": 4.2,
+        "reviewsCount": 155,
+        "profileLink": "https://www.google.com/maps/place/M%26M+studio+nyc+Nails+and+Eyelashes/data=!4m7!3m6!1s0x89c259a84a4498f9:0xdcdf97a84c9729f6!8m2!3d40.7464969!4d-73.9894347!16s%2Fg%2F11b86c2tnk!19sChIJ-ZhESqhZwokR9imXTKiX39w?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_QTYgTmFpbCAtIFRy",
+        "name": "A6 Nail - Tribeca",
+        "address": "222 W Broadway, New York, NY 10013",
+        "phone": "+1 (212) 226-1423",
+        "allPhones": [
+          "+1 (212) 226-1423"
+        ],
+        "whatsapp": "https://wa.me/12122261423",
+        "instagram": null,
+        "email": "info@a6nail.com",
+        "site": "http://www.a6nail.com/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 108,
+        "profileLink": "https://www.google.com/maps/place/A6+Nail+-+Tribeca/data=!4m7!3m6!1s0x89c2592deb6471cd:0xebe2aa04e01606d8!8m2!3d40.7192792!4d-74.0064708!16s%2Fg%2F11rs0mr7nj!19sChIJzXFk6y1ZwokR2AYW4ASq4us?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_RGlhbW9uZCBOYWls",
+        "name": "Diamond Nails NYC",
+        "address": "10 E 39th St, New York, NY 10016",
+        "phone": "+1 (347) 951-8813",
+        "allPhones": [
+          "+1 (347) 951-8813"
+        ],
+        "whatsapp": "https://wa.me/13479518813",
+        "instagram": null,
+        "email": "lolaalieva400@gmail.com",
+        "site": "https://book.squareup.com/appointments/uzsr45tv6h3utj/location/LM9YRW99GZ63M/services",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 40,
+        "profileLink": "https://www.google.com/maps/place/Diamond+Nails+NYC/data=!4m7!3m6!1s0x89c25929a14c689f:0xbdf1c602cef37296!8m2!3d40.751161!4d-73.981529!16s%2Fg%2F11z5yxgx2m!19sChIJn2hMoSlZwokRlnLzzgLG8b0?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_U0VOIEJFQVVUWSBO",
+        "name": "SEN BEAUTY NYC",
+        "address": "714 Lexington Ave #3, New York, NY 10022",
+        "phone": "+1 (929) 499-7052",
+        "allPhones": [
+          "+1 (929) 499-7052"
+        ],
+        "whatsapp": "https://wa.me/19294997052",
+        "instagram": null,
+        "email": "info.senbeauty@yahoo.com",
+        "site": "https://senbeautysalons.com/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 209,
+        "profileLink": "https://www.google.com/maps/place/SEN+BEAUTY+NYC/data=!4m7!3m6!1s0x89c2596dec6ebf9f:0x51e3c3268cb81a6d!8m2!3d40.7614903!4d-73.9689466!16s%2Fg%2F11w2frhcwr!19sChIJn79u7G1ZwokRbRq4jCbD41E?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TW9yYSBOYWlscyBI",
+        "name": "Mora Nails Head Spa",
+        "address": "312 E 46th St, New York, NY 10017",
+        "phone": "+1 (347) 888-2299",
+        "allPhones": [
+          "+1 (347) 888-2299"
+        ],
+        "whatsapp": "https://wa.me/13478882299",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.instagram.com/moraspalounge/?hl=en",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 91,
+        "profileLink": "https://www.google.com/maps/place/Mora+Nails+Head+Spa/data=!4m7!3m6!1s0x89c259f59a8a5f21:0x3767b037a6e707f7!8m2!3d40.7518184!4d-73.9699187!16s%2Fg%2F11nk7tpl4z!19sChIJIV-KmvVZwokR9wfnpjewZzc?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_UVEgTmFpbHMgJiBT",
+        "name": "QQ Nails & Spa",
+        "address": "253 E 49th St, New York, NY 10017",
+        "phone": "+1 (646) 410-2684",
+        "allPhones": [
+          "+1 (646) 410-2684"
+        ],
+        "whatsapp": "https://wa.me/16464102684",
+        "instagram": null,
+        "email": "inquiries@qqnailspa.com",
+        "site": "http://www.qqnailspa.com/",
+        "schedule": "Open",
+        "rating": 4.6,
+        "reviewsCount": 426,
+        "profileLink": "https://www.google.com/maps/place/QQ+Nails+%26+Spa/data=!4m7!3m6!1s0x89c259f1138da65d:0x1b1614ab0380c409!8m2!3d40.7545327!4d-73.9693012!16s%2Fg%2F11stxvxsh6!19sChIJXaaNE_FZwokRCcSAA6sUFhs?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_UGFuZGEgTmFpbHMg",
+        "name": "Panda Nails | Lexington Ave",
+        "address": "673 Lexington Ave, New York, NY 10022",
+        "phone": "+1 (646) 768-8577",
+        "allPhones": [
+          "+1 (646) 768-8577"
+        ],
+        "whatsapp": "https://wa.me/16467688577",
+        "instagram": null,
+        "email": "pandanail@noemail.com",
+        "site": "http://www.pandanailsalonny.com/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 366,
+        "profileLink": "https://www.google.com/maps/place/Panda+Nails+%7C+Lexington+Ave/data=!4m7!3m6!1s0x89c259145dc8daad:0x275d6a3fa5681433!8m2!3d40.7600657!4d-73.9695157!16s%2Fg%2F11yv7qggvr!19sChIJrdrIXRRZwokRMxRopT9qXSc?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TllDIE5haWxzIFNw",
+        "name": "NYC Nails Spa and Beyond",
+        "address": "141W W 35th St, New York, NY 10001",
+        "phone": "+1 (212) 564-6971",
+        "allPhones": [
+          "+1 (212) 564-6971"
+        ],
+        "whatsapp": "https://wa.me/12125646971",
+        "instagram": null,
+        "email": "nycnailsspabeyond@gmail.com",
+        "site": "https://nycnsb.com/",
+        "schedule": "Open",
+        "rating": 4.7,
+        "reviewsCount": 64,
+        "profileLink": "https://www.google.com/maps/place/NYC+Nails+Spa+and+Beyond/data=!4m7!3m6!1s0x89c25936d36c0967:0xbc47de9c6667375b!8m2!3d40.7514486!4d-73.9891093!16s%2Fg%2F11x39k4v2w!19sChIJZwls0zZZwokRWzdnZpzeR7w?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_Rm9yZXZlciBZb3Vu",
+        "name": "Forever Young Nail & Spa NYC",
+        "address": "665 Lexington Ave 2nd fl, New York, NY 10022",
+        "phone": "+1 (212) 755-4150",
+        "allPhones": [
+          "+1 (212) 755-4150"
+        ],
+        "whatsapp": "https://wa.me/12127554150",
+        "instagram": null,
+        "email": null,
+        "site": "https://foreveryoungnyc.com/",
+        "schedule": "Open",
+        "rating": 4.7,
+        "reviewsCount": 114,
+        "profileLink": "https://www.google.com/maps/place/Forever+Young+Nail+%26+Spa+NYC/data=!4m7!3m6!1s0x89c259e72c71c0a9:0x7930fba3a8b8db98!8m2!3d40.759819!4d-73.969632!16s%2Fg%2F11fl9k5pft!19sChIJqcBxLOdZwokRmNu4qKP7MHk?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_R2VsTWUgUnVzc2lh",
+        "name": "GelMe Russian Nails",
+        "address": "211 W 71st St Frnt, New York, NY 10023",
+        "phone": "+1 (917) 678-2085",
+        "allPhones": [
+          "+1 (917) 678-2085"
+        ],
+        "whatsapp": "https://wa.me/19176782085",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.gelmenails.com/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 182,
+        "profileLink": "https://www.google.com/maps/place/GelMe+Russian+Nails/data=!4m7!3m6!1s0x89c259ed5e22b191:0x37b50e3eebeb2cf5!8m2!3d40.7783993!4d-73.9825668!16s%2Fg%2F11vwptxscy!19sChIJkbEiXu1ZwokR9Szr6z4OtTc?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TmFpbHMgZm9yIFVz",
+        "name": "Nails for Us | Japanese-Style • 2022",
+        "address": "221 W 79th St, New York, NY 10024",
+        "phone": "+1 (212) 781-2222",
+        "allPhones": [
+          "+1 (212) 781-2222"
+        ],
+        "whatsapp": "https://wa.me/12127812222",
+        "instagram": null,
+        "email": null,
+        "site": null,
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 394,
+        "profileLink": "https://www.google.com/maps/place/Nails+for+Us+%7C+Japanese-Style+%E2%80%A2+2022/data=!4m7!3m6!1s0x89c259def651e195:0x24ae4b5e921623e2!8m2!3d40.7837141!4d-73.9792168!16s%2Fg%2F11srl4tdft!19sChIJleFR9t5ZwokR4iMWkl5LriQ?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_RWxlZ2FudCBOYWls",
+        "name": "Elegant Nails & Spa (Greenwich)",
+        "address": "373 6th Ave, New York, NY 10014",
+        "phone": "+1 (212) 206-0688",
+        "allPhones": [
+          "+1 (212) 206-0688"
+        ],
+        "whatsapp": "https://wa.me/12122060688",
+        "instagram": null,
+        "email": "605a7baede844d278b89dc95ae0a9123@sentry-next.wixpress.com",
+        "site": "https://www.elegantnailsnyc.com/",
+        "schedule": "Open",
+        "rating": 4.3,
+        "reviewsCount": 522,
+        "profileLink": "https://www.google.com/maps/place/Elegant+Nails+%26+Spa+%28Greenwich%29/data=!4m7!3m6!1s0x89c2599155166019:0xf6c81844387aa781!8m2!3d40.7327649!4d-74.000422!16s%2Fg%2F11c4xxtlkh!19sChIJGWAWVZFZwokRgad6OEQYyPY?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_NTUgU3RyZWV0IFVW",
+        "name": "55 Street UV Nail & Spa",
+        "address": "141 E 55th St, New York, NY 10022",
+        "phone": "+1 (646) 767-0288",
+        "allPhones": [
+          "+1 (646) 767-0288"
+        ],
+        "whatsapp": "https://wa.me/16467670288",
+        "instagram": null,
+        "email": "uvnailspa55street@gmail.com",
+        "site": "https://www.uvnailspa.com/",
+        "schedule": "Open",
+        "rating": 4.1,
+        "reviewsCount": 222,
+        "profileLink": "https://www.google.com/maps/place/55+Street+UV+Nail+%26+Spa/data=!4m7!3m6!1s0x89c258e8cb756597:0x10ce07c4708203a9!8m2!3d40.7595575!4d-73.9693938!16s%2Fg%2F11dxbb2qg2!19sChIJl2V1y-hYwokRqQOCcMQHzhA?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_VklCTGlTU0lNTyBB",
+        "name": "VIBLiSSIMO Art of Beauty",
+        "address": "35 E 1st St BSMT E, New York, NY 10003",
+        "phone": "+1 (212) 387-9161",
+        "allPhones": [
+          "+1 (212) 387-9161"
+        ],
+        "whatsapp": "https://wa.me/12123879161",
+        "instagram": null,
+        "email": "info@viblissimobeauty.com",
+        "site": "https://viblissimobeauty.com/",
+        "schedule": "Open",
+        "rating": 4.6,
+        "reviewsCount": 214,
+        "profileLink": "https://www.google.com/maps/place/VIBLiSSIMO+Art+of+Beauty/data=!4m7!3m6!1s0x89c259845e290539:0x9d79924a8d48fc95!8m2!3d40.7239215!4d-73.9903259!16s%2Fg%2F1tfw3z1c!19sChIJOQUpXoRZwokRlfxIjUqSeZ0?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TmFpbHMgU3BhICYg",
+        "name": "Nails Spa & Beyond",
+        "address": "343 Lexington Ave, New York, NY 10016",
+        "phone": "+1 (212) 213-8923",
+        "allPhones": [
+          "+1 (212) 213-8923"
+        ],
+        "whatsapp": "https://wa.me/12122138923",
+        "instagram": null,
+        "email": "info@nailsspabeyond.com",
+        "site": "https://nailsspabeyondny.com/",
+        "schedule": "Open",
+        "rating": 4.5,
+        "reviewsCount": 527,
+        "profileLink": "https://www.google.com/maps/place/Nails+Spa+%26+Beyond/data=!4m7!3m6!1s0x89c25906b23886dd:0x22ec390db8ec6d5c!8m2!3d40.7497309!4d-73.9769759!16s%2Fg%2F1tdq210y!19sChIJ3YY4sgZZwokRXG3suA057CI?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_SmVsbHkgTmFpbCBT",
+        "name": "Jelly Nail SPA NYC",
+        "address": "39 W 32nd St Fl 3, New York, NY 10001",
+        "phone": "+1 (929) 989-3088",
+        "allPhones": [
+          "+1 (929) 989-3088"
+        ],
+        "whatsapp": "https://wa.me/19299893088",
+        "instagram": null,
+        "email": "605a7baede844d278b89dc95ae0a9123@sentry-next.wixpress.com",
+        "site": "http://www.jellynailspa.com/",
+        "schedule": "Open",
+        "rating": 4.9,
+        "reviewsCount": 301,
+        "profileLink": "https://www.google.com/maps/place/Jelly+Nail+SPA+NYC/data=!4m7!3m6!1s0x89c25957082d1a5f:0xff303ef614394b33!8m2!3d40.7481614!4d-73.9872958!16s%2Fg%2F11xn0wn7t5!19sChIJXxotCFdZwokRM0s5FPY-MP8?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_WXVraWUgTmF0b3Jp",
+        "name": "Yukie Natori New York Salon & Spa",
+        "address": "39 W 56th St, New York, NY 10019",
+        "phone": "+1 (646) 649-5324",
+        "allPhones": [
+          "+1 (646) 649-5324"
+        ],
+        "whatsapp": "https://wa.me/16466495324",
+        "instagram": null,
+        "email": null,
+        "site": "https://yukienatori-newyork.com/",
+        "schedule": "Open",
+        "rating": 4.3,
+        "reviewsCount": 264,
+        "profileLink": "https://www.google.com/maps/place/Yukie+Natori+New+York+Salon+%26+Spa/data=!4m7!3m6!1s0x89c258fab2138c73:0xa6a923e326d7f61f!8m2!3d40.7633797!4d-73.9763534!16s%2Fg%2F1tdb9rmq!19sChIJc4wTsvpYwokRH_bXJuMjqaY?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_RXZhJ3MgTmFpbHMg",
+        "name": "Eva's Nails & Spa",
+        "address": "883 1st Ave Apt 3, New York, NY 10022",
+        "phone": "+1 (212) 588-9666",
+        "allPhones": [
+          "+1 (212) 588-9666"
+        ],
+        "whatsapp": "https://wa.me/12125889666",
+        "instagram": null,
+        "email": null,
+        "site": null,
+        "schedule": "Open",
+        "rating": 4.5,
+        "reviewsCount": 145,
+        "profileLink": "https://www.google.com/maps/place/Eva%27s+Nails+%26+Spa/data=!4m7!3m6!1s0x89c258e212cf67d3:0x7de58f50d6bb4569!8m2!3d40.7535152!4d-73.9667976!16s%2Fg%2F11b8070xvk!19sChIJ02fPEuJYwokRaUW71lCP5X0?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_MTA5IE5haWxzKzE2",
+        "name": "109 Nails",
+        "address": "99 Clinton St Frnt 1, New York, NY 10002",
+        "phone": "+1 (646) 705-6216",
+        "allPhones": [
+          "+1 (646) 705-6216"
+        ],
+        "whatsapp": "https://wa.me/16467056216",
+        "instagram": null,
+        "email": null,
+        "site": "http://instagram.com/109NailsSalon",
+        "schedule": "Open",
+        "rating": 4.7,
+        "reviewsCount": 1373,
+        "profileLink": "https://www.google.com/maps/place/109+Nails/data=!4m7!3m6!1s0x89c259cce66c3e1b:0xa168e1f50409e4f2!8m2!3d40.7183961!4d-73.9856051!16s%2Fg%2F11rycs2n0z!19sChIJGz5s5sxZwokR8uQJBPXhaKE?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_QWZmaW5hIEJlYXV0",
+        "name": "Affina Beauty & Spa",
+        "address": "125 Church St, New York, NY 10007",
+        "phone": "+1 (212) 233-8822",
+        "allPhones": [
+          "+1 (212) 233-8822"
+        ],
+        "whatsapp": "https://wa.me/12122338822",
+        "instagram": null,
+        "email": "605a7baede844d278b89dc95ae0a9123@sentry-next.wixpress.com",
+        "site": "https://spabeauty888.wixstudio.com/affinanailbeautyspa",
+        "schedule": "Open",
+        "rating": 4.4,
+        "reviewsCount": 369,
+        "profileLink": "https://www.google.com/maps/place/Affina+Beauty+%26+Spa/data=!4m7!3m6!1s0x89c25a18ce06a6ef:0xf26db466842bfd72!8m2!3d40.7138553!4d-74.008599!16s%2Fg%2F12qfzg8hd!19sChIJ76YGzhhawokRcv0rhGa0bfI?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_WCBuYWlsIGJhciB8",
+        "name": "X nail bar | Nail Salon Manhattan | Nails Koreatown Midtown",
+        "address": "36 W 36th St. 1st floor, New York, NY 10018",
+        "phone": "+1 (347) 575-0387",
+        "allPhones": [
+          "+1 (347) 575-0387"
+        ],
+        "whatsapp": "https://wa.me/13475750387",
+        "instagram": null,
+        "email": "nailx2021@gmail.com",
+        "site": "http://www.xnailsnyc.com/",
+        "schedule": "Open",
+        "rating": 4,
+        "reviewsCount": 188,
+        "profileLink": "https://www.google.com/maps/place/X+nail+bar+%7C+Nail+Salon+Manhattan+%7C+Nails+Koreatown+Midtown/data=!4m7!3m6!1s0x89c259f16814a3f5:0x94c0638c17c7e9e2!8m2!3d40.750325!4d-73.9852653!16s%2Fg%2F11sml3bg_k!19sChIJ9aMUaPFZwokR4unHF4xjwJQ?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TW9ybmluZyBSaXR1",
+        "name": "Morning Ritual nails & spa",
+        "address": "241 E 14th St, New York, NY 10003",
+        "phone": "+1 (212) 460-9662",
+        "allPhones": [
+          "+1 (212) 460-9662"
+        ],
+        "whatsapp": "https://wa.me/12124609662",
+        "instagram": null,
+        "email": "info@mysite.com",
+        "site": "https://salons-spa.wixsite.com/morningritualnailspa",
+        "schedule": "Open",
+        "rating": 4.2,
+        "reviewsCount": 227,
+        "profileLink": "https://www.google.com/maps/place/Morning+Ritual+nails+%26+spa/data=!4m7!3m6!1s0x89c2599e5a79c9b7:0x235f98d2d0876214!8m2!3d40.7327872!4d-73.9853215!16s%2Fg%2F11gf0f_9mp!19sChIJt8l5Wp5ZwokRFGKH0NKYXyM?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_RHJlYW1taXN0IE5h",
+        "name": "Dreammist Nails & Spa",
+        "address": "122 W 25th St, New York, NY 10001",
+        "phone": "+1 (917) 388-2360",
+        "allPhones": [
+          "+1 (917) 388-2360"
+        ],
+        "whatsapp": "https://wa.me/19173882360",
+        "instagram": null,
+        "email": null,
+        "site": "https://go.bychronos.com/l/new-york-10001-dreammist-nails--spa-806640/a/services",
+        "schedule": "Open",
+        "rating": 4.5,
+        "reviewsCount": 231,
+        "profileLink": "https://www.google.com/maps/place/Dreammist+Nails+%26+Spa/data=!4m7!3m6!1s0x89c2595461a90fc9:0x86fca1e456cf9a27!8m2!3d40.7444912!4d-73.9929482!16s%2Fg%2F11fhtl_1p7!19sChIJyQ-pYVRZwokRJ5rPVuSh_IY?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_R29yZ2VvdXMgR29y",
+        "name": "Gorgeous Gorgona",
+        "address": "62 W 38th St, New York, NY 10018",
+        "phone": "+1 (888) 438-8515",
+        "allPhones": [
+          "+1 (888) 438-8515"
+        ],
+        "whatsapp": "https://wa.me/18884388515",
+        "instagram": null,
+        "email": null,
+        "site": "https://russiannails.com/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 1381,
+        "profileLink": "https://www.google.com/maps/place/Gorgeous+Gorgona/data=!4m7!3m6!1s0x89c25944de4ef6d9:0x256de3d86d2d21cc!8m2!3d40.751933!4d-73.9853619!16s%2Fg%2F11h4qb_d2r!19sChIJ2fZO3kRZwokRzCEtbdjjbSU?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_RmxhaXJlIE5haWxz",
+        "name": "Flaire Nails",
+        "address": "304 E 62nd St #4, New York, NY 10065",
+        "phone": "+1 (212) 319-6828",
+        "allPhones": [
+          "+1 (212) 319-6828"
+        ],
+        "whatsapp": "https://wa.me/12123196828",
+        "instagram": null,
+        "email": null,
+        "site": null,
+        "schedule": "Open",
+        "rating": 4.7,
+        "reviewsCount": 180,
+        "profileLink": "https://www.google.com/maps/place/Flaire+Nails/data=!4m7!3m6!1s0x89c258e87fdb458b:0xc6d0c9938e3920c9!8m2!3d40.7621086!4d-73.9623585!16s%2Fg%2F1tj92gbp!19sChIJi0Xbf-hYwokRySA5jpPJ0MY?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_U2F5LUl0IE5haWxz",
+        "name": "Say-It Nails",
+        "address": "5 W 37th St Ste 721, New York, NY 10018",
+        "phone": "+1 (929) 559-0760",
+        "allPhones": [
+          "+1 (929) 559-0760"
+        ],
+        "whatsapp": "https://wa.me/19295590760",
+        "instagram": null,
+        "email": "sayitnail@gmail.com",
+        "site": "http://www.sayitnails.com/",
+        "schedule": "Open",
+        "rating": 4.9,
+        "reviewsCount": 159,
+        "profileLink": "https://www.google.com/maps/place/Say-It+Nails/data=!4m7!3m6!1s0x89c2590b607619b7:0xf9caeb75b45ed70b!8m2!3d40.7508732!4d-73.9839671!16s%2Fg%2F11y1vl6ftf!19sChIJtxl2YAtZwokRC9detHXryvk?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_QS1TS1kgU1RVRElP",
+        "name": "A-SKY STUDIO",
+        "address": "303 5th Ave #1908, New York, NY 10016",
+        "phone": "+1 (347) 388-3088",
+        "allPhones": [
+          "+1 (347) 388-3088"
+        ],
+        "whatsapp": "https://wa.me/13473883088",
+        "instagram": null,
+        "email": "info@a-sky.studio",
+        "site": "https://www.studioasky.com/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 119,
+        "profileLink": "https://www.google.com/maps/place/A-SKY+STUDIO/data=!4m7!3m6!1s0x89c25913d5e66d69:0xe3a7e9af64603d2a!8m2!3d40.7466489!4d-73.9857854!16s%2Fg%2F11v66h600q!19sChIJaW3m1RNZwokRKj1gZK_pp-M?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_U2xvd2JlYXV0eS5u",
+        "name": "Slowbeauty.nyc",
+        "address": "325 W 38th St Ste 1002 floor 10, New York, NY 10018",
+        "phone": "+1 (646) 331-0861",
+        "allPhones": [
+          "+1 (646) 331-0861"
+        ],
+        "whatsapp": "https://wa.me/16463310861",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.instagram.com/slowbeauty.nyc",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 28,
+        "profileLink": "https://www.google.com/maps/place/Slowbeauty.nyc/data=!4m7!3m6!1s0x89c2591dbf4de895:0x36167b1b848a090f!8m2!3d40.7553565!4d-73.9928!16s%2Fg%2F11x6x0yyf2!19sChIJlehNvx1ZwokRDwmKhBt7FjY?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_QXJ0IE5haWwgTllD",
+        "name": "Art Nail NYC",
+        "address": "3 W 13th St #2Fl, New York, NY 10011",
+        "phone": null,
+        "allPhones": [],
+        "whatsapp": null,
+        "instagram": null,
+        "email": "info@artnailnyc.comwe",
+        "site": "https://artnailnyc.com/",
+        "schedule": "Open",
+        "rating": 4.5,
+        "reviewsCount": 64,
+        "profileLink": "https://www.google.com/maps/place/Art+Nail+NYC/data=!4m7!3m6!1s0x89c2598f7f89bc5b:0x7eb18db8cffd07e6!8m2!3d40.7356551!4d-73.9946472!16s%2Fg%2F11f5q5xg8q!19sChIJW7yJf49ZwokR5gf9z7iNsX4?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_U3dlZXR5IFNhbG9u",
+        "name": "Sweety Salon NYC",
+        "address": "39 W 32nd St #902, New York, NY 10001",
+        "phone": "+1 (347) 978-1003",
+        "allPhones": [
+          "+1 (347) 978-1003"
+        ],
+        "whatsapp": "https://wa.me/13479781003",
+        "instagram": null,
+        "email": "sales@vagaro.com",
+        "site": "http://www.vagaro.com/sweetysalon",
+        "schedule": "Open",
+        "rating": 4.3,
+        "reviewsCount": 62,
+        "profileLink": "https://www.google.com/maps/place/Sweety+Salon+NYC/data=!4m7!3m6!1s0x89c259853f348db5:0xde41fd5c13c339a7!8m2!3d40.7481614!4d-73.9872958!16s%2Fg%2F11f7jl14kl!19sChIJtY00P4VZwokRpznDE1z9Qd4?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_U29obyBOYWlscysx",
+        "name": "Soho Nails",
+        "address": "458 W Broadway 3rd Floor, New York, NY 10012",
+        "phone": "+1 (212) 475-6368",
+        "allPhones": [
+          "+1 (212) 475-6368"
+        ],
+        "whatsapp": "https://wa.me/12124756368",
+        "instagram": null,
+        "email": "605a7baede844d278b89dc95ae0a9123@sentry-next.wixpress.com",
+        "site": "http://sohonailsny.com/",
+        "schedule": "Open",
+        "rating": 4,
+        "reviewsCount": 251,
+        "profileLink": "https://www.google.com/maps/place/Soho+Nails/data=!4m7!3m6!1s0x89c2598dd88b976d:0xc7d9c9c8b8ea074e!8m2!3d40.7262877!4d-74.0007476!16s%2Fg%2F1tdph3cp!19sChIJbZeL2I1ZwokRTgfquMjJ2cc?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TEFWIE5haWxzICYg",
+        "name": "LAV Nails & More",
+        "address": "141 W 35th St Fl 1, New York, NY 10001",
+        "phone": "+1 (929) 714-4883",
+        "allPhones": [
+          "+1 (929) 714-4883"
+        ],
+        "whatsapp": "https://wa.me/19297144883",
+        "instagram": null,
+        "email": null,
+        "site": null,
+        "schedule": "Open",
+        "rating": 4.9,
+        "reviewsCount": 150,
+        "profileLink": "https://www.google.com/maps/place/LAV+Nails+%26+More/data=!4m7!3m6!1s0x89c259a4689eab65:0x1e09b8542014f700!8m2!3d40.7513149!4d-73.9890233!16s%2Fg%2F11ph18jvxw!19sChIJZaueaKRZwokRAPcUIFS4CR4?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_VW5pY29ybiBOYWls",
+        "name": "Unicorn Nails & Spa",
+        "address": "809 Lexington Ave 2FL(Bet, 62&63 St, New York, NY 10065",
+        "phone": "+1 (212) 380-8895",
+        "allPhones": [
+          "+1 (212) 380-8895"
+        ],
+        "whatsapp": "https://wa.me/12123808895",
+        "instagram": null,
+        "email": null,
+        "site": "https://unicornnailsspa.setmore.com/",
+        "schedule": "Open",
+        "rating": 4.7,
+        "reviewsCount": 155,
+        "profileLink": "https://www.google.com/maps/place/Unicorn+Nails+%26+Spa/data=!4m7!3m6!1s0x89c2598ba14c069f:0xb83f89f5c9396e47!8m2!3d40.7642422!4d-73.9664696!16s%2Fg%2F11t7vfyf4b!19sChIJnwZMoYtZwokRR245yfWJP7g?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_Uk0gTmFpbCBTYWxv",
+        "name": "RM Nail Salon",
+        "address": "875 3rd Ave, New York, NY 10022",
+        "phone": "+1 (346) 865-6565",
+        "allPhones": [
+          "+1 (346) 865-6565"
+        ],
+        "whatsapp": "https://wa.me/13468656565",
+        "instagram": null,
+        "email": "rmnyc2026@gmail.com",
+        "site": "https://www.rmnailsalon.com/",
+        "schedule": "Open",
+        "rating": 4.9,
+        "reviewsCount": 55,
+        "profileLink": "https://www.google.com/maps/place/RM+Nail+Salon/data=!4m7!3m6!1s0x89c259da315ca5b3:0x19b9154b423cd145!8m2!3d40.7573625!4d-73.969416!16s%2Fg%2F11z6qt707l!19sChIJs6VcMdpZwokRRdE8QksVuRk?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TUFOSVErMTY0NjMw",
+        "name": "MANIQ",
+        "address": "336 W 37th St Fl 15, suite 1510, New York, NY 10018",
+        "phone": "+1 (646) 303-8831",
+        "allPhones": [
+          "+1 (646) 303-8831"
+        ],
+        "whatsapp": "https://wa.me/16463038831",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.instagram.com/maniq_nyc?igsh=MXBkMDlyd2FteWp5bQ==&utm_source=qr",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 88,
+        "profileLink": "https://www.google.com/maps/place/MANIQ/data=!4m7!3m6!1s0x89c2598ab7469c0d:0x2d3f0c8d8dabd5dd!8m2!3d40.7547451!4d-73.9939479!16s%2Fg%2F11xts1q95z!19sChIJDZxGt4pZwokR3dWrjY0MPy0?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_QW1iaWVudCBOYWls",
+        "name": "Ambient Nails & Spa",
+        "address": "601 10th Ave, New York, NY 10036",
+        "phone": "+1 (917) 388-2681",
+        "allPhones": [
+          "+1 (917) 388-2681"
+        ],
+        "whatsapp": "https://wa.me/19173882681",
+        "instagram": null,
+        "email": null,
+        "site": "http://www.ambientnailspa.com/",
+        "schedule": "Open",
+        "rating": 4.5,
+        "reviewsCount": 259,
+        "profileLink": "https://www.google.com/maps/place/Ambient+Nails+%26+Spa/data=!4m7!3m6!1s0x89c259238eed7669:0x99c349d7cd303dc0!8m2!3d40.7607787!4d-73.9949924!16s%2Fg%2F11khrclkkm!19sChIJaXbtjiNZwokRwD0wzddJw5k?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_R2xpdHRlciAmIFBv",
+        "name": "Glitter & Polish, Nails & Spa",
+        "address": "248 E 44th St, New York, NY 10017",
+        "phone": "+1 (646) 669-7321",
+        "allPhones": [
+          "+1 (646) 669-7321"
+        ],
+        "whatsapp": "https://wa.me/16466697321",
+        "instagram": null,
+        "email": null,
+        "site": null,
+        "schedule": "Open",
+        "rating": 4.7,
+        "reviewsCount": 475,
+        "profileLink": "https://www.google.com/maps/place/Glitter+%26+Polish,+Nails+%26+Spa/data=!4m7!3m6!1s0x89c25902d6b0f4fd:0x23c08a3587a7076f!8m2!3d40.751138!4d-73.9715762!16s%2Fg%2F11b6dqldr_!19sChIJ_fSw1gJZwokRbwenhzWKwCM?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_RGF6emxlIG5haWwg",
+        "name": "Dazzle nail & Spa - NYC",
+        "address": "125 W 30th St, New York, NY 10001",
+        "phone": "+1 (917) 388-2677",
+        "allPhones": [
+          "+1 (917) 388-2677"
+        ],
+        "whatsapp": "https://wa.me/19173882677",
+        "instagram": null,
+        "email": "mydazzlespa@gmail.com",
+        "site": "https://mydazzlespa.com/",
+        "schedule": "Open",
+        "rating": 4.3,
+        "reviewsCount": 158,
+        "profileLink": "https://www.google.com/maps/place/Dazzle+nail+%26+Spa+-+NYC/data=!4m7!3m6!1s0x89c2590cf4e2e517:0x329ecf0cd2684456!8m2!3d40.7478872!4d-73.9907483!16s%2Fg%2F11lnzznljl!19sChIJF-Xi9AxZwokRVkRo0gzPnjI?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TmFpbCBXQUgrMTkx",
+        "name": "Nail WAH",
+        "address": "165 W 48th St 2nd Floor, New York, NY 10036",
+        "phone": "+1 (917) 628-3373",
+        "allPhones": [
+          "+1 (917) 628-3373"
+        ],
+        "whatsapp": "https://wa.me/19176283373",
+        "instagram": null,
+        "email": "sales@vagaro.com",
+        "site": "https://www.vagaro.com/nailwah",
+        "schedule": "Open",
+        "rating": 4.6,
+        "reviewsCount": 193,
+        "profileLink": "https://www.google.com/maps/place/Nail+WAH/data=!4m7!3m6!1s0x89c2598c4533d54b:0x9cd66d7ffb3fdb85!8m2!3d40.7598122!4d-73.9836123!16s%2Fg%2F11jnmtp34b!19sChIJS9UzRYxZwokRhds_-39t1pw?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_QWJvdmUgUGlnbWVu",
+        "name": "Above Pigment Nails & Spa",
+        "address": "69 Murray St, New York, NY 10007",
+        "phone": "+1 (646) 596-7246",
+        "allPhones": [
+          "+1 (646) 596-7246"
+        ],
+        "whatsapp": "https://wa.me/16465967246",
+        "instagram": null,
+        "email": "abovepigment@gmail.com",
+        "site": "https://www.abovenail.com/",
+        "schedule": "Open",
+        "rating": 4.3,
+        "reviewsCount": 425,
+        "profileLink": "https://www.google.com/maps/place/Above+Pigment+Nails+%26+Spa/data=!4m7!3m6!1s0x89c25b28bdd7e42d:0x49f51214bb436a48!8m2!3d40.7147493!4d-74.0103023!16s%2Fg%2F11jk8z53dz!19sChIJLeTXvShbwokRSGpDuxQS9Uk?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TmV3IFlvcmsgTmFp",
+        "name": "New York Nails & Spa",
+        "address": "145 W 55th St, New York, NY 10019",
+        "phone": "+1 (212) 957-3445",
+        "allPhones": [
+          "+1 (212) 957-3445"
+        ],
+        "whatsapp": "https://wa.me/12129573445",
+        "instagram": null,
+        "email": "605a7baede844d278b89dc95ae0a9123@sentry-next.wixpress.com",
+        "site": "http://www.newyorknailspa.com/",
+        "schedule": "Open",
+        "rating": 3.9,
+        "reviewsCount": 380,
+        "profileLink": "https://www.google.com/maps/place/New+York+Nails+%26+Spa/data=!4m7!3m6!1s0x89c258f832917715:0xc2850b457f3112cf!8m2!3d40.763995!4d-73.9800024!16s%2Fg%2F1tdkb_1h!19sChIJFXeRMvhYwokRzxIxf0ULhcI?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_QWxtb25kIE5haWxz",
+        "name": "Almond Nails Studio",
+        "address": "347 5th Ave 8 floor, suite 803 C, New York, NY 10016",
+        "phone": "+1 (347) 444-2209",
+        "allPhones": [
+          "+1 (347) 444-2209"
+        ],
+        "whatsapp": "https://wa.me/13474442209",
+        "instagram": null,
+        "email": "hi@mystore.com",
+        "site": "http://almond-nails-studio.com/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 71,
+        "profileLink": "https://www.google.com/maps/place/Almond+Nails+Studio/data=!4m7!3m6!1s0x21ecd0b7e2a93ba3:0xc7c2cd4a6aed836d!8m2!3d40.7480733!4d-73.9845923!16s%2Fg%2F11vbsrfnhc!19sChIJozup4rfQ7CERbYPtakrNwsc?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TmFpbHMgU2xhdmEg",
+        "name": "Nails Slava Studio",
+        "address": "147 W 35th St Suite 802, 8floor, New York, NY 10001",
+        "phone": "+1 (347) 483-0623",
+        "allPhones": [
+          "+1 (347) 483-0623"
+        ],
+        "whatsapp": "https://wa.me/13474830623",
+        "instagram": null,
+        "email": null,
+        "site": "https://nailslava.com/",
+        "schedule": "Open",
+        "rating": 4.9,
+        "reviewsCount": 55,
+        "profileLink": "https://www.google.com/maps/place/Nails+Slava+Studio/data=!4m7!3m6!1s0x89c25b5e0be73323:0x46332afc7b6a7b5c!8m2!3d40.751454!4d-73.9891092!16s%2Fg%2F11vc1xqjhb!19sChIJIzPnC15bwokRXHtqe_wqM0Y?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TWVnYSB8IEphcGFu",
+        "name": "Mega | Japanese Nail",
+        "address": "294 8th Ave, New York, NY 10001",
+        "phone": "+1 (646) 776-5888",
+        "allPhones": [
+          "+1 (646) 776-5888"
+        ],
+        "whatsapp": "https://wa.me/16467765888",
+        "instagram": null,
+        "email": "corachenjuan@gmail.com",
+        "site": "http://www.meganailspany.com/",
+        "schedule": "Open",
+        "rating": 4.9,
+        "reviewsCount": 116,
+        "profileLink": "https://www.google.com/maps/place/Mega+%7C+Japanese+Nail/data=!4m7!3m6!1s0x89c259bd737439b3:0x54cc0a64d8683f8d!8m2!3d40.7463655!4d-73.997387!16s%2Fg%2F11z7sm8w4h!19sChIJszl0c71ZwokRjT9o2GQKzFQ?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_Q09MT1JWQVQgTllD",
+        "name": "COLORVAT NYC",
+        "address": "223 W 79th St Ste 2, New York, NY 10024",
+        "phone": "+1 (917) 504-6162",
+        "allPhones": [
+          "+1 (917) 504-6162"
+        ],
+        "whatsapp": "https://wa.me/19175046162",
+        "instagram": null,
+        "email": "colorvat@gmail.com",
+        "site": "http://nyc.colorvat.com/",
+        "schedule": "Open",
+        "rating": 4.6,
+        "reviewsCount": 57,
+        "profileLink": "https://www.google.com/maps/place/COLORVAT+NYC/data=!4m7!3m6!1s0x89c25973ddd6fbff:0x398331e21538efc1!8m2!3d40.7837091!4d-73.9792775!16s%2Fg%2F11gtzck506!19sChIJ__vW3XNZwokRwe84FeIxgzk?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_RGFuZmUgTmFpbHMr",
+        "name": "Danfe Nails",
+        "address": "1567 York Ave, New York, NY 10028",
+        "phone": "+1 (212) 717-1426",
+        "allPhones": [
+          "+1 (212) 717-1426"
+        ],
+        "whatsapp": "https://wa.me/12127171426",
+        "instagram": null,
+        "email": null,
+        "site": null,
+        "schedule": "Open",
+        "rating": 4.7,
+        "reviewsCount": 75,
+        "profileLink": "https://www.google.com/maps/place/Danfe+Nails/data=!4m7!3m6!1s0x89c258b9efc9919d:0xd553600a9747b6c4!8m2!3d40.7742384!4d-73.9486798!16s%2Fg%2F1tcwmgpq!19sChIJnZHJ77lYwokRxLZHlwpgU9U?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TWFuc2lvbiBCZWF1",
+        "name": "Mansion Beauty European Nail Studio",
+        "address": "238 E 80th St, New York, NY 10075",
+        "phone": "+1 (646) 408-0131",
+        "allPhones": [
+          "+1 (646) 408-0131"
+        ],
+        "whatsapp": "https://wa.me/16464080131",
+        "instagram": null,
+        "email": "mansionbeauty2022@gmail.com",
+        "site": "http://www.mansion-beauty.com/google",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 78,
+        "profileLink": "https://www.google.com/maps/place/Mansion+Beauty+European+Nail+Studio/data=!4m7!3m6!1s0x89c25922966f2c07:0x4a92441cd2c14345!8m2!3d40.7742035!4d-73.9552809!16s%2Fg%2F11t2rl2p0s!19sChIJByxvliJZwokRRUPB0hxEkko?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_UGFuZGEgTmFpbHMg",
+        "name": "Panda Nails | 8th Ave, Chelsea",
+        "address": "224 8th Ave Store #3, New York, NY 10011",
+        "phone": "+1 (332) 733-3364",
+        "allPhones": [
+          "+1 (332) 733-3364"
+        ],
+        "whatsapp": "https://wa.me/13327333364",
+        "instagram": null,
+        "email": "pandanail@noemail.com",
+        "site": "https://www.pandanailsalonny.com/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 911,
+        "profileLink": "https://www.google.com/maps/place/Panda+Nails+%7C+8th+Ave,+Chelsea/data=!4m7!3m6!1s0x89c259c625367ad7:0xcc4a6da7e6512719!8m2!3d40.7441799!4d-73.9989571!16s%2Fg%2F11wbln0mxn!19sChIJ13o2JcZZwokRGSdR5qdtSsw?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_SGltYWxheWFuIE5h",
+        "name": "Himalayan Nails & Spa",
+        "address": "404 W 47th St, New York, NY 10036",
+        "phone": "+1 (212) 256-1065",
+        "allPhones": [
+          "+1 (212) 256-1065"
+        ],
+        "whatsapp": "https://wa.me/12122561065",
+        "instagram": null,
+        "email": null,
+        "site": null,
+        "schedule": "Open",
+        "rating": 4.1,
+        "reviewsCount": 340,
+        "profileLink": "https://www.google.com/maps/place/Himalayan+Nails+%26+Spa/data=!4m7!3m6!1s0x89c259b26f0f7e61:0x1a0b064a9f5bc60d!8m2!3d40.7616735!4d-73.9908508!16s%2Fg%2F11rj_vzj5t!19sChIJYX4Pb7JZwokRDcZbn0oGCxo?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_QTYgTmFpbCAtIFNv",
+        "name": "A6 Nail - SoHo",
+        "address": "128 Thompson St, New York, NY 10012",
+        "phone": "+1 (646) 398-9110",
+        "allPhones": [
+          "+1 (646) 398-9110"
+        ],
+        "whatsapp": "https://wa.me/16463989110",
+        "instagram": null,
+        "email": "info@a6nail.com",
+        "site": "http://a6nail.com/",
+        "schedule": "Open",
+        "rating": 4.3,
+        "reviewsCount": 147,
+        "profileLink": "https://www.google.com/maps/place/A6+Nail+-+SoHo/data=!4m7!3m6!1s0x89c2598ddb1a5d83:0x6a1364ad382a02a6!8m2!3d40.7264!4d-74.001268!16s%2Fg%2F11f3n5_gtl!19sChIJg10a241ZwokRpgIqOK1kE2o?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_U29uYSBOYWlscysx",
+        "name": "Sona Nails",
+        "address": "375 1st Ave, New York, NY 10010",
+        "phone": "+1 (917) 261-5347",
+        "allPhones": [
+          "+1 (917) 261-5347"
+        ],
+        "whatsapp": "https://wa.me/19172615347",
+        "instagram": null,
+        "email": null,
+        "site": null,
+        "schedule": "Open",
+        "rating": 4.5,
+        "reviewsCount": 93,
+        "profileLink": "https://www.google.com/maps/place/Sona+Nails/data=!4m7!3m6!1s0x89c2590b178324f1:0x37e683599c58e331!8m2!3d40.7362117!4d-73.9792522!16s%2Fg%2F1xgrnvv8!19sChIJ8SSDFwtZwokRMeNYnFmD5jc?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_R29sZGVuIEhvdXNl",
+        "name": "Golden House Nail Spa",
+        "address": "25 Maiden Ln 2nd Floor, New York, NY 10038",
+        "phone": "+1 (212) 267-3959",
+        "allPhones": [
+          "+1 (212) 267-3959"
+        ],
+        "whatsapp": "https://wa.me/12122673959",
+        "instagram": null,
+        "email": "boston@dreamcitynails.com",
+        "site": "https://ghnailspa.1heartai.com/",
+        "schedule": "Open",
+        "rating": 4.3,
+        "reviewsCount": 321,
+        "profileLink": "https://www.google.com/maps/place/Golden+House+Nail+Spa/data=!4m7!3m6!1s0x89c25b8cadae7fdf:0xb77c267b10f0d795!8m2!3d40.7092677!4d-74.008897!16s%2Fg%2F11rk8d_z9j!19sChIJ33-urYxbwokRldfwEHsmfLc?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TWFuaSBNdXNlaHR0",
+        "name": "Mani Muse",
+        "address": "37 W 20th St 11 Floor, Suite 1106, New York, NY 10011",
+        "phone": null,
+        "allPhones": [],
+        "whatsapp": null,
+        "instagram": null,
+        "email": "nmanimusenyc@gmail.com",
+        "site": "http://manimusenyc.com/",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 372,
+        "profileLink": "https://www.google.com/maps/place/Mani+Muse/data=!4m7!3m6!1s0x89c2591a7b5208c9:0xc44ea3a86439b807!8m2!3d40.7407938!4d-73.9933119!16s%2Fg%2F11svlp1cpz!19sChIJyQhSexpZwokRB7g5ZKijTsQ?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_U3Vuc2hpbmUgTmFp",
+        "name": "Sunshine Nails & Spa",
+        "address": "136 Church St, New York, NY 10007",
+        "phone": "+1 (212) 962-2661",
+        "allPhones": [
+          "+1 (212) 962-2661"
+        ],
+        "whatsapp": "https://wa.me/12129622661",
+        "instagram": null,
+        "email": "sunshinenailsandspausa@gmail.com",
+        "site": "https://sunshinenailsandspany.com/",
+        "schedule": "Open",
+        "rating": 4.4,
+        "reviewsCount": 110,
+        "profileLink": "https://www.google.com/maps/place/Sunshine+Nails+%26+Spa/data=!4m7!3m6!1s0x89c25a1f32ad109d:0xe420d0e3688cb315!8m2!3d40.7142679!4d-74.0086752!16s%2Fg%2F11rjyx56dj!19sChIJnRCtMh9awokRFbOMaOPQIOQ?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_VGFvIE5haWwgU3R1",
+        "name": "Tao Nail Studio",
+        "address": "514 E 6th St, New York, NY 10009",
+        "phone": "+1 (929) 988-0998",
+        "allPhones": [
+          "+1 (929) 988-0998"
+        ],
+        "whatsapp": "https://wa.me/19299880998",
+        "instagram": null,
+        "email": "eben@eyebytes.com",
+        "site": "https://taonailstudio.com/",
+        "schedule": "Open",
+        "rating": 4.4,
+        "reviewsCount": 122,
+        "profileLink": "https://www.google.com/maps/place/Tao+Nail+Studio/data=!4m7!3m6!1s0x89c25966f607903d:0xcb41aa13b40caf3a!8m2!3d40.7249894!4d-73.9831625!16s%2Fg%2F11s8344fmc!19sChIJPZAH9mZZwokROq8MtBOqQcs?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_U3VnYXIgUGx1bSDi",
+        "name": "Sugar Plum — Japanese Nail",
+        "address": "179 Church St B, New York, NY 10007",
+        "phone": "+1 (347) 271-1387",
+        "allPhones": [
+          "+1 (347) 271-1387"
+        ],
+        "whatsapp": "https://wa.me/13472711387",
+        "instagram": null,
+        "email": "nycsugarplum@gmail.com",
+        "site": "http://www.sugarplumnail.com/",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 223,
+        "profileLink": "https://www.google.com/maps/place/Sugar+Plum+%E2%80%94+Japanese+Nail/data=!4m7!3m6!1s0x89c25b7f94e26ce5:0x8088140777bbd7c7!8m2!3d40.7156385!4d-74.0071946!16s%2Fg%2F11zchzkxss!19sChIJ5WzilH9bwokRx9e7dwcUiIA?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_UnVzc2lhbiBOYWls",
+        "name": "Russian Nails/atita-nails",
+        "address": "37 W 26th St 8 floor 828 room, New York, NY 10010",
+        "phone": "+1 (646) 877-8909",
+        "allPhones": [
+          "+1 (646) 877-8909"
+        ],
+        "whatsapp": "https://wa.me/16468778909",
+        "instagram": null,
+        "email": "hi@mystore.com",
+        "site": "https://atita-nails.square.site/?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAdGRleAQJnD5leHRuA2FlbQIxMQBzcnRjBmFwcF9pZA8xMjQwMjQ1NzQyODc0MTQAAafCPrkDgGqckmq1Cn3nZUWXGvTiDP6j5OFN3XLvog-sgQAPqtFKmIC8sQEQzA_aem_kMNRp10qZl86IZ2XW-u98w",
+        "schedule": "Open",
+        "rating": 4.9,
+        "reviewsCount": 50,
+        "profileLink": "https://www.google.com/maps/place/Russian+Nails%2Fatita-nails/data=!4m7!3m6!1s0x89c259da64ad7037:0xfcac136617edb848!8m2!3d40.7445519!4d-73.9904324!16s%2Fg%2F11mm98gk_1!19sChIJN3CtZNpZwokRSLjtF2YTrPw?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_UGVvbnkgQmVhdXR5",
+        "name": "Peony Beauty",
+        "address": "11 Broadway #560, New York, NY 10004",
+        "phone": "+1 (347) 706-9504",
+        "allPhones": [
+          "+1 (347) 706-9504"
+        ],
+        "whatsapp": "https://wa.me/13477069504",
+        "instagram": null,
+        "email": "peonybeautynyc@gmail.com",
+        "site": "http://peonybeautynyc.com/",
+        "schedule": "Open",
+        "rating": 4.9,
+        "reviewsCount": 61,
+        "profileLink": "https://www.google.com/maps/place/Peony+Beauty/data=!4m7!3m6!1s0x89c25b1f4cbe9355:0x8ca0d323551f6a8a!8m2!3d40.7052799!4d-74.0140249!16s%2Fg%2F11mlszrxqr!19sChIJVZO-TB9bwokRimofVSPToIw?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_RW5haWwrMTIxMjY4",
+        "name": "Enail",
+        "address": "35 E 32nd St, New York, NY 10016",
+        "phone": "+1 (212) 683-3399",
+        "allPhones": [
+          "+1 (212) 683-3399"
+        ],
+        "whatsapp": "https://wa.me/12126833399",
+        "instagram": null,
+        "email": "605a7baede844d278b89dc95ae0a9123@sentry-next.wixpress.com",
+        "site": "https://beautyspa888.wixsite.com/enail/enail32ndst",
+        "schedule": "Open",
+        "rating": 4.3,
+        "reviewsCount": 578,
+        "profileLink": "https://www.google.com/maps/place/Enail/data=!4m7!3m6!1s0x89c259a81fcf51b5:0xc26d6ce5cc0473a9!8m2!3d40.7463436!4d-73.9830697!16s%2Fg%2F11g8v5l317!19sChIJtVHPH6hZwokRqXMEzOVsbcI?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_UlVTU0lBTiBOQUlM",
+        "name": "RUSSIAN NAILS by Maira",
+        "address": "144 W 37th St 6 floor 4th office, New York, NY 10018",
+        "phone": "+1 (917) 554-1554",
+        "allPhones": [
+          "+1 (917) 554-1554"
+        ],
+        "whatsapp": "https://wa.me/19175541554",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.nailsbymaira-nyc.com/",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 89,
+        "profileLink": "https://www.google.com/maps/place/RUSSIAN+NAILS+by+Maira/data=!4m7!3m6!1s0x89c25980ace0ac57:0x30bf614e11fb1bb!8m2!3d40.7524546!4d-73.988719!16s%2Fg%2F11x6f_74cw!19sChIJV6zgrIBZwokRu7Ef4RT2CwM?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_R29sZCBSb29tIE5h",
+        "name": "Gold Room Nails",
+        "address": "130 7th Ave, New York, NY 10011",
+        "phone": "+1 (646) 221-2010",
+        "allPhones": [
+          "+1 (646) 221-2010"
+        ],
+        "whatsapp": "https://wa.me/16462212010",
+        "instagram": null,
+        "email": "605a7baede844d278b89dc95ae0a9123@sentry-next.wixpress.com",
+        "site": "http://goldroomnails.com/",
+        "schedule": "Open",
+        "rating": 4.7,
+        "reviewsCount": 90,
+        "profileLink": "https://www.google.com/maps/place/Gold+Room+Nails/data=!4m7!3m6!1s0x89c259e0565e31cd:0xb8d52f4e5fe6a5f0!8m2!3d40.7409368!4d-73.9981843!16s%2Fg%2F11shy96hcb!19sChIJzTFeVuBZwokR8KXmX04v1bg?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_MTAgUGllY2UgTmFp",
+        "name": "10 Piece Nails",
+        "address": "179 Orchard St, New York, NY 10002",
+        "phone": "+1 (646) 791-0000",
+        "allPhones": [
+          "+1 (646) 791-0000"
+        ],
+        "whatsapp": "https://wa.me/16467910000",
+        "instagram": null,
+        "email": "info@10piecenails.com",
+        "site": "http://www.10piecenails.com/",
+        "schedule": "Open",
+        "rating": 4.9,
+        "reviewsCount": 114,
+        "profileLink": "https://www.google.com/maps/place/10+Piece+Nails/data=!4m7!3m6!1s0x89c2599a62bf7b33:0xa007d5457c6d25d8!8m2!3d40.7218926!4d-73.9885958!16s%2Fg%2F11rcrgzz33!19sChIJM3u_YppZwokR2CVtfEXVB6A?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_QXJ0b251cyBOYWls",
+        "name": "Artonus Nailsroom",
+        "address": "38 W 32nd St Suite 1012 (10th floor, New York, NY 10001",
+        "phone": "+1 (347) 888-1036",
+        "allPhones": [
+          "+1 (347) 888-1036"
+        ],
+        "whatsapp": "https://wa.me/13478881036",
+        "instagram": null,
+        "email": "605a7baede844d278b89dc95ae0a9123@sentry-next.wixpress.com",
+        "site": "http://artonusnailsroom.com/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 548,
+        "profileLink": "https://www.google.com/maps/place/Artonus+Nailsroom/data=!4m7!3m6!1s0x89c2456990e8d0d7:0xf90c09fe6a4e52fa!8m2!3d40.747771!4d-73.987415!16s%2Fg%2F11t2tfymb0!19sChIJ19DokGlFwokR-lJOav4JDPk?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TWlhIEFtb3VyIE5h",
+        "name": "Mia Amour Nail & Spa",
+        "address": "107 Christopher St, New York, NY 10014",
+        "phone": "+1 (917) 261-2168",
+        "allPhones": [
+          "+1 (917) 261-2168"
+        ],
+        "whatsapp": "https://wa.me/19172612168",
+        "instagram": null,
+        "email": "605a7baede844d278b89dc95ae0a9123@sentry-next.wixpress.com",
+        "site": "https://www.miaamournailandspa.com/",
+        "schedule": "Open",
+        "rating": 4.5,
+        "reviewsCount": 129,
+        "profileLink": "https://www.google.com/maps/place/Mia+Amour+Nail+%26+Spa/data=!4m7!3m6!1s0x89c2597b31de2563:0xd1e50edb0eeb1115!8m2!3d40.7333993!4d-74.0051144!16s%2Fg%2F11mvv84660!19sChIJYyXeMXtZwokRFRHrDtsO5dE?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_T2ggTXkgTmFpbHMh",
+        "name": "Oh My Nails!",
+        "address": "273 E 10th St, New York, NY 10009",
+        "phone": "+1 (646) 590-4700",
+        "allPhones": [
+          "+1 (646) 590-4700"
+        ],
+        "whatsapp": "https://wa.me/16465904700",
+        "instagram": null,
+        "email": null,
+        "site": "https://ohmynails.com/",
+        "schedule": "Open",
+        "rating": 4.2,
+        "reviewsCount": 96,
+        "profileLink": "https://www.google.com/maps/place/Oh+My+Nails!/data=!4m7!3m6!1s0x89c2599d40d89db9:0xdab1d500e81e44a9!8m2!3d40.728255!4d-73.9829341!16s%2Fg%2F1262c96w8!19sChIJuZ3YQJ1ZwokRqUQe6ADVsdo?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_RGlhTmFpbHNodHRw",
+        "name": "DiaNails",
+        "address": "265 W 37th St, New York, NY 10018",
+        "phone": null,
+        "allPhones": [],
+        "whatsapp": null,
+        "instagram": null,
+        "email": "dianailsny@gmail.com",
+        "site": "http://dianails.square.site/",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 56,
+        "profileLink": "https://www.google.com/maps/place/DiaNails/data=!4m7!3m6!1s0x89c259ef5e73befd:0x1c05555107ea63ab!8m2!3d40.7540428!4d-73.9916533!16s%2Fg%2F11t_rxmtss!19sChIJ_b5zXu9ZwokRq2PqB1FVBRw?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TmFpbHMgYnkgbWkr",
+        "name": "Nails by mi",
+        "address": "15 Clinton St, New York, NY 10002",
+        "phone": "+1 (646) 609-4686",
+        "allPhones": [
+          "+1 (646) 609-4686"
+        ],
+        "whatsapp": "https://wa.me/16466094686",
+        "instagram": null,
+        "email": null,
+        "site": "http://nailsbymi.com/",
+        "schedule": "Open",
+        "rating": 4.6,
+        "reviewsCount": 88,
+        "profileLink": "https://www.google.com/maps/place/Nails+by+mi/data=!4m7!3m6!1s0x89c259fc3c16ac25:0x1708bc4ec10b6d08!8m2!3d40.7209126!4d-73.9843118!16s%2Fg%2F11pfx7l_3m!19sChIJJawWPPxZwokRCG0LwU68CBc?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_RGFybGluZ3MgQmVh",
+        "name": "Darlings Beauty Lab",
+        "address": "42 W 28th St, New York, NY 10001",
+        "phone": "+1 (646) 612-8501",
+        "allPhones": [
+          "+1 (646) 612-8501"
+        ],
+        "whatsapp": "https://wa.me/16466128501",
+        "instagram": null,
+        "email": "darlingsnycmarketing@gmail.com",
+        "site": "https://darlingsnyc.com/",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 758,
+        "profileLink": "https://www.google.com/maps/place/Darlings+Beauty+Lab/data=!4m7!3m6!1s0x89c2592f44bc4f03:0xac9a5825c8433a0!8m2!3d40.7455275!4d-73.9898078!16s%2Fg%2F11kjzvljn_!19sChIJA0-8RC9ZwokRoDOEXIKlyQo?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_QWtpa28gTmFpbHMr",
+        "name": "Akiko Nails",
+        "address": "135 Eldridge St, New York, NY 10002",
+        "phone": "+1 (646) 972-6576",
+        "allPhones": [
+          "+1 (646) 972-6576"
+        ],
+        "whatsapp": "https://wa.me/16469726576",
+        "instagram": null,
+        "email": "akikonails139@gmail.com",
+        "site": "http://www.akikonailsnyc.com/",
+        "schedule": "Open",
+        "rating": 4,
+        "reviewsCount": 416,
+        "profileLink": "https://www.google.com/maps/place/Akiko+Nails/data=!4m7!3m6!1s0x89c25987003903d3:0x9b616a3f22e8c56d!8m2!3d40.719111!4d-73.991747!16s%2Fg%2F11gd67nrqm!19sChIJ0wM5AIdZwokRbcXoIj9qYZs?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TmFpbGF1cmkrMTM0",
+        "name": "Nailauri",
+        "address": "43 W 33rd St suite 507 5th floor, New York, NY 10001",
+        "phone": "+1 (347) 881-2717",
+        "allPhones": [
+          "+1 (347) 881-2717"
+        ],
+        "whatsapp": "https://wa.me/13478812717",
+        "instagram": null,
+        "email": null,
+        "site": "https://nailauri.com/",
+        "schedule": "Open",
+        "rating": 4.9,
+        "reviewsCount": 158,
+        "profileLink": "https://www.google.com/maps/place/Nailauri/data=!4m7!3m6!1s0x89c25927ac37aa23:0xfaf97f8e395e5859!8m2!3d40.7488085!4d-73.9872327!16s%2Fg%2F11k3wgjbfh!19sChIJI6o3rCdZwokRWVheOY5_-fo?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_VG9wIEEgQmVhdXR5",
+        "name": "Top A Beauty & Cutie Nails Inc",
+        "address": "139 Avenue A, New York, NY 10009",
+        "phone": "+1 (212) 475-5678",
+        "allPhones": [
+          "+1 (212) 475-5678"
+        ],
+        "whatsapp": "https://wa.me/12124755678",
+        "instagram": null,
+        "email": null,
+        "site": null,
+        "schedule": "Open",
+        "rating": 4.2,
+        "reviewsCount": 187,
+        "profileLink": "https://www.google.com/maps/place/Top+A+Beauty+%26+Cutie+Nails+Inc/data=!4m7!3m6!1s0x89c25977d42e5349:0x9a1751c6ebc50276!8m2!3d40.7271409!4d-73.9829089!16s%2Fg%2F1thpxrf_!19sChIJSVMu1HdZwokRdgLF68ZRF5o?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_T2NlYW4gQmx1ZSBO",
+        "name": "Ocean Blue Nail and Spa",
+        "address": "140 W 19th St Ground Floor, New York, NY 10011",
+        "phone": "+1 (646) 609-6868",
+        "allPhones": [
+          "+1 (646) 609-6868"
+        ],
+        "whatsapp": "https://wa.me/16466096868",
+        "instagram": null,
+        "email": "oceanbluenailandspa@gmail.com",
+        "site": "https://www.oceanbluenailandspa.com/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 848,
+        "profileLink": "https://www.google.com/maps/place/Ocean+Blue+Nail+and+Spa/data=!4m7!3m6!1s0x89c259e9e27f322d:0x1a6d3d549d550612!8m2!3d40.7410168!4d-73.9965239!16s%2Fg%2F11w43p4d5j!19sChIJLTJ_4ulZwokREgZVnVQ9bRo?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_Q2hlbHNlYSBOYWls",
+        "name": "Chelsea Nails",
+        "address": "100 W 23rd St #2, New York, NY 10011",
+        "phone": "+1 (212) 924-6245",
+        "allPhones": [
+          "+1 (212) 924-6245"
+        ],
+        "whatsapp": "https://wa.me/12129246245",
+        "instagram": null,
+        "email": "605a7baede844d278b89dc95ae0a9123@sentry-next.wixpress.com",
+        "site": "https://www.chelseanailsnyc.com/",
+        "schedule": "Open",
+        "rating": 4,
+        "reviewsCount": 221,
+        "profileLink": "https://www.google.com/maps/place/Chelsea+Nails/data=!4m7!3m6!1s0x89c259a4950f3779:0x9349c2d59e898e9!8m2!3d40.742853!4d-73.993179!16s%2Fg%2F1tw1frfw!19sChIJeTcPlaRZwokR6ZjoWS2cNAk?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TWFqZXN0eSdzIFBs",
+        "name": "Majesty's Pleasure",
+        "address": "45 E 20th St 2nd floor, New York, NY 10003",
+        "phone": "+1 (646) 722-8352",
+        "allPhones": [
+          "+1 (646) 722-8352"
+        ],
+        "whatsapp": "https://wa.me/16467228352",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.majestyspleasure.com/",
+        "schedule": "Open",
+        "rating": 4.5,
+        "reviewsCount": 427,
+        "profileLink": "https://www.google.com/maps/place/Majesty%27s+Pleasure/data=!4m7!3m6!1s0x89c25993336126af:0x23739a22df6c8150!8m2!3d40.7387688!4d-73.9883081!16s%2Fg%2F11v_b4hccl!19sChIJryZhM5NZwokRUIFs3yKacyM?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TmFpbCBhcnRzIG55",
+        "name": "Nail arts nyc",
+        "address": "304 8th Ave B, New York, NY 10001",
+        "phone": "+1 (618) 818-6767",
+        "allPhones": [
+          "+1 (618) 818-6767"
+        ],
+        "whatsapp": "https://wa.me/16188186767",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.instagram.com/nailartsnyc?igsh=aGhoZDRhcjRsZ2Ry&utm_source=qr",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 2,
+        "profileLink": "https://www.google.com/maps/place/Nail+arts+nyc/data=!4m7!3m6!1s0x607da41e0db75903:0x1c8fd6376046a25f!8m2!3d40.7467697!4d-73.9972142!16s%2Fg%2F11nb2prn2c!19sChIJA1m3DR6kfWARX6JGYDfWjxw?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_S09ZU1RVRElPKzE5",
+        "name": "KOYSTUDIO",
+        "address": "24-77 47th St, Astoria, NY 11103",
+        "phone": "+1 (929) 992-0407",
+        "allPhones": [
+          "+1 (929) 992-0407"
+        ],
+        "whatsapp": "https://wa.me/19299920407",
+        "instagram": null,
+        "email": "nkoystudionyc@gmail.com",
+        "site": "https://koystudio.square.site/",
+        "schedule": "Open",
+        "rating": 4.5,
+        "reviewsCount": 46,
+        "profileLink": "https://www.google.com/maps/place/KOYSTUDIO/data=!4m7!3m6!1s0x89c25ff2fa7a349d:0xf24f213855307564!8m2!3d40.7658562!4d-73.905494!16s%2Fg%2F11rv56wr63!19sChIJnTR6-vJfwokRZHUwVTghT_I?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_UGxpZSBOYWlsIFN0",
+        "name": "Plie Nail Studio",
+        "address": "322 W 49th St, New York, NY 10019",
+        "phone": "+1 (646) 370-4660",
+        "allPhones": [
+          "+1 (646) 370-4660"
+        ],
+        "whatsapp": "https://wa.me/16463704660",
+        "instagram": null,
+        "email": "hi@mystore.com",
+        "site": "http://plie-nail-studio.square.site/",
+        "schedule": "Open",
+        "rating": 4.3,
+        "reviewsCount": 155,
+        "profileLink": "https://www.google.com/maps/place/Plie+Nail+Studio/data=!4m7!3m6!1s0x89c2593726595d01:0xff8c7daa5a978614!8m2!3d40.762115!4d-73.987945!16s%2Fg%2F11rnpb2jj8!19sChIJAV1ZJjdZwokRFIaXWqp9jP8?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TmV3IFVWIE5haWwg",
+        "name": "New UV Nail & Spa",
+        "address": "790 Lexington Ave #2F, New York, NY 10065",
+        "phone": "+1 (212) 688-2888",
+        "allPhones": [
+          "+1 (212) 688-2888"
+        ],
+        "whatsapp": "https://wa.me/12126882888",
+        "instagram": null,
+        "email": "sales@vagaro.com",
+        "site": "http://www.vagaro.com/us03/newuvnailspa",
+        "schedule": "Open",
+        "rating": 4.4,
+        "reviewsCount": 190,
+        "profileLink": "https://www.google.com/maps/place/New+UV+Nail+%26+Spa/data=!4m7!3m6!1s0x89c258ef6b869001:0x1308efcd915d2f2!8m2!3d40.7637203!4d-73.9672812!16s%2Fg%2F1tfpw5dd!19sChIJAZCGa-9YwokR8tIV2fyOMAE?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TmFpbCBTUFkrMTIx",
+        "name": "Nail SPY",
+        "address": "51 Murray St, New York, NY 10007",
+        "phone": "+1 (212) 964-0137",
+        "allPhones": [
+          "+1 (212) 964-0137"
+        ],
+        "whatsapp": "https://wa.me/12129640137",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.nailspy51.com/",
+        "schedule": "Open",
+        "rating": 4,
+        "reviewsCount": 125,
+        "profileLink": "https://www.google.com/maps/place/Nail+SPY/data=!4m7!3m6!1s0x89c25bd42a855f3f:0x2bacd440c3592653!8m2!3d40.7143086!4d-74.0094244!16s%2Fg%2F11lg840_xn!19sChIJP1-FKtRbwokRUyZZw0DUrCs?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_RkFSSURBIE5BSUxT",
+        "name": "FARIDA NAILS",
+        "address": "144 W 37th St Fl 5, New York, NY 10018",
+        "phone": "+1 (914) 729-4804",
+        "allPhones": [
+          "+1 (914) 729-4804"
+        ],
+        "whatsapp": "https://wa.me/19147294804",
+        "instagram": null,
+        "email": "hi@mystore.com",
+        "site": "https://faridanails.square.site/",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 34,
+        "profileLink": "https://www.google.com/maps/place/FARIDA+NAILS/data=!4m7!3m6!1s0x89c259a4b19b63b7:0x3828a0923ee45d31!8m2!3d40.7524546!4d-73.988719!16s%2Fg%2F11nc142v0l!19sChIJt2ObsaRZwokRMV3kPpKgKDg?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_T25lIEwgUHJvZmVz",
+        "name": "One L Professional",
+        "address": "11 W 36th St. office 601, New York, NY 10018",
+        "phone": "+1 (929) 844-5254",
+        "allPhones": [
+          "+1 (929) 844-5254"
+        ],
+        "whatsapp": "https://wa.me/19298445254",
+        "instagram": null,
+        "email": null,
+        "site": "https://onelnyc.com/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 875,
+        "profileLink": "https://www.google.com/maps/place/One+L+Professional/data=!4m7!3m6!1s0x89c259af2369a969:0x13b11945e0ab3959!8m2!3d40.7502516!4d-73.9843846!16s%2Fg%2F11rfmpv4m8!19sChIJaalpI69ZwokRWTmr4EUZsRM?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_TmFpbCBPbmUrMTIx",
+        "name": "Nail One",
+        "address": "590 3rd Ave, New York, NY 10016",
+        "phone": "+1 (212) 557-2687",
+        "allPhones": [
+          "+1 (212) 557-2687"
+        ],
+        "whatsapp": "https://wa.me/12125572687",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.instagram.com/nailonenyc?igsh=MXVhZnRobXlidXl2eg==",
+        "schedule": "Open",
+        "rating": 4.5,
+        "reviewsCount": 92,
+        "profileLink": "https://www.google.com/maps/place/Nail+One/data=!4m7!3m6!1s0x89c259040f9855e5:0x37ba9b98b3290811!8m2!3d40.7487258!4d-73.9763068!16s%2Fg%2F1xn_p8zp!19sChIJ5VWYDwRZwokREQgps5ibujc?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_Rmlyc3QgV2F2ZSBT",
+        "name": "First Wave Studio",
+        "address": "481 8th Ave Rm 609, New York, NY 10001",
+        "phone": "+1 (818) 571-9017",
+        "allPhones": [
+          "+1 (818) 571-9017"
+        ],
+        "whatsapp": "https://wa.me/18185719017",
+        "instagram": null,
+        "email": "hi@mystore.com",
+        "site": "https://first-wave-studio-llc.square.site/",
+        "schedule": "Open",
+        "rating": 5,
+        "reviewsCount": 115,
+        "profileLink": "https://www.google.com/maps/place/First+Wave+Studio/data=!4m7!3m6!1s0x89c259005aa31f53:0xf39492c9a1d6167f!8m2!3d40.7526594!4d-73.9935627!16s%2Fg%2F11vzgfmb3j!19sChIJUx-jWgBZwokRfxbWocmSlPM?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_U2FwcGhpcmUgTmFp",
+        "name": "Sapphire Nails & Spa",
+        "address": "1527 York Ave, New York, NY 10028",
+        "phone": "+1 (212) 988-1891",
+        "allPhones": [
+          "+1 (212) 988-1891"
+        ],
+        "whatsapp": "https://wa.me/12129881891",
+        "instagram": null,
+        "email": "info@sapphirespanyc.com",
+        "site": "http://www.sapphirespanyc.com/",
+        "schedule": "Open",
+        "rating": 3.9,
+        "reviewsCount": 169,
+        "profileLink": "https://www.google.com/maps/place/Sapphire+Nails+%26+Spa/data=!4m7!3m6!1s0x89c258b9b2b70d53:0x53c2919268561db5!8m2!3d40.772647!4d-73.949865!16s%2Fg%2F1pv1sgtzv!19sChIJUw23srlYwokRtR1WaJKRwlM?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_UGl4aWUgTmFpbHMg",
+        "name": "Pixie Nails & Spa",
+        "address": "345 Greenwich St #1A, New York, NY 10013",
+        "phone": "+1 (212) 537-5741",
+        "allPhones": [
+          "+1 (212) 537-5741"
+        ],
+        "whatsapp": "https://wa.me/12125375741",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.pixie-nailspa.com/",
+        "schedule": "Open",
+        "rating": 4.7,
+        "reviewsCount": 110,
+        "profileLink": "https://www.google.com/maps/place/Pixie+Nails+%26+Spa/data=!4m7!3m6!1s0x89c25bc2677787cd:0x3aa5be157827763e!8m2!3d40.7184772!4d-74.0102259!16s%2Fg%2F11yfcnnztm!19sChIJzYd3Z8JbwokRPnYneBW-pTo?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_U3ByaW5nIE5ZIE5h",
+        "name": "Spring NY Nail",
+        "address": "27 W 15th St, New York, NY 10011",
+        "phone": "+1 (917) 265-8166",
+        "allPhones": [
+          "+1 (917) 265-8166"
+        ],
+        "whatsapp": "https://wa.me/19172658166",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.27w15th-springnynail.com/",
+        "schedule": "Open",
+        "rating": 4.8,
+        "reviewsCount": 62,
+        "profileLink": "https://www.google.com/maps/place/Spring+NY+Nail/data=!4m7!3m6!1s0x89c2598059aed8c3:0x40ed37441e9eafd4!8m2!3d40.7374251!4d-73.9943863!16s%2Fg%2F11xs7yylvc!19sChIJw9iuWYBZwokR1K-eHkQ37UA?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_UmVsYXggTmFpbHMr",
+        "name": "Relax Nails",
+        "address": "389 3rd Ave, New York, NY 10016",
+        "phone": "+1 (212) 685-8988",
+        "allPhones": [
+          "+1 (212) 685-8988"
+        ],
+        "whatsapp": "https://wa.me/12126858988",
+        "instagram": null,
+        "email": null,
+        "site": "https://www.relaxnailsnyc.com/",
+        "schedule": "Open",
+        "rating": 4.1,
+        "reviewsCount": 143,
+        "profileLink": "https://www.google.com/maps/place/Relax+Nails/data=!4m7!3m6!1s0x89c25909ba897ef9:0xc1a79056c9de9748!8m2!3d40.7417331!4d-73.9807937!16s%2Fg%2F1tf6n3bp!19sChIJ-X6JuglZwokRSJfeyVaQp8E?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_U2F5LUl0IE5haWxz",
+        "name": "Say-It Nails 2 - Downtown",
+        "address": "139 Fulton St Fl 10, Rm 1009, New York, NY 10038",
+        "phone": "+1 (929) 729-3713",
+        "allPhones": [
+          "+1 (929) 729-3713"
+        ],
+        "whatsapp": "https://wa.me/19297293713",
+        "instagram": null,
+        "email": "sayitnail@gmail.com",
+        "site": "https://www.sayitnails.com/",
+        "schedule": "Open",
+        "rating": 4.7,
+        "reviewsCount": 88,
+        "profileLink": "https://www.google.com/maps/place/Say-It+Nails+2+-+Downtown/data=!4m7!3m6!1s0x89c25bafce4e3ced:0x51590cd581253461!8m2!3d40.7104706!4d-74.0077899!16s%2Fg%2F11whpnbcky!19sChIJ7TxOzq9bwokRYTQlgdUMWVE?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      },
+      {
+        "id": "gm_RWxpdGUgTmFpbHMg",
+        "name": "Elite Nails Spa",
+        "address": "356 7th Ave Floor 3, New York, NY 10001",
+        "phone": "+1 (917) 679-7997",
+        "allPhones": [
+          "+1 (917) 679-7997"
+        ],
+        "whatsapp": "https://wa.me/19176797997",
+        "instagram": null,
+        "email": "elitenailspanyc@gmail.com",
+        "site": "https://elitenailspanyc.setmore.com/beta",
+        "schedule": "Open",
+        "rating": 4.6,
+        "reviewsCount": 297,
+        "profileLink": "https://www.google.com/maps/place/Elite+Nails+Spa/data=!4m7!3m6!1s0x89c25943b6cc5b7b:0x4033c7d083447427!8m2!3d40.7484046!4d-73.9928131!16s%2Fg%2F11p72q3jgy!19sChIJe1vMtkNZwokRJ3REg9DHM0A?authuser=0&hl=en&g_ep=EgoyMDI2MDkzMC4wIJJjKgBIAVAD&rclk=1"
+      }
+    ]
+  },
+  {
     "id": "574c807d-2d3a-4851-8796-7a36ef02c732",
     "userId": "cmsz3ykci0000tw2kz4532cwb",
     "title": "маникюр Москва 04.10.26",
