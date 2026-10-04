@@ -1,4 +1,4 @@
-﻿import { Router } from 'express';
+import { Router } from 'express';
 import type { Request, Response } from 'express';
 import { z } from 'zod';
 import { prisma } from '@nexora/database';
@@ -17,17 +17,30 @@ const LEAD_STATUSES: LeadStatus[] = [
 ];
 
 const leadCreateSchema = z.object({
+  contactName: z.string().max(200).optional().nullable(),
   companyName: z.string().max(200).optional().nullable(),
+  position: z.string().max(150).optional().nullable(),
   phone: z.string().max(30).optional().nullable(),
+  email: z.string().email().optional().nullable().or(z.literal('')),
   whatsappUrl: z.string().max(300).optional().nullable(),
   instagramUrl: z.string().max(300).optional().nullable(),
+  telegram: z.string().max(100).optional().nullable(),
   website: z.string().max(300).optional().nullable(),
   city: z.string().max(100).optional().nullable(),
+  country: z.string().max(100).optional().nullable(),
   niche: z.string().max(100).optional().nullable(),
+  businessSize: z.enum(['MICRO', 'SMALL', 'MEDIUM', 'ENTERPRISE']).optional(),
+  priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']).optional(),
   status: z.enum(LEAD_STATUSES as [string, ...string[]]).optional(),
   source: z.enum(['WA_LINK', 'PHONE', 'INSTAGRAM', 'WEBSITE', 'CSV', 'MANUAL']).optional(),
-  notes: z.string().max(5000).optional().nullable(),
+  assumedNeed: z.string().max(5000).optional().nullable(),
+  estimatedBudget: z.number().nonnegative().optional().nullable(),
+  isDecisionMaker: z.boolean().optional().nullable(),
+  decisionMakerInfo: z.string().max(500).optional().nullable(),
+  dealProbability: z.number().min(0).max(100).optional().nullable(),
+  notes: z.string().max(10000).optional().nullable(),
   assignedAccountId: z.string().optional().nullable(),
+  isArchived: z.boolean().optional(),
 });
 
 function buildWhere(req: Request) {
@@ -35,9 +48,20 @@ function buildWhere(req: Request) {
   const userId = req.user!.id;
   const where: Record<string, unknown> = { userId };
 
+  if (q.archived === 'true') {
+    where.isArchived = true;
+  } else if (q.archived === 'all') {
+    // include all
+  } else {
+    where.isArchived = false;
+  }
+
   if (q.status) where.status = String(q.status);
+  if (q.priority) where.priority = String(q.priority);
+  if (q.businessSize) where.businessSize = String(q.businessSize);
   if (q.account) where.assignedAccountId = String(q.account);
   if (q.city) where.city = { contains: String(q.city), mode: 'insensitive' } as never;
+  if (q.country) where.country = { contains: String(q.country), mode: 'insensitive' } as never;
   if (q.niche) where.niche = String(q.niche);
   if (q.source) where.source = String(q.source);
 
@@ -51,13 +75,17 @@ function buildWhere(req: Request) {
   const search = q.search ? String(q.search).trim() : '';
   if (search) {
     where.OR = [
+      { contactName: { contains: search, mode: 'insensitive' } },
       { companyName: { contains: search, mode: 'insensitive' } },
       { phone: { contains: search, mode: 'insensitive' } },
+      { email: { contains: search, mode: 'insensitive' } },
+      { telegram: { contains: search, mode: 'insensitive' } },
       { whatsappUrl: { contains: search, mode: 'insensitive' } },
       { instagramUrl: { contains: search, mode: 'insensitive' } },
       { website: { contains: search, mode: 'insensitive' } },
       { notes: { contains: search, mode: 'insensitive' } },
       { city: { contains: search, mode: 'insensitive' } },
+      { niche: { contains: search, mode: 'insensitive' } },
     ];
   }
 
@@ -76,6 +104,9 @@ const leadInclude = {
   tags: { include: { tag: true } },
   campaigns: { include: { campaign: true } },
   assignedAccount: { select: { id: true, name: true, phoneMasked: true } },
+  score: true,
+  analysis: true,
+  deals: { where: { isArchived: false } },
 } as const;
 
 type LeadWithRelations = {
@@ -101,7 +132,7 @@ leadsRouter.get('/', asyncHandler(async (req: Request, res: Response) => {
   const sortBy = String(req.query.sortBy ?? 'createdAt');
   const sortDir = String(req.query.sortDir ?? 'desc') === 'asc' ? 'asc' : 'desc';
 
-  const allowSort = ['createdAt', 'companyName', 'status', 'city', 'phone', 'updatedAt'];
+  const allowSort = ['createdAt', 'companyName', 'contactName', 'status', 'priority', 'city', 'phone', 'updatedAt'];
   const orderBy = allowSort.includes(sortBy)
     ? { [sortBy]: sortDir }
     : { createdAt: 'desc' as const };
@@ -131,6 +162,7 @@ leadsRouter.get('/export', asyncHandler(async (req: Request, res: Response) => {
   const csv = buildExportCsv(
     leads.map((l) => ({
       ...l,
+      customFields: (l.customFields as Record<string, unknown> | null) ?? null,
       assignedAccountId: l.assignedAccount?.name ?? null,
     })),
   );
@@ -150,15 +182,27 @@ leadsRouter.post('/', asyncHandler(async (req: Request, res: Response) => {
   const lead = await prisma.lead.create({
     data: {
       userId,
+      contactName: body.contactName ?? null,
       companyName: body.companyName ?? null,
+      position: body.position ?? null,
       phone: body.phone?.replace(/\D/g, '') ?? null,
+      email: body.email || null,
       whatsappUrl,
       instagramUrl: body.instagramUrl ?? null,
+      telegram: body.telegram ?? null,
       website: body.website ?? null,
       city: body.city ?? null,
+      country: body.country ?? null,
       niche: body.niche ?? null,
+      businessSize: body.businessSize ?? 'SMALL',
+      priority: body.priority ?? 'MEDIUM',
       status: (body.status as LeadStatus | undefined) ?? 'NEW',
       source,
+      assumedNeed: body.assumedNeed ?? null,
+      estimatedBudget: body.estimatedBudget ?? null,
+      isDecisionMaker: body.isDecisionMaker ?? null,
+      decisionMakerInfo: body.decisionMakerInfo ?? null,
+      dealProbability: body.dealProbability ?? null,
       notes: body.notes ?? null,
       assignedAccountId: body.assignedAccountId ?? null,
     },
@@ -170,7 +214,7 @@ leadsRouter.post('/', asyncHandler(async (req: Request, res: Response) => {
     action: 'LEAD_CREATED',
     entity: 'LEAD',
     entityId: lead.id,
-    metadata: { companyName: lead.companyName },
+    metadata: { companyName: lead.companyName, contactName: lead.contactName },
   });
   emitToUser(userId, 'lead.created', serializeLead(lead));
   res.status(201).json(serializeLead(lead));
@@ -201,17 +245,30 @@ leadsRouter.patch('/:id', asyncHandler(async (req: Request, res: Response) => {
   const updated = await prisma.lead.update({
     where: { id: lead.id },
     data: {
+      contactName: body.contactName === undefined ? undefined : body.contactName,
       companyName: body.companyName === undefined ? undefined : body.companyName,
+      position: body.position === undefined ? undefined : body.position,
       phone: body.phone === undefined ? undefined : body.phone?.replace(/\D/g, ''),
+      email: body.email === undefined ? undefined : (body.email || null),
       whatsappUrl: body.whatsappUrl === undefined ? undefined :
         body.whatsappUrl ?? (body.phone ? buildWaLink(body.phone.replace(/\D/g, '')) : undefined),
       instagramUrl: body.instagramUrl === undefined ? undefined : body.instagramUrl,
+      telegram: body.telegram === undefined ? undefined : body.telegram,
       website: body.website === undefined ? undefined : body.website,
       city: body.city === undefined ? undefined : body.city,
+      country: body.country === undefined ? undefined : body.country,
       niche: body.niche === undefined ? undefined : body.niche,
+      businessSize: body.businessSize,
+      priority: body.priority,
       status: body.status as LeadStatus | undefined,
       source: body.source ?? undefined,
+      assumedNeed: body.assumedNeed === undefined ? undefined : body.assumedNeed,
+      estimatedBudget: body.estimatedBudget === undefined ? undefined : body.estimatedBudget,
+      isDecisionMaker: body.isDecisionMaker === undefined ? undefined : body.isDecisionMaker,
+      decisionMakerInfo: body.decisionMakerInfo === undefined ? undefined : body.decisionMakerInfo,
+      dealProbability: body.dealProbability === undefined ? undefined : body.dealProbability,
       notes: body.notes === undefined ? undefined : body.notes,
+      isArchived: body.isArchived === undefined ? undefined : body.isArchived,
       assignedAccountId:
         body.assignedAccountId === undefined ? undefined : body.assignedAccountId,
     },

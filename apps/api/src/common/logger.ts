@@ -1,3 +1,5 @@
+import { sanitizeForLog, maskPii } from './security/pii-masker';
+
 type Level = 'debug' | 'info' | 'warn' | 'error';
 
 const LEVELS: Record<Level, number> = { debug: 10, info: 20, warn: 30, error: 40 };
@@ -5,11 +7,12 @@ const LEVELS: Record<Level, number> = { debug: 10, info: 20, warn: 30, error: 40
 function write(level: Level, message: string, meta?: Record<string, unknown>) {
   const threshold = process.env.LOG_LEVEL ?? 'info';
   if (LEVELS[level] < LEVELS[threshold as Level]) return;
+  const sanitizedMeta = meta ? sanitizeForLog(meta) : undefined;
   const line = {
     ts: new Date().toISOString(),
     level,
-    msg: message,
-    ...meta,
+    msg: maskPii(message),
+    ...sanitizedMeta,
   };
   if (level === 'error') {
     process.stderr.write(JSON.stringify(line) + '\n');

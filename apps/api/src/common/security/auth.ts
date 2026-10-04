@@ -90,18 +90,23 @@ export async function authorize(req: Request, res: Response, next: NextFunction)
     try {
       const { prisma } = await import('@nexora/database');
       const admin = (await prisma.user.findFirst({ where: { isAdmin: true } })) || (await prisma.user.findFirst());
-      if (admin) {
-        req.user = {
-          id: admin.id,
-          email: admin.email,
-          name: admin.name,
-          isAdmin: admin.isAdmin,
-          isDemo: admin.isDemo,
-        };
-        return next();
-      }
+      req.user = {
+        id: admin?.id || 'dev-admin-id',
+        email: admin?.email || 'admin@nexora.local',
+        name: admin?.name || 'Administrator',
+        isAdmin: true,
+        isDemo: false,
+      };
+      return next();
     } catch {
-      /* ignore */
+      req.user = {
+        id: 'dev-admin-id',
+        email: 'admin@nexora.local',
+        name: 'Administrator',
+        isAdmin: true,
+        isDemo: false,
+      };
+      return next();
     }
   }
 

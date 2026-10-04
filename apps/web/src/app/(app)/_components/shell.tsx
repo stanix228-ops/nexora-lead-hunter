@@ -20,10 +20,17 @@ import {
   Volume2,
   VolumeX,
   Bell,
+  Globe,
+  Flame,
+  Bot,
+  Sparkles,
+  Briefcase,
+  Crosshair,
+  Zap,
 } from 'lucide-react';
 import { useAuth, useSocket } from '@/lib/auth';
 import { useToast } from '@/components/ui/toast';
-import { get } from '@/lib/api';
+import { get, post } from '@/lib/api';
 import {
   playMessageSound,
   showDesktopNotification,
@@ -32,14 +39,19 @@ import {
 
 const NAV = [
   { href: '/', label: 'Дашборд', icon: LayoutDashboard },
-  { href: '/accounts', label: 'Аккаунты', icon: Smartphone },
-  { href: '/leads', label: 'Лиды', icon: Users },
-  { href: '/campaigns', label: 'Кампании', icon: Megaphone },
+  { href: '/autopilot', label: 'Автопилот Продаж', icon: Zap, isAi: true, isHot: true },
+  { href: '/hunter', label: 'Lead Hunter', icon: Crosshair, isAi: true, isHot: true },
+  { href: '/ai-agent', label: 'AI Sales Agent', icon: Bot, isAi: true },
+  { href: '/crm', label: 'CRM & Память AI', icon: Briefcase, isAi: true },
+  { href: '/parser', label: 'Парсер Лидов', icon: Globe, isHot: true },
   { href: '/conversations', label: 'Диалоги', icon: MessagesSquare, badgeKey: 'conversations' },
+  { href: '/accounts', label: 'Аккаунты WhatsApp', icon: Smartphone },
   { href: '/multiview', label: 'Трансляция', icon: RadioTower, badgeKey: 'multiview' },
-  { href: '/import', label: 'Импорт', icon: Upload },
+  { href: '/leads', label: 'База Лидов', icon: Users },
+  { href: '/campaigns', label: 'Кампании', icon: Megaphone },
+  { href: '/import', label: 'Импорт контактов', icon: Upload },
   { href: '/analytics', label: 'Аналитика', icon: BarChart3 },
-  { href: '/risk', label: 'Риски', icon: ShieldAlert },
+  { href: '/risk', label: 'Риски и Лимиты', icon: ShieldAlert },
 ];
 
 function ShellInner({ children }: { children: React.ReactNode }) {
@@ -51,6 +63,8 @@ function ShellInner({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [aiMode, setAiMode] = useState<'OFF' | 'AUTONOMOUS' | 'COPILOT'>('OFF');
+  const [togglingAi, setTogglingAi] = useState(false);
 
   // Load unread count on startup
   const loadUnread = useCallback(async () => {
@@ -62,9 +76,46 @@ function ShellInner({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  // Load global AI mode on startup
+  const loadAiConfig = useCallback(async () => {
+    try {
+      const res = await get<{ mode?: 'OFF' | 'AUTONOMOUS' | 'COPILOT' }>('/api/ai/config');
+      if (res?.mode) {
+        setAiMode(res.mode);
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
   useEffect(() => {
     void loadUnread();
-  }, [loadUnread]);
+    void loadAiConfig();
+  }, [loadUnread, loadAiConfig]);
+
+  const toggleGlobalAi = async () => {
+    try {
+      setTogglingAi(true);
+      const nextMode = aiMode === 'OFF' ? 'AUTONOMOUS' : 'OFF';
+      const res = await post<{ ok: boolean; mode: 'OFF' | 'AUTONOMOUS' | 'COPILOT'; message: string }>(
+        '/api/ai/master-toggle',
+        { mode: nextMode },
+      );
+      if (res?.ok) {
+        setAiMode(res.mode);
+        toast(
+          res.mode === 'OFF'
+            ? '⏸️ ИИ агент полностью остановлен! Включен ручной режим (как прежде).'
+            : '⚡ ИИ агент активирован! Включен авто-режим.',
+          res.mode === 'OFF' ? 'info' : 'success',
+        );
+      }
+    } catch (err) {
+      toast((err as Error).message || 'Не удалось переключить режим AI', 'danger');
+    } finally {
+      setTogglingAi(false);
+    }
+  };
 
   // Request browser notification permission once
   useEffect(() => {
@@ -101,14 +152,29 @@ function ShellInner({ children }: { children: React.ReactNode }) {
       void loadUnread();
     };
 
+    const onHotLeadAlert = (data: { reason?: string }) => {
+      if (soundEnabled) playMessageSound();
+      showDesktopNotification('🔥 Горячий лид!', data.reason || 'Клиент готов к заключению сделки');
+      toast(`🔥 Внимание! Горячий лид: ${data.reason || 'Требуется участие менеджера'}`, 'success');
+      void loadUnread();
+    };
+
+    const onMasterModeChanged = (data: { mode: 'OFF' | 'AUTONOMOUS' | 'COPILOT' }) => {
+      if (data?.mode) setAiMode(data.mode);
+    };
+
     socket.on('message.created', onMessage);
     socket.on('conversation.updated', onConvUpdated);
     socket.on('conversation.created', onConvUpdated);
+    socket.on('ai.hot_lead_alert', onHotLeadAlert);
+    socket.on('ai.master_mode_changed', onMasterModeChanged);
 
     return () => {
       socket.off('message.created', onMessage);
       socket.off('conversation.updated', onConvUpdated);
       socket.off('conversation.created', onConvUpdated);
+      socket.off('ai.hot_lead_alert', onHotLeadAlert);
+      socket.off('ai.master_mode_changed', onMasterModeChanged);
     };
   }, [socket, soundEnabled, toast, loadUnread]);
 
@@ -131,12 +197,28 @@ function ShellInner({ children }: { children: React.ReactNode }) {
           >
             <item.icon size={18} className={active ? 'text-brand-600' : 'text-ink-400'} />
             <span className="flex-1 truncate">{item.label}</span>
+            {item.isAi && !showBadge && (
+              aiMode === 'OFF' ? (
+                <span className="flex items-center gap-0.5 rounded-full bg-amber-100 text-amber-800 px-1.5 py-0.5 text-[9px] font-semibold border border-amber-200">
+                  ⏸️ ВЫКЛ
+                </span>
+              ) : (
+                <span className="flex items-center gap-0.5 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-1.5 py-0.5 text-[9px] font-black shadow-xs animate-pulse">
+                  ⚡ AUTO
+                </span>
+              )
+            )}
+            {item.isHot && !showBadge && (
+              <span className="flex items-center gap-0.5 rounded-full bg-emerald-100 text-emerald-800 px-1.5 py-0.2 text-[9px] font-black border border-emerald-300">
+                🔥 СНГ/USA
+              </span>
+            )}
             {showBadge && (
               <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-emerald-600 px-1 text-[10px] font-bold text-white shadow-sm animate-pulse">
                 {unreadCount}
               </span>
             )}
-            {active && !showBadge && <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />}
+            {active && !showBadge && !item.isHot && !item.isAi && <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />}
           </Link>
         );
       })}
@@ -205,6 +287,32 @@ function ShellInner({ children }: { children: React.ReactNode }) {
             {NAV.find((n) => n.href === pathname)?.label ?? 'Nexora'}
           </div>
           <div className="ml-auto flex items-center gap-2.5">
+            {/* Global Master AI Toggle */}
+            <button
+              onClick={() => void toggleGlobalAi()}
+              disabled={togglingAi}
+              className={clsx(
+                'flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold border transition-all shadow-2xs cursor-pointer',
+                aiMode === 'OFF'
+                  ? 'border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100'
+                  : 'border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100',
+              )}
+              title={
+                aiMode === 'OFF'
+                  ? 'ИИ агент полностью остановлен. Сайт работает в обычном ручном режиме. Нажмите, чтобы включить.'
+                  : 'ИИ агент активен. Нажмите, чтобы полностью остановить бота и вернуть ручной режим.'
+              }
+            >
+              <Bot size={14} className={aiMode === 'OFF' ? 'text-amber-600' : 'text-emerald-600 animate-pulse'} />
+              <span className="hidden sm:inline-flex items-center gap-1.5">
+                <span className={clsx('h-2 w-2 rounded-full', aiMode === 'OFF' ? 'bg-amber-500' : 'bg-emerald-500 animate-pulse')} />
+                <span>ИИ Агент: <strong>{aiMode === 'OFF' ? 'ВЫКЛЮЧЕН (Ручной режим)' : 'АКТИВЕН'}</strong></span>
+              </span>
+              <span className="sm:hidden text-[11px] font-bold">
+                {aiMode === 'OFF' ? '⏸️ AI ВЫКЛ' : '⚡ AI ВКЛ'}
+              </span>
+            </button>
+
             {/* Sound toggle button */}
             <button
               onClick={() => {

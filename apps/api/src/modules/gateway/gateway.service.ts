@@ -38,6 +38,9 @@ export async function sendViaGateway(
     include: { lead: true, account: { include: { gateway: true } } },
   });
   if (!conversation) throw new NotFoundError('Conversation not found.');
+  if (!conversation.account) {
+    throw new AppError(400, 'WhatsApp account is not attached to this conversation.', 'ACCOUNT_NOT_ATTACHED');
+  }
 
   const connection = conversation.account.gateway;
   if (!connection || connection.status !== 'CONNECTED') {
@@ -145,22 +148,40 @@ export async function handleInbound(userId: string, accountId: string, payload: 
     if (existingMsg) return { ok: true, duplicated: true };
   }
 
-  const lead = await prisma.lead.upsert({
-    where: { userId_phone: { userId, phone: digits } },
-    update: {
-      assignedAccountId: accountId,
-      companyName: senderName ? senderName : undefined,
-    },
-    create: {
+  // Robust lead lookup matching digits, +digits, or 8/7 prefix variations
+  let lead = await prisma.lead.findFirst({
+    where: {
       userId,
-      companyName: senderName || maskPhone(digits),
-      phone: digits,
-      whatsappUrl: buildWaLink(digits),
-      source: 'WA_LINK',
-      status: 'NEW',
-      assignedAccountId: accountId,
+      OR: [
+        { phone: digits },
+        { phone: `+${digits}` },
+        ...(digits.startsWith('7') && digits.length === 11
+          ? [{ phone: `8${digits.slice(1)}` }, { phone: `+8${digits.slice(1)}` }]
+          : []),
+      ],
     },
   });
+
+  if (lead) {
+    if (senderName && (!lead.companyName || lead.companyName.startsWith('+') || /^\d+$/.test(lead.companyName))) {
+      lead = await prisma.lead.update({
+        where: { id: lead.id },
+        data: { assignedAccountId: accountId, companyName: senderName },
+      });
+    }
+  } else {
+    lead = await prisma.lead.create({
+      data: {
+        userId,
+        companyName: senderName || maskPhone(digits),
+        phone: digits,
+        whatsappUrl: buildWaLink(digits),
+        source: 'WA_LINK',
+        status: 'NEW',
+        assignedAccountId: accountId,
+      },
+    });
+  }
 
   const msgTime = new Date(payload.timestamp ?? Date.now());
 
@@ -223,6 +244,35 @@ export async function handleInbound(userId: string, accountId: string, payload: 
     account: { id: account.id, name: account.name },
   });
   emitToUser(userId, 'conversation.updated', conversation);
+
+  // Trigger AI Sales Agent processing asynchronously
+  setTimeout(async () => {
+    try {
+      const aiConfig = await prisma.aiAgentConfig.findUnique({ where: { userId } });
+      if (!aiConfig || aiConfig.mode === 'OFF') return;
+
+      const aiState = await prisma.aiDialogueState.findUnique({ where: { conversationId: conversation.id } });
+      if (aiState?.isAiPaused) return;
+
+      const { processInboundWithSalesBrain } = await import('../ai/sales-brain.service');
+      const result = await processInboundWithSalesBrain(userId, conversation.id, text);
+
+      if (aiConfig.mode === 'AUTONOMOUS' && result.replyText && !result.optOutTriggered) {
+        // Enforce safe delay before sending
+        const delayMs = Math.max(3000, (aiConfig.minDelaySeconds || 4) * 1000);
+        setTimeout(async () => {
+          try {
+            await sendViaGateway(userId, conversation.id, result.replyText!, 'TRACKED');
+          } catch (sendErr) {
+            /* ignore if session disconnected */
+          }
+        }, delayMs);
+      }
+    } catch (aiErr) {
+      /* ignore ai error to not disrupt basic messaging */
+    }
+  }, 500);
+
   return { ok: true, leadId: lead.id, conversationId: conversation.id, messageId: message.id };
 }
 

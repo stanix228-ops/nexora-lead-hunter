@@ -1,4 +1,4 @@
-﻿import { Router } from 'express';
+import { Router } from 'express';
 import type { Request, Response } from 'express';
 import { z } from 'zod';
 import { prisma } from '@nexora/database';
@@ -55,11 +55,27 @@ async function buildSummary(account: {
 }
 
 whatsappRouter.get('/', asyncHandler(async (req: Request, res: Response) => {
-  const accounts = await prisma.whatsAppAccount.findMany({
+  let accounts = await prisma.whatsAppAccount.findMany({
     where: { userId: req.user!.id },
     include: { gateway: { select: { provider: true, status: true, lastError: true } } },
     orderBy: [{ position: 'asc' }, { createdAt: 'asc' }],
   });
+
+  if (accounts.length === 0) {
+    const defaultAcc = await prisma.whatsAppAccount.create({
+      data: {
+        userId: req.user!.id,
+        name: 'Основной WhatsApp',
+        phone: '',
+        phoneMasked: 'Не привязан',
+        status: 'OFFLINE',
+        position: 1,
+      },
+      include: { gateway: { select: { provider: true, status: true, lastError: true } } },
+    });
+    accounts = [defaultAcc];
+  }
+
   const summaries = await Promise.all(accounts.map(buildSummary));
   res.json({ items: summaries });
 }));

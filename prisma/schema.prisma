@@ -21,6 +21,14 @@ enum AccountStatus {
   ATTENTION
 }
 
+enum AiExecutionMode {
+  AUTOMATIC_REPLIES
+  MANUAL_APPROVAL
+  FULL_AUTONOMY
+  PAUSED
+  HUMAN_HANDOFF
+}
+
 enum LeadStatus {
   NEW
   CONTACTED
@@ -42,9 +50,14 @@ enum ConversationStatus {
 }
 
 enum LeadSource {
+  GIS_2
+  GOOGLE_MAPS
+  INSTAGRAM
+  TELEGRAM
+  LINKEDIN
+  EMAIL
   WA_LINK
   PHONE
-  INSTAGRAM
   WEBSITE
   CSV
   MANUAL
@@ -97,12 +110,21 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  accounts    WhatsAppAccount[]
-  leads       Lead[]
-  campaigns   Campaign[]
-  tags        Tag[]
-  activity    ActivityEvent[]
-  settings    Setting[]
+  accounts          WhatsAppAccount[]
+  instagramAccounts InstagramAccount[]
+  telegramBots      TelegramBot[]
+  emailAccounts     EmailAccount[]
+  emailSuppressions EmailSuppression[]
+  leads             Lead[]
+  campaigns      Campaign[]
+  tags           Tag[]
+  activity       ActivityEvent[]
+  settings       Setting[]
+  aiConfig       AiAgentConfig?
+  aiAuditLogs    AiAuditLog[]
+  deals          Deal[]
+  timelineEvents TimelineEvent[]
+  hunterJobs     LeadHunterJob[]
 }
 
 model WhatsAppAccount {
@@ -142,6 +164,12 @@ model GatewayConnection {
   status      GatewayStatus @default(DISCONNECTED)
   qrKey       String?
   lastError   String?
+  officialPhoneNumberId String?
+  officialWabaId        String?
+  officialAccessToken   String?
+  officialVerifyToken   String?
+  officialAppSecret     String?
+  webhookUrl            String?
   isDemo      Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -156,35 +184,159 @@ enum GatewayStatus {
   FAILED
 }
 
+enum BusinessSize {
+  MICRO
+  SMALL
+  MEDIUM
+  ENTERPRISE
+}
+
+enum LeadPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum DigitalMaturity {
+  LOW
+  MEDIUM
+  HIGH
+  ADVANCED
+}
+
+enum DealStageEnum {
+  NEW
+  QUALIFICATION
+  PROPOSAL
+  NEGOTIATION
+  WON
+  LOST
+}
+
+enum CommunicationChannel {
+  WHATSAPP
+  TELEGRAM
+  INSTAGRAM
+  EMAIL
+  WEB
+}
+
+enum SentimentType {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+  SKEPTICAL
+}
+
+enum MemoryLayer {
+  SHORT_TERM
+  LONG_TERM
+  BUSINESS_FACT
+  INTERACTION_FACT
+  DEAL_FACT
+  PREFERENCE
+  OBJECTION
+  AGREEMENT
+}
+
+enum TimelineEventType {
+  LEAD_CREATED
+  MESSAGE_SENT
+  MESSAGE_RECEIVED
+  AI_SCORED
+  AI_ANALYZED
+  DEAL_CREATED
+  DEAL_STAGE_CHANGED
+  PROPOSAL_GENERATED
+  PROPOSAL_SENT
+  OBJECTION_LOGGED
+  MEMORY_RECORDED
+  STATUS_CHANGED
+  NOTE_ADDED
+  FOLLOW_UP_SCHEDULED
+  HUMAN_HANDOFF
+}
+
 model Lead {
   id                String     @id @default(cuid())
   userId            String
   user              User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contactName       String?
   companyName       String?
+  position          String?
   phone             String?
+  email             String?
   whatsappUrl       String?
   instagramUrl      String?
+  instagramUsername String?
+  instagramId       String?
+  telegram          String?
+  telegramUrl       String?
+  telegramUsername  String?
+  telegramChatId    String?
   website           String?
   city              String?
+  country           String?
   niche             String?
+  businessSize      BusinessSize @default(SMALL)
+  priority          LeadPriority @default(MEDIUM)
   source            LeadSource @default(MANUAL)
   status            LeadStatus @default(NEW)
+  assumedNeed       String?    @db.Text
+  estimatedBudget   Float?
+  isDecisionMaker   Boolean?
+  decisionMakerInfo String?
+  dealProbability   Int?
   notes             String?
+  customFields      Json?
+  isArchived        Boolean    @default(false)
+  archivedAt        DateTime?
   assignedAccountId String?
   assignedAccount   WhatsAppAccount? @relation(fields: [assignedAccountId], references: [id], onDelete: SetNull)
+  assignedInstagramAccountId String?
+  assignedInstagramAccount   InstagramAccount? @relation(fields: [assignedInstagramAccountId], references: [id], onDelete: SetNull)
+  assignedTelegramBotId String?
+  assignedTelegramBot   TelegramBot? @relation(fields: [assignedTelegramBotId], references: [id], onDelete: SetNull)
+  assignedEmailAccountId String?
+  assignedEmailAccount   EmailAccount? @relation(fields: [assignedEmailAccountId], references: [id], onDelete: SetNull)
+  discoveredAt      DateTime   @default(now())
+  searchQuery       String?
+  hunterJobId       String?
+  hunterJob         LeadHunterJob? @relation(fields: [hunterJobId], references: [id], onDelete: SetNull)
   isDemo            Boolean    @default(false)
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @updatedAt
 
-  conversations Conversation[]
-  tags         LeadTag[]
-  campaigns    CampaignLead[]
-  activity     ActivityEvent[]
+  conversations  Conversation[]
+  tags           LeadTag[]
+  campaigns      CampaignLead[]
+  activity       ActivityEvent[]
+  score          LeadScore?
+  analysis       BusinessAnalysis?
+  memoryFacts    MemoryFact[]
+  clientMemories ClientMemory[]
+  proposals      CommercialProposal[]
+  deals          Deal[]
+  timelineEvents TimelineEvent[]
+  followUps      FollowUpJob[]
+  aiAuditLogs    AiAuditLog[]
 
   @@index([userId, status])
   @@index([userId, assignedAccountId])
+  @@index([userId, assignedInstagramAccountId])
+  @@index([userId, assignedTelegramBotId])
+  @@index([userId, assignedEmailAccountId])
+  @@index([userId, email])
   @@index([userId, createdAt])
+  @@index([userId, discoveredAt])
+  @@index([userId, instagramId])
+  @@index([userId, instagramUsername])
+  @@index([userId, telegramChatId])
+  @@index([userId, telegramUsername])
+  @@index([hunterJobId])
   @@index([companyName])
+  @@index([contactName])
   @@unique([userId, phone])
 }
 
@@ -221,26 +373,51 @@ model CampaignLead {
 
 // ------------------------------------------------ Conversations & messages
 model Conversation {
-  id                String             @id @default(cuid())
-  userId            String
-  accountId         String
-  account           WhatsAppAccount    @relation(fields: [accountId], references: [id], onDelete: Cascade)
-  leadId            String
-  lead              Lead               @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  status            ConversationStatus @default(NEW)
-  unreadCount       Int                @default(0)
-  lastMessageAt     DateTime?
+  id                 String               @id @default(cuid())
+  userId             String
+  accountId          String?
+  account            WhatsAppAccount?     @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  instagramAccountId String?
+  instagramAccount   InstagramAccount?    @relation(fields: [instagramAccountId], references: [id], onDelete: Cascade)
+  telegramBotId      String?
+  telegramBot        TelegramBot?         @relation(fields: [telegramBotId], references: [id], onDelete: Cascade)
+  telegramChatId     String?
+  emailAccountId     String?
+  emailAccount       EmailAccount?        @relation(fields: [emailAccountId], references: [id], onDelete: Cascade)
+  leadId             String
+  lead               Lead                 @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  channel            CommunicationChannel @default(WHATSAPP)
+  status             ConversationStatus   @default(NEW)
+  currentIntent      String?
+  sentiment          SentimentType?
+  unreadCount        Int                  @default(0)
+  lastMessageAt      DateTime?
   lastMessagePreview String?
-  isDemo            Boolean            @default(false)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  isDemo             Boolean              @default(false)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
 
-  messages Message[]
+  messages       Message[]
+  aiState        AiDialogueState?
+  proposals      CommercialProposal[]
+  deals          Deal[]
+  clientMemories ClientMemory[]
+  timelineEvents TimelineEvent[]
+  followUps      FollowUpJob[]
+  aiAuditLogs    AiAuditLog[]
 
   @@index([accountId, status])
+  @@index([instagramAccountId, status])
+  @@index([telegramBotId, status])
+  @@index([emailAccountId, status])
+  @@index([telegramChatId])
   @@index([leadId])
   @@index([userId, lastMessageAt])
+  @@index([channel])
   @@unique([accountId, leadId])
+  @@unique([instagramAccountId, leadId])
+  @@unique([telegramBotId, leadId])
+  @@unique([emailAccountId, leadId])
 }
 
 model Message {
@@ -249,13 +426,24 @@ model Message {
   conversation   Conversation    @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   direction      MessageDirection
   body           String
+  intent         String?
+  sentiment      SentimentType?
+  extractedFacts Json?
+  mediaType      String?
+  mediaUrl       String?
+  mediaMimeType  String?
+  mediaCaption   String?
+  mediaFileName  String?
+  metaMessageId  String?
+  deliveryStatus String?         @default("SENT")
   /// TRACKED = pulled from the WhatsApp client, MANUAL = user recorded,
   /// UNAVAILABLE = no real event source connected.
   provenance     DataProvenance  @default(MANUAL)
   recordedAt     DateTime        @default(now())
   opId           String?
 
-  events MessageEvent[]
+  events         MessageEvent[]
+  emailMeta      EmailMessageMeta?
 
   @@index([conversationId, recordedAt])
   @@index([recordedAt])
@@ -355,4 +543,598 @@ model Setting {
   value  String
 
   @@unique([userId, key])
+}
+
+// ------------------------------------------------ AI Sales Agent
+enum AiAgentMode {
+  AUTONOMOUS
+  COPILOT
+  OFF
+}
+
+enum AiProvider {
+  BUILTIN
+  OPENAI
+  ANTHROPIC
+  GEMINI
+  OPENROUTER
+  OLLAMA
+}
+
+enum LeadGrade {
+  HOT
+  WARM
+  COLD
+  UNQUALIFIED
+}
+
+enum RecommendedService {
+  WEB
+  MOBILE
+  TELEGRAM_BOT
+  AI_AUTOMATION
+  CUSTOM_CRM
+  REDESIGN
+  INTEGRATION
+}
+
+enum UrgencyLevel {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum BudgetTier {
+  LOW
+  MEDIUM
+  HIGH
+  ENTERPRISE
+}
+
+enum AiStage {
+  NEW
+  CONTACTED
+  DISCOVERY
+  QUALIFIED
+  SOLUTION
+  PROPOSAL
+  NEGOTIATION
+  FOLLOW_UP
+  WON
+  LOST
+  HUMAN_HANDOFF
+  // Legacy aliases for backward compatibility:
+  DISCOVERED
+  ANALYZED
+  SCORED
+  OUTREACH_PENDING
+  FIRST_TOUCH_SENT
+  REPLIED
+  NEEDS_DISCOVERY
+  PROBLEM_DIAGNOSED
+  SOLUTION_PROPOSED
+  OBJECTION_HANDLING
+  PROPOSAL_SENT
+  CLOSING
+  HUMAN_TAKEOVER
+}
+
+enum MemoryFactCategory {
+  BUDGET
+  PREFERENCE
+  TECH_STACK
+  DECISION_MAKER
+  COMPETITOR
+  TIMELINE
+  GENERAL
+}
+
+enum MemoryFactSource {
+  USER
+  AI
+  MANUAL
+}
+
+enum ProposalStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  REJECTED
+}
+
+enum FollowUpStatus {
+  PENDING
+  SENT
+  CANCELLED
+  SKIPPED
+}
+
+enum AiActionType {
+  ANALYSIS
+  SCORING
+  OUTREACH_GENERATION
+  INBOUND_REPLY
+  OBJECTION_HANDLED
+  PROPOSAL_GENERATED
+  FOLLOW_UP
+  HUMAN_ALERT
+  GUARDRAIL_TRIGGERED
+}
+
+model AiAgentConfig {
+  id                        String      @id @default(cuid())
+  userId                    String      @unique
+  user                      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mode                      AiAgentMode @default(COPILOT)
+  llmProvider               AiProvider  @default(BUILTIN)
+  apiKey                    String?
+  modelName                 String?     @default("gpt-4o-mini")
+  temperature               Float       @default(0.4)
+  systemPrompt              String?     @db.Text
+  serviceCatalog            Json?
+  pricingRules              Json?
+  workingHoursStart         String      @default("09:00")
+  workingHoursEnd           String      @default("20:00")
+  timezone                  String      @default("Europe/Moscow")
+  maxDailyMessagesPerAccount Int        @default(50)
+  minDelaySeconds           Int         @default(8)
+  maxDelaySeconds           Int         @default(45)
+  autoAnalyzeLeads          Boolean     @default(true)
+  autoScoreLeads            Boolean     @default(true)
+  autoOutreach              Boolean     @default(false)
+  stopWords                 Json?
+  followUpEnabled           Boolean     @default(true)
+  followUpIntervals         Json?
+  createdAt                 DateTime    @default(now())
+  updatedAt                 DateTime    @updatedAt
+}
+
+model BusinessAnalysis {
+  id                  String          @id @default(cuid())
+  leadId              String          @unique
+  lead                Lead            @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  description         String?         @db.Text
+  services            Json?
+  websiteUrl          String?
+  socials             Json?
+  competitors         Json?
+  foundProblems       Json?
+  foundOpportunities  Json?
+  digitalMaturity     DigitalMaturity @default(LOW)
+  automationPoints    Json?
+  websiteStatus       String          @default("UNKNOWN")
+  pageLoadSpeedMs     Int?
+  isMobileFriendly    Boolean?
+  techStack           Json?
+  hasOnlineBooking    Boolean?
+  hasEcommerce        Boolean?
+  hasChatWidget       Boolean?
+  seoScore            Int?
+  detectedGaps        Json?
+  instagramHandle     String?
+  instagramBio        String?
+  instagramFollowers  Int?
+  summary             String?         @db.Text
+  analyzedAt          DateTime        @default(now())
+}
+
+model LeadScore {
+  id                 String             @id @default(cuid())
+  leadId             String             @unique
+  lead               Lead               @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  score              Int                @default(50)
+  grade              LeadGrade          @default(WARM)
+  category           String             @default("medium")
+  confidence         Float              @default(0.85)
+  recommendedService RecommendedService @default(WEB)
+  urgency            UrgencyLevel       @default(MEDIUM)
+  estimatedBudgetTier BudgetTier        @default(MEDIUM)
+  reasons            Json?
+  factors            Json?
+  breakdown          Json?
+  painPoints         Json?
+  techGaps           Json?
+  rawAnalysis        Json?
+  scoredAt           DateTime           @default(now())
+}
+
+model AiDialogueState {
+  id                    String       @id @default(cuid())
+  conversationId        String       @unique
+  conversation          Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  stage                 AiStage      @default(DISCOVERED)
+  bantBudget            String?
+  bantAuthority         String?
+  bantNeed              String?
+  bantTimeline          String?
+  identifiedPains       Json?
+  offeredServices       Json?
+  objectionsEncountered Json?
+  isAiPaused            Boolean          @default(false)
+  pausedReason          String?
+  executionMode         AiExecutionMode?
+  suggestedReply        String?          @db.Text
+  suggestedReplyStatus  String?
+  humanTakeoverAt       DateTime?
+  humanTakeoverBy       String?
+  lastAiReplyAt         DateTime?
+  nextFollowUpAt        DateTime?
+  followUpStep          Int              @default(0)
+  confidenceScore       Float            @default(0.9)
+  summary               String?          @db.Text
+  discoveryProfile      Json?
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+}
+
+model MemoryFact {
+  id             String             @id @default(cuid())
+  leadId         String
+  lead           Lead               @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  category       MemoryFactCategory @default(GENERAL)
+  key            String
+  value          String             @db.Text
+  source         MemoryFactSource   @default(AI)
+  confidence     Float              @default(0.9)
+  createdAt      DateTime           @default(now())
+
+  @@index([leadId, category])
+}
+
+// ------------------------------------------------ CRM: 8-Layer Memory Fact Model
+model ClientMemory {
+  id             String           @id @default(cuid())
+  leadId         String
+  lead           Lead             @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  conversationId String?
+  conversation   Conversation?    @relation(fields: [conversationId], references: [id], onDelete: SetNull)
+  layer          MemoryLayer      @default(BUSINESS_FACT)
+  key            String
+  value          String           @db.Text
+  confidence     Float            @default(0.9)
+  source         MemoryFactSource @default(AI)
+  isPinned       Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@index([leadId, layer])
+  @@index([conversationId])
+}
+
+// ------------------------------------------------ CRM: Deal / Pipeline Model
+model Deal {
+  id             String         @id @default(cuid())
+  userId         String
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leadId         String
+  lead           Lead           @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  conversationId String?
+  conversation   Conversation?  @relation(fields: [conversationId], references: [id], onDelete: SetNull)
+  proposalId     String?
+  proposal       CommercialProposal? @relation(fields: [proposalId], references: [id], onDelete: SetNull)
+  title          String
+  stage          DealStageEnum  @default(NEW)
+  serviceType    String?
+  proposalText   String?        @db.Text
+  amount         Float          @default(0)
+  discount       Float          @default(0)
+  probability    Int            @default(50)
+  nextAction     String?
+  followUpDate   DateTime?
+  lostReason     String?
+  isArchived     Boolean        @default(false)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  timelineEvents TimelineEvent[]
+
+  @@index([userId, stage])
+  @@index([leadId])
+  @@index([conversationId])
+}
+
+model CommercialProposal {
+  id              String         @id @default(cuid())
+  leadId          String
+  lead            Lead           @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  conversationId  String?
+  conversation    Conversation?  @relation(fields: [conversationId], references: [id], onDelete: SetNull)
+  title           String
+  serviceType     String
+  summary         String         @db.Text
+  scope           Json?
+  deliverables    Json?
+  timelineWeeks   Int            @default(2)
+  priceEstimateMin Int           @default(30000)
+  priceEstimateMax Int           @default(150000)
+  currency        String         @default("RUB")
+  status          ProposalStatus @default(DRAFT)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  deals           Deal[]
+
+  @@index([leadId])
+  @@index([conversationId])
+}
+
+// ------------------------------------------------ CRM: Unified Customer Timeline
+model TimelineEvent {
+  id             String            @id @default(cuid())
+  userId         String
+  user           User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leadId         String?
+  lead           Lead?             @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  dealId         String?
+  deal           Deal?             @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  conversationId String?
+  conversation   Conversation?     @relation(fields: [conversationId], references: [id], onDelete: SetNull)
+  eventType      TimelineEventType
+  title          String
+  description    String?           @db.Text
+  metadata       Json?
+  createdAt      DateTime          @default(now())
+
+  @@index([userId, createdAt])
+  @@index([leadId, createdAt])
+  @@index([dealId])
+}
+
+model FollowUpJob {
+  id                String         @id @default(cuid())
+  conversationId    String
+  conversation      Conversation   @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  leadId            String
+  lead              Lead           @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  stepNumber        Int            @default(1)
+  scheduledFor      DateTime
+  status            FollowUpStatus @default(PENDING)
+  reason            String?
+  channel           String         @default("WHATSAPP")
+  messageTemplate   String?        @db.Text
+  actualMessageSent String?        @db.Text
+  sentAt            DateTime?
+  metadata          Json?
+  createdAt         DateTime       @default(now())
+
+  @@index([scheduledFor, status])
+  @@index([conversationId])
+  @@index([leadId])
+}
+
+model AiAuditLog {
+  id              String        @id @default(cuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leadId          String?
+  lead            Lead?         @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  conversationId  String?
+  conversation    Conversation? @relation(fields: [conversationId], references: [id], onDelete: SetNull)
+  actionType      AiActionType
+  modelUsed       String?
+  promptTokens    Int           @default(0)
+  completionTokens Int          @default(0)
+  inputSnapshot   Json?
+  outputSnapshot  Json?
+  executionTimeMs Int           @default(0)
+  success         Boolean       @default(true)
+  errorMessage    String?
+  createdAt       DateTime      @default(now())
+
+  @@index([userId, createdAt])
+  @@index([leadId])
+  @@index([conversationId])
+}
+
+// ------------------------------------------------ Lead Hunter: Autonomous Discovery Jobs
+model LeadHunterJob {
+  id              String        @id @default(cuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name            String
+  query           String
+  niche           String
+  city            String
+  country         String?
+  targetCount     Int           @default(30)
+  minScore        Int           @default(50)
+  sources         Json
+  filters         Json?
+  autoOutreach    Boolean       @default(false)
+  status          String        @default("PENDING")
+  discoveredCount Int           @default(0)
+  processedCount  Int           @default(0)
+  savedCount      Int           @default(0)
+  duplicateCount  Int           @default(0)
+  rejectedCount   Int           @default(0)
+  currentStage    String?
+  errorMessage    String?
+  logs            Json?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  completedAt     DateTime?
+
+  leads           Lead[]
+
+  @@index([userId, status])
+  @@index([userId, createdAt])
+}
+
+// ------------------------------------------------ Instagram Integration: Official Direct API
+model InstagramAccount {
+  id                  String          @id @default(cuid())
+  userId              String
+  user                User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                String
+  username            String
+  instagramId         String          // Meta Instagram Business Account ID / IGSID
+  pageId              String?         // Linked Facebook Page ID
+  status              AccountStatus   @default(ONLINE)
+  accessToken         String?         @db.Text
+  verifyToken         String?
+  appSecret           String?
+  profilePicUrl       String?
+  aiExecutionMode     AiExecutionMode @default(AUTOMATIC_REPLIES)
+  dailyMessageLimit   Int             @default(100)
+  messagesSentToday   Int             @default(0)
+  lastActiveAt        DateTime?
+  isDemo              Boolean         @default(false)
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+
+  conversations       Conversation[]
+  leads               Lead[]
+
+  @@index([userId, status])
+  @@index([instagramId])
+  @@unique([userId, username])
+}
+
+// ------------------------------------------------ Telegram Integration: Official Bot API & Owner Notifications
+model TelegramBot {
+  id                    String          @id @default(cuid())
+  userId                String
+  user                  User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                  String          // Display name e.g. "Nexora AI Assistant"
+  username              String          // Telegram bot username e.g. "nexora_sales_bot"
+  botId                 String?         // Telegram bot numeric ID (from getMe)
+  botToken              String          @db.Text // Bot API token from @BotFather
+  secretToken           String?         // Secret token for x-telegram-bot-api-secret-token webhook verification
+  status                AccountStatus   @default(ONLINE)
+  webhookUrl            String?
+  aiExecutionMode       AiExecutionMode @default(AUTOMATIC_REPLIES)
+  isNotificationChannel Boolean         @default(false) // Whether this bot sends owner notifications
+  ownerChatId           String?         // Telegram chat ID of the business owner/manager for HOT LEAD notifications
+  ownerUsername         String?         // Telegram username of the owner
+  notifyOnHotLead       Boolean         @default(true) // Notify on score >= 80 or HOT grade
+  notifyOnProposal      Boolean         @default(true) // Notify when CP is generated
+  notifyOnHandoff       Boolean         @default(true) // Notify when client asks for manager / takeover
+  notifyOnObjection     Boolean         @default(false) // Notify on objection
+  dailyMessageLimit     Int             @default(500)
+  messagesSentToday     Int             @default(0)
+  lastActiveAt          DateTime?
+  isDemo                Boolean         @default(false)
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+
+  conversations         Conversation[]
+  leads                 Lead[]
+
+  @@index([userId, status])
+  @@index([username])
+  @@unique([userId, username])
+}
+
+// ------------------------------------------------ Email Integration: RFC 2822 / 8058 Compliance, Anti-Spam & Multi-Provider
+enum EmailProviderType {
+  SMTP
+  RESEND
+  SENDGRID
+  POSTMARK
+  MOCK
+}
+
+enum EmailSuppressionReason {
+  UNSUBSCRIBED
+  HARD_BOUNCE
+  SOFT_BOUNCE
+  SPAM_COMPLAINT
+  MANUAL
+}
+
+enum EmailBounceType {
+  HARD
+  SOFT
+  SPAM_COMPLAINT
+}
+
+model EmailAccount {
+  id                  String            @id @default(cuid())
+  userId              String
+  user                User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                String            // Friendly name e.g. "Primary Outreach (alex@domain.com)"
+  emailAddress        String            // From email address
+  senderName          String?           // Display name e.g. "Alexey from Nexora Web"
+  replyToAddress      String?           // Reply-To header
+  provider            EmailProviderType @default(SMTP)
+  // SMTP credentials
+  smtpHost            String?
+  smtpPort            Int?              @default(587)
+  smtpUser            String?
+  smtpPassword        String?           @db.Text
+  smtpSecure          Boolean           @default(false)
+  // API provider keys (Resend, SendGrid, etc.)
+  apiKey              String?           @db.Text
+  webhookSecret       String?
+  // Anti-spam, throttling & warm-up limits
+  status              AccountStatus     @default(ONLINE)
+  aiExecutionMode     AiExecutionMode   @default(AUTOMATIC_REPLIES)
+  dailyMessageLimit   Int               @default(50)  // Strict anti-spam rate limit
+  hourlyMessageLimit  Int               @default(10)  // Hourly drip/warmup throttle
+  messagesSentToday   Int               @default(0)
+  messagesSentThisHour Int              @default(0)
+  lastSentAt          DateTime?
+  warmupStage         Int               @default(1)   // 1=Warmup (10-20/day), 2=Established, 3=Mature
+  trackingEnabled     Boolean           @default(true) // Open pixel & click tracking
+  signatureHtml       String?           @db.Text
+  isDemo              Boolean           @default(false)
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  conversations       Conversation[]
+  leads               Lead[]
+
+  @@index([userId, status])
+  @@index([emailAddress])
+  @@unique([userId, emailAddress])
+}
+
+model EmailSuppression {
+  id             String                 @id @default(cuid())
+  userId         String
+  user           User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email          String
+  reason         EmailSuppressionReason @default(UNSUBSCRIBED)
+  bounceType     EmailBounceType?
+  bounceDetails  String?                @db.Text
+  sourceMessageId String?
+  suppressedAt   DateTime               @default(now())
+
+  @@unique([userId, email])
+  @@index([email])
+}
+
+model EmailMessageMeta {
+  id             String        @id @default(cuid())
+  messageId      String        @unique
+  message        Message       @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  emailSubject   String?
+  fromAddress    String
+  toAddress      String
+  ccAddresses    Json?
+  bccAddresses   Json?
+  replyToAddress String?
+  rfcMessageId   String?       @unique // e.g. "<cuid@nexora.io>" for RFC 2822 threading
+  inReplyTo      String?       // In-Reply-To header
+  references     String?       @db.Text // References header for thread hierarchy
+  openToken      String?       @unique // Token for transparent tracking pixel
+  openedAt       DateTime?
+  openCount      Int           @default(0)
+  clickToken     String?       @unique // Token for tracking links
+  clickedAt      DateTime?
+  clickCount     Int           @default(0)
+  clickedUrls    Json?
+  isPersonalized Boolean       @default(true) // Built on BusinessAnalysis
+  personalizationFactors Json? // Tech stack, speed, gaps used in email
+  unsubToken     String?       @unique // RFC 8058 1-click unsubscribe token
+  unsubscribedAt DateTime?
+  bounceType     EmailBounceType?
+  bounceDetails  String?       @db.Text
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([rfcMessageId])
+  @@index([openToken])
+  @@index([clickToken])
+  @@index([unsubToken])
 }

@@ -28,7 +28,19 @@ import { activityRouter } from './modules/activity/activity.routes';
 import { importRouter } from './modules/import/import.routes';
 import { analyticsRouter } from './modules/analytics/analytics.routes';
 import { waRouter } from './modules/wa/wa.routes';
+import { officialWebhookRouter, officialWaApiRouter } from './modules/wa/official-webhook.routes';
+import { instagramWebhookRouter } from './modules/instagram/instagram-webhook.routes';
+import { instagramApiRouter } from './modules/instagram/instagram-api.routes';
+import { telegramWebhookRouter } from './modules/telegram/telegram-webhook.routes';
+import { telegramApiRouter } from './modules/telegram/telegram-api.routes';
+import { emailWebhookRouter } from './modules/email/email-webhook.routes';
+import { emailApiRouter } from './modules/email/email-api.routes';
 import { parserRouter } from './modules/parser/parser.routes';
+import { tagRouter } from './modules/leads/tags.routes';
+import { aiRouter } from './modules/ai/ai.routes';
+import { crmRouter } from './modules/crm/crm.routes';
+import { hunterRouter } from './modules/hunter/hunter.routes';
+import { securityRouter } from './modules/security/security.routes';
 
 export function createApp(): Express {
   const app = express();
@@ -74,11 +86,22 @@ export function createApp(): Express {
   // Public-ish routes (self-contained auth).
   app.use('/api/auth', authRouter);
 
+  // Public Meta WhatsApp, Instagram, Telegram & Email Webhook/Tracking endpoints
+  app.use('/api/webhooks/whatsapp', officialWebhookRouter);
+  app.use('/api/wa/official/webhook', officialWebhookRouter);
+  app.use('/api/webhooks/instagram', instagramWebhookRouter);
+  app.use('/api/instagram/webhook', instagramWebhookRouter);
+  app.use('/api/webhooks/telegram', telegramWebhookRouter);
+  app.use('/api/telegram/webhook', telegramWebhookRouter);
+  app.use('/api/email', emailWebhookRouter);
+  app.use('/api', emailWebhookRouter);
+
   // Everything below requires an authenticated user.
   app.use(optionalAuth);
   app.use('/api', authorize);
 
   app.use('/api/accounts', whatsappRouter);
+  app.use('/api/whatsapp', whatsappRouter);
   app.use('/api/leads', leadsRouter);
   app.use('/api/campaigns', campaignsRouter);
   app.use('/api/conversations', conversationRouter);
@@ -87,8 +110,17 @@ export function createApp(): Express {
   app.use('/api/activity', activityRouter);
   app.use('/api/import', importRouter);
   app.use('/api/analytics', analyticsRouter);
+  app.use('/api/wa/official', officialWaApiRouter);
   app.use('/api/wa', waRouter);
+  app.use('/api/instagram', instagramApiRouter);
+  app.use('/api/telegram', telegramApiRouter);
+  app.use('/api/email', emailApiRouter);
   app.use('/api/parser', parserRouter);
+  app.use('/api/tags', tagRouter);
+  app.use('/api/ai', aiRouter);
+  app.use('/api/crm', crmRouter);
+  app.use('/api/hunter', hunterRouter);
+  app.use('/api/security', securityRouter);
 
   app.use(notFoundHandler);
   app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {

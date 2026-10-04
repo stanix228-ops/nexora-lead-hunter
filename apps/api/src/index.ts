@@ -39,7 +39,8 @@ async function main() {
   process.on('SIGTERM', () => void shutdown('SIGTERM'));
 }
 
-main().catch((err) => {
-  logger.error('Fatal startup error', { error: (err as Error).message, stack: (err as Error).stack });
+main().catch((err: unknown) => {
+  const errorObj = err instanceof Error ? err : new Error(String(err));
+  logger.error('Fatal startup error', { error: errorObj.message, stack: errorObj.stack });
   process.exit(1);
 });

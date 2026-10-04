@@ -41,3 +41,8 @@ apps/desktop/out/
 # IDE
 .vscode/
 .idea/
+
+# Sessions & Auth Credentials
+.sessions/
+apps/api/.sessions/
+*.tsbuildinfo

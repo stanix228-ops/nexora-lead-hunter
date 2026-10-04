@@ -5,10 +5,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatPrice(price: number): string {
+export function formatPrice(price: number, currency = 'KZT'): string {
+  if (currency === 'KZT' || !currency) {
+    return `${price.toLocaleString('ru-RU')} ₸`;
+  }
   return new Intl.NumberFormat('ru-RU', {
     style: 'currency',
-    currency: 'RUB',
+    currency,
     maximumFractionDigits: 0,
   }).format(price);
 }

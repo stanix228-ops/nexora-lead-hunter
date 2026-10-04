@@ -17,6 +17,9 @@ import {
   ShieldCheck,
   CheckCircle2,
   AlertCircle,
+  Bot,
+  Sparkles,
+  Zap,
 } from 'lucide-react';
 import { get } from '@/lib/api';
 import type { AccountSummary } from '@nexora/types';
@@ -51,25 +54,30 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="rounded-2xl bg-gradient-to-r from-emerald-700 via-emerald-600 to-teal-700 p-6 text-white shadow-lg">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight">Nexora WhatsApp CRM & Парсер</h1>
-            <p className="text-sm text-emerald-100">
-              Единая платформа: парсинг целевых организаций без сайтов, прогрев номеров и массовые рассылки
+      <div className="rounded-2xl bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 p-6 text-white shadow-xl relative overflow-hidden">
+        <div className="flex flex-wrap items-center justify-between gap-4 relative z-10">
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <span className="flex items-center gap-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40 px-2 py-0.5 text-[10px] font-black">
+                <Sparkles size={11} /> AI SALES AGENT V2.0
+              </span>
+            </div>
+            <h1 className="text-2xl font-bold tracking-tight">Nexora WhatsApp CRM & AI Sales Agent</h1>
+            <p className="text-sm text-purple-200 max-w-2xl">
+              Единая платформа: парсинг организаций, автономный AI-скоринг сайтов, подбор решений Nexora и авто-продажи 24/7
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/parser">
-              <Button variant="secondary" size="md" className="bg-white text-emerald-800 hover:bg-emerald-50 font-bold">
-                <Search size={16} />
-                Открыть Парсер Лидов
+            <Link href="/ai-agent">
+              <Button variant="secondary" size="md" className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:from-purple-600 hover:to-indigo-700 font-bold border-0 shadow-md">
+                <Bot size={16} />
+                Открыть AI Sales Agent
               </Button>
             </Link>
-            <Link href="/accounts">
-              <Button variant="primary" size="md" className="bg-emerald-950 text-white hover:bg-emerald-900 border border-emerald-500/30">
-                <Plus size={16} />
-                Добавить WhatsApp
+            <Link href="/parser">
+              <Button variant="secondary" size="md" className="bg-white/10 text-white hover:bg-white/20 border border-white/20 font-bold">
+                <Search size={16} />
+                Парсер Лидов
               </Button>
             </Link>
           </div>

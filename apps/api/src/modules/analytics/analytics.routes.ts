@@ -104,3 +104,38 @@ analyticsRouter.get('/funnel', asyncHandler(async (req: Request, res: Response) 
     ],
   });
 }));
+
+/**
+ * GET /api/analytics/full
+ * Full multi-dimensional sales analytics overview and AI pattern intelligence.
+ */
+analyticsRouter.get('/full', asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user!.id;
+  const days = typeof req.query.days === 'string' ? Number(req.query.days) || 30 : 30;
+  const { AnalyticsPatternEngine } = await import('./analytics-pattern.service');
+  const result = await AnalyticsPatternEngine.calculateFullAnalytics(userId, days);
+  res.json(result);
+}));
+
+/**
+ * GET /api/analytics/patterns
+ * AI-discovered business patterns and actionable recommendations.
+ */
+analyticsRouter.get('/patterns', asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user!.id;
+  const days = typeof req.query.days === 'string' ? Number(req.query.days) || 30 : 30;
+  const { AnalyticsPatternEngine } = await import('./analytics-pattern.service');
+  const result = await AnalyticsPatternEngine.calculateFullAnalytics(userId, days);
+  res.json({ patterns: result.patterns, generatedAt: result.generatedAt });
+}));
+
+/**
+ * POST /api/analytics/recalculate
+ * Triggers on-demand recalculation of sales analytics.
+ */
+analyticsRouter.post('/recalculate', asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user!.id;
+  const { AnalyticsPatternEngine } = await import('./analytics-pattern.service');
+  const result = await AnalyticsPatternEngine.calculateFullAnalytics(userId, 30);
+  res.json({ success: true, analytics: result });
+}));

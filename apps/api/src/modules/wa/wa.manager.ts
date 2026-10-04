@@ -330,6 +330,76 @@ function attachEvents(ctx: WaContext): void {
     }
   });
 
+  ctx.socket.ev.on('messages.update', async (updates) => {
+    if (sessions.get(ctx.accountId) !== ctx || ctx.closed) return;
+    for (const update of updates) {
+      try {
+        const opId = update.key?.id;
+        if (!opId) continue;
+        const statusNum = update.update?.status;
+        let eventType: 'MESSAGE_SENT' | 'MESSAGE_DELIVERED' | 'MESSAGE_READ' | null = null;
+        if (statusNum === 4 || statusNum === 5) {
+          eventType = 'MESSAGE_READ';
+        } else if (statusNum === 3) {
+          eventType = 'MESSAGE_DELIVERED';
+        } else if (statusNum === 2) {
+          eventType = 'MESSAGE_SENT';
+        }
+        if (eventType) {
+          const msg = await prisma.message.findFirst({ where: { opId } });
+          if (msg) {
+            await prisma.messageEvent.create({
+              data: {
+                messageId: msg.id,
+                type: eventType,
+                name: eventType,
+                provenance: 'TRACKED',
+              },
+            });
+            emitToUser(ctx.userId, 'message.updated', {
+              id: msg.id,
+              conversationId: msg.conversationId,
+              status: eventType,
+            });
+          }
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+  });
+
+  ctx.socket.ev.on('message-receipt.update', async (receipts) => {
+    if (sessions.get(ctx.accountId) !== ctx || ctx.closed) return;
+    for (const r of receipts) {
+      try {
+        const opId = r.key?.id;
+        if (!opId) continue;
+        const isRead = !!(r.receipt?.readTimestamp || (r.receipt as any)?.userReceipt?.some((u: any) => u.readTimestamp));
+        if (isRead) {
+          const msg = await prisma.message.findFirst({ where: { opId } });
+          if (msg) {
+            await prisma.messageEvent.create({
+              data: {
+                messageId: msg.id,
+                type: 'MESSAGE_READ',
+                name: 'MESSAGE_READ',
+                provenance: 'TRACKED',
+              },
+            });
+            emitToUser(ctx.userId, 'message.updated', {
+              id: msg.id,
+              conversationId: msg.conversationId,
+              status: 'MESSAGE_READ',
+            });
+          }
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+  });
+
   ctx.socket.ev.on('messaging-history.set', (history) => {
     if (sessions.get(ctx.accountId) !== ctx || ctx.closed) return;
     logger.info('WA messaging-history.set received', {
@@ -496,7 +566,27 @@ export function extractTextFromRaw(m: { message?: unknown }): string | null {
   return null;
 }
 
-async function buildSocket(auth: AuthenticationState): Promise<WASocket> {
+const BROWSER_PROFILES: [string, string, string][] = [
+  ['Windows', 'Chrome', '124.0.6367.207'],
+  ['macOS', 'Safari', '17.4.1'],
+  ['Windows', 'Edge', '124.0.2478.80'],
+  ['macOS', 'Chrome', '124.0.6367.207'],
+  ['Windows', 'Firefox', '125.0.3'],
+  ['macOS', 'Edge', '124.0.2478.80'],
+  ['Windows', 'Opera', '109.0.5097.45'],
+];
+
+function getBrowserProfile(accountId?: string): [string, string, string] {
+  if (!accountId) return ['Windows', 'Chrome', '124.0.6367.207'];
+  let hash = 0;
+  for (let i = 0; i < accountId.length; i++) {
+    hash = (hash * 31 + accountId.charCodeAt(i)) & 0xffffffff;
+  }
+  const idx = Math.abs(hash) % BROWSER_PROFILES.length;
+  return BROWSER_PROFILES[idx]!;
+}
+
+async function buildSocket(auth: AuthenticationState, accountId?: string): Promise<WASocket> {
   let version;
   try {
     const res = await fetchLatestWaWebVersion();
@@ -508,18 +598,17 @@ async function buildSocket(auth: AuthenticationState): Promise<WASocket> {
     version,
     auth,
     logger: pinoLogger as never,
-    browser: Browsers.ubuntu('Chrome'),
-    markOnlineOnConnect: true,
+    browser: getBrowserProfile(accountId),
+    markOnlineOnConnect: false,
     printQRInTerminal: false,
-    syncFullHistory: true,
+    syncFullHistory: false,
     emitOwnEvents: true,
-    shouldSyncHistoryMessage: () => true,
     shouldIgnoreJid: (jid) => jid === 'status@broadcast' || jid.endsWith('@newsletter'),
     generateHighQualityLinkPreview: false,
     enableAutoSessionRecreation: true,
     enableRecentMessageCache: true,
     connectTimeoutMs: 60000,
-    keepAliveIntervalMs: 25000,
+    keepAliveIntervalMs: 30000,
     getMessage: async (key) => {
       if (key?.id) {
         try {
@@ -578,7 +667,7 @@ export async function startWaSession(
       sessions.delete(accountId);
     }
 
-    const socket = await buildSocket(auth);
+    const socket = await buildSocket(auth, accountId);
 
     const ctx: WaContext = {
       userId,
@@ -729,7 +818,25 @@ export async function sendWaText(
   phone: string,
   body: string,
 ): Promise<{ opId: string }> {
-  const ctx = sessions.get(accountId);
+  let ctx = sessions.get(accountId);
+  if (!ctx || ctx.closed || ctx.state !== 'CONNECTED') {
+    const acc = await prisma.whatsAppAccount.findUnique({
+      where: { id: accountId },
+      include: { gateway: true },
+    });
+    if (acc && (acc.status === 'ONLINE' || acc.gateway?.status === 'CONNECTED')) {
+      logger.info('Auto-resuming WA session on send request', { accountId });
+      void startWaSession(acc.userId, accountId).catch((err) => {
+        logger.warn('Auto-resume failed', { accountId, error: (err as Error).message });
+      });
+      for (let i = 0; i < 10; i++) {
+        await new Promise((r) => setTimeout(r, 500));
+        ctx = sessions.get(accountId);
+        if (ctx && !ctx.closed && ctx.state === 'CONNECTED') break;
+      }
+    }
+  }
+
   if (!ctx || ctx.closed || ctx.state !== 'CONNECTED') {
     throw new Error('WA_SESSION_NOT_CONNECTED');
   }
@@ -784,10 +891,13 @@ export async function resumeWaSessions(): Promise<void> {
     where: { provider: 'WHATSAPP_WEB', status: { in: ['SCANNING', 'CONNECTED'] } },
     include: { account: { select: { userId: true } } },
   });
-  for (const row of rows) {
-    void startWaSession(row.account.userId, row.accountId).catch((err) => {
-      logger.warn('WA resume failed', { accountId: row.accountId, error: (err as Error).message });
-    });
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    setTimeout(() => {
+      void startWaSession(row.account.userId, row.accountId).catch((err) => {
+        logger.warn('WA resume failed', { accountId: row.accountId, error: (err as Error).message });
+      });
+    }, i * 2500);
   }
 }
 

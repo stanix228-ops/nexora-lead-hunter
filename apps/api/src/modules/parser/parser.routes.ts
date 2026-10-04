@@ -10,6 +10,7 @@ import { CITIES, getCitiesByCountry, getCityConfig } from './cities';
 import { US_STATES_MAP, US_NICHE_SUGGESTIONS } from './us-cities';
 import { parseSearchPage, type FirmResult } from './scraper.service';
 import { scrapeGoogleMaps } from './google-scraper.service';
+import { scrapeYandexMaps } from './yandex-scraper.service';
 import {
   getAllSessions,
   getSessionById,
@@ -17,6 +18,8 @@ import {
   updateSessionTitle,
   deleteSession,
 } from './sessions.service';
+import { generatePersonalizedOutreachMessage } from '../hunter/hunter.service';
+import { sendWaText } from '../wa/wa.manager';
 
 export const parserRouter: import('express').Router = Router();
 
@@ -34,6 +37,7 @@ const firmItemSchema = z.object({
   phone: z.string().optional().nullable(),
   allPhones: z.array(z.string()).optional(),
   whatsapp: z.string().optional().nullable(),
+  max: z.string().optional().nullable(),
   instagram: z.string().optional().nullable(),
   email: z.string().optional().nullable(),
   site: z.string().optional().nullable(),
@@ -161,6 +165,7 @@ parserRouter.get(
     const country = typeof req.query.country === 'string' ? req.query.country.trim() : undefined;
     const websiteFilter = (req.query.websiteFilter as 'all' | 'with_site' | 'without_site') || 'all';
     const whatsappFilter = (req.query.whatsappFilter as 'all' | 'with_wa') || 'all';
+    const maxFilter = (req.query.maxFilter as 'all' | 'with_max') || 'all';
     const phoneFilter = (req.query.phoneFilter as 'all' | 'with_phone') || 'all';
     const limit = Math.min(Math.max(parseInt(String(req.query.limit || '30'), 10) || 30, 1), 10000);
 
@@ -204,6 +209,7 @@ parserRouter.get(
       country,
       websiteFilter,
       whatsappFilter,
+      maxFilter,
       phoneFilter,
     };
 
@@ -394,6 +400,106 @@ parserRouter.get(
 );
 
 /**
+ * GET /api/parser/yandex/search
+ * Live Server-Sent Events (SSE) streaming endpoint for Yandex Maps (Яндекс Карты) scraper.
+ */
+parserRouter.get(
+  '/yandex/search',
+  asyncHandler(async (req: Request, res: Response) => {
+    const city = typeof req.query.city === 'string' ? req.query.city.trim() : '';
+    const niche = typeof req.query.niche === 'string' ? req.query.niche.trim() : '';
+    const websiteFilter = (req.query.websiteFilter as 'all' | 'with_site' | 'without_site') || 'all';
+    const phoneFilter = (req.query.phoneFilter as 'all' | 'with_phone') || 'all';
+    const whatsappFilter = (req.query.whatsappFilter as 'all' | 'with_wa') || 'all';
+    const telegramFilter = (req.query.telegramFilter as 'all' | 'with_tg') || 'all';
+    const limit = Math.min(Math.max(parseInt(String(req.query.limit || '30'), 10) || 30, 1), 10000);
+
+    if (!city) {
+      res.status(400).json({ error: 'Укажите город России для поиска' });
+      return;
+    }
+    if (!niche) {
+      res.status(400).json({ error: 'Укажите нишу или сферу деятельности' });
+      return;
+    }
+
+    // Set up SSE headers
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache, no-transform');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('X-Accel-Buffering', 'no');
+    res.flushHeaders?.();
+
+    let closed = false;
+    const send = (type: string, data: any) => {
+      if (!closed && !res.writableEnded) {
+        res.write(`data: ${JSON.stringify({ type, data })}\n\n`);
+      }
+    };
+
+    const heartbeat = setInterval(() => {
+      if (!closed && !res.writableEnded) {
+        res.write(': heartbeat\n\n');
+      }
+    }, 12000);
+
+    req.on('close', () => {
+      closed = true;
+      clearInterval(heartbeat);
+    });
+
+    const searchOptions = {
+      websiteFilter,
+      phoneFilter,
+      whatsappFilter,
+      telegramFilter,
+    };
+
+    try {
+      const data = await scrapeYandexMaps(city, niche, limit, searchOptions, (msg) => {
+        if (closed) return;
+        if (typeof msg === 'object' && msg.type === 'result') {
+          send('result', msg.data);
+        } else if (typeof msg === 'string') {
+          send('progress', { message: msg });
+        }
+      });
+
+      if (!closed && !res.writableEnded) {
+        // Auto-save batch to history
+        const savedSession = await saveSession({
+          userId: req.user!.id,
+          niche: data.niche,
+          city: data.city,
+          country: 'Россия (Яндекс Карты)',
+          totalFound: data.total,
+          items: data.results,
+        }).catch((err) => {
+          logger.error('Failed to auto-save Yandex Maps parser session', { error: err.message });
+          return null;
+        });
+
+        send('complete', {
+          sessionId: savedSession?.id,
+          sessionTitle: savedSession?.title,
+          total: data.total,
+          results: data.results.length,
+          url: data.url,
+        });
+      }
+    } catch (err: any) {
+      logger.error('Yandex Maps Search Error', { city, niche, error: err.message });
+      send('error', { error: err.message || 'Ошибка парсинга Яндекс Карт' });
+    } finally {
+      clearInterval(heartbeat);
+      if (!res.writableEnded) {
+        res.end();
+      }
+    }
+  }),
+);
+
+/**
  * POST /api/parser/add-to-whatsapp
  * Batch add parsed leads directly to chosen WhatsApp account(s) with smart distribution.
  */
@@ -420,7 +526,25 @@ parserRouter.post(
     }
 
     if (targetAccountIds.length === 0) {
-      throw new AppError(400, 'Выберите хотя бы один WhatsApp аккаунт для добавления лидов.', 'NO_ACCOUNT');
+      const existingAccounts = await prisma.whatsAppAccount.findMany({
+        where: { userId },
+        orderBy: [{ position: 'asc' }, { createdAt: 'asc' }],
+      });
+      if (existingAccounts.length > 0) {
+        targetAccountIds.push(existingAccounts[0].id);
+      } else {
+        const defaultAcc = await prisma.whatsAppAccount.create({
+          data: {
+            userId,
+            name: 'Основной WhatsApp',
+            phone: '',
+            phoneMasked: 'Не привязан',
+            status: 'OFFLINE',
+            position: 1,
+          },
+        });
+        targetAccountIds.push(defaultAcc.id);
+      }
     }
 
     const accounts = await prisma.whatsAppAccount.findMany({
@@ -428,8 +552,25 @@ parserRouter.post(
     });
 
     if (accounts.length === 0) {
-      throw new NotFoundError('Выбранные WhatsApp аккаунты не найдены.');
+      const fallbackAcc = await prisma.whatsAppAccount.create({
+        data: {
+          userId,
+          name: 'Основной WhatsApp',
+          phone: '',
+          phoneMasked: 'Не привязан',
+          status: 'OFFLINE',
+          position: 1,
+        },
+      });
+      accounts.push(fallbackAcc);
     }
+
+    // Prioritize online accounts with real phone numbers so leads are never assigned to dead/offline accounts
+    const onlineAccounts = accounts.filter(
+      (a) => a.status === 'ONLINE' && Boolean(a.phone),
+    );
+    const validAccounts = onlineAccounts.length > 0 ? onlineAccounts : accounts.filter((a) => Boolean(a.phone));
+    const activeAccounts = validAccounts.length > 0 ? validAccounts : accounts;
 
     let addedCount = 0;
     let skippedCount = 0;
@@ -468,12 +609,12 @@ parserRouter.post(
       const { item, digits } = uniqueItems[i]!;
 
       // Determine target account based on distribution mode
-      let targetAccount = accounts[0]!;
+      let targetAccount = activeAccounts[0]!;
       if (body.distributionMode === 'round_robin') {
-        targetAccount = accounts[i % accounts.length]!;
+        targetAccount = activeAccounts[i % activeAccounts.length]!;
       } else if (body.distributionMode === 'batch') {
-        const accIndex = Math.min(Math.floor(i / perLimit), accounts.length - 1);
-        targetAccount = accounts[accIndex]!;
+        const accIndex = Math.min(Math.floor(i / perLimit), activeAccounts.length - 1);
+        targetAccount = activeAccounts[accIndex]!;
       }
 
       const noteLines: string[] = [];
@@ -526,13 +667,27 @@ parserRouter.post(
 
       const conversation = await prisma.conversation.upsert({
         where: { accountId_leadId: { accountId: targetAccount.id, leadId: lead.id } },
-        update: {},
+        update: {
+          aiState: {
+            upsert: {
+              create: { stage: 'NEW', isAiPaused: true },
+              update: { isAiPaused: true },
+            },
+          },
+        },
         create: {
           userId,
           accountId: targetAccount.id,
           leadId: lead.id,
+          channel: 'WHATSAPP',
           status: 'NEW',
           unreadCount: 0,
+          aiState: {
+            create: {
+              stage: 'NEW',
+              isAiPaused: true,
+            },
+          },
         },
         include: {
           lead: true,
@@ -564,7 +719,7 @@ parserRouter.post(
       added: addedCount,
       skipped: skippedCount,
       mode: body.distributionMode,
-      distribution: accounts.map((acc) => ({
+      distribution: activeAccounts.map((acc) => ({
         accountId: acc.id,
         accountName: acc.name,
         phoneMasked: acc.phoneMasked,
@@ -691,4 +846,287 @@ parserRouter.post(
     });
   }),
 );
+
+/**
+ * POST /api/parser/preview-message
+ * Preview what an outreach message looks like for a parsed lead.
+ */
+parserRouter.post(
+  '/preview-message',
+  asyncHandler(async (req: Request, res: Response) => {
+    const schema = z.object({
+      item: firmItemSchema,
+      city: z.string().optional(),
+      niche: z.string().optional(),
+      customTemplate: z.string().optional(),
+    });
+    const body = schema.parse(req.body);
+
+    const company = (body.item.name || 'Организация').replace(/^(ТОО|ИП|АО|ООО)\s+/i, '').trim();
+    const city = body.city || '';
+    const niche = body.niche || '';
+
+    if (body.customTemplate && body.customTemplate.trim()) {
+      const replaced = body.customTemplate
+        .replace(/\{Компания\}|\{name\}/gi, company)
+        .replace(/\{Город\}|\{city\}/gi, city)
+        .replace(/\{Ниша\}|\{niche\}/gi, niche);
+      res.json({ previewText: replaced });
+      return;
+    }
+
+    const mockLead = {
+      id: body.item.profileLink || company,
+      companyName: body.item.name,
+      city,
+      niche,
+      website: body.item.site,
+      analysis: null,
+      score: null,
+    };
+
+    const text = generatePersonalizedOutreachMessage(mockLead, city);
+    res.json({ previewText: text });
+  }),
+);
+
+/**
+ * POST /api/parser/send-whatsapp-batch
+ * Directly send personalized WhatsApp outreach to parsed leads.
+ */
+parserRouter.post(
+  '/send-whatsapp-batch',
+  asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user!.id;
+    const schema = z.object({
+      items: z.array(firmItemSchema).min(1, 'Не выбрано ни одной организации'),
+      city: z.string().optional(),
+      niche: z.string().optional(),
+      accountId: z.string().optional(),
+      accountIds: z.array(z.string()).optional(),
+      customMessageTemplate: z.string().optional(),
+      delayMs: z.number().min(500).max(10000).optional().default(2000),
+    });
+    const body = schema.parse(req.body);
+
+    const targetAccountIds: string[] = [];
+    if (Array.isArray(body.accountIds) && body.accountIds.length > 0) {
+      targetAccountIds.push(...body.accountIds);
+    } else if (body.accountId) {
+      targetAccountIds.push(body.accountId);
+    }
+
+    const accountQuery: any = { userId };
+    if (targetAccountIds.length > 0) {
+      accountQuery.id = { in: targetAccountIds };
+    }
+
+    const accounts = await prisma.whatsAppAccount.findMany({
+      where: accountQuery,
+      include: { gateway: true },
+    });
+
+    if (accounts.length === 0) {
+      throw new AppError(
+        400,
+        'У вас нет подключенных WhatsApp аккаунтов. Перейдите во вкладку «Аккаунты WhatsApp» и добавьте номер.',
+        'NO_WA_ACCOUNT',
+      );
+    }
+
+    const onlineAccounts = accounts.filter(
+      (a) => (a.status === 'ONLINE' || a.gateway?.status === 'CONNECTED') && Boolean(a.phone),
+    );
+
+    if (onlineAccounts.length === 0) {
+      throw new AppError(
+        400,
+        `Все WhatsApp аккаунты (${accounts.map((a) => a.name).join(', ')}) сейчас офлайн. Пожалуйста, откройте вкладку «Аккаунты WhatsApp» и отсканируйте QR-код для подключения сессии.`,
+        'WA_OFFLINE',
+      );
+    }
+
+    // 1. Deduplicate leads by normalized phone
+    const uniqueItems: Array<{ item: (typeof body.items)[0]; digits: string }> = [];
+    const seenPhones = new Set<string>();
+    let skippedCount = 0;
+
+    for (const item of body.items) {
+      let rawPhone = item.phone || '';
+      if (!rawPhone && item.whatsapp) {
+        const waMatch = item.whatsapp.match(/\d{7,15}/);
+        if (waMatch) rawPhone = waMatch[0];
+      }
+
+      const digits = normalizePhone(rawPhone);
+      if (!digits || digits.length < 7) {
+        skippedCount++;
+        continue;
+      }
+
+      if (seenPhones.has(digits)) {
+        continue;
+      }
+      seenPhones.add(digits);
+      uniqueItems.push({ item, digits });
+    }
+
+    let sentCount = 0;
+    let failedCount = 0;
+    const errors: string[] = [];
+
+    // 2. Iterate and send
+    for (let i = 0; i < uniqueItems.length; i++) {
+      const { item, digits } = uniqueItems[i]!;
+      const targetAccount = onlineAccounts[i % onlineAccounts.length]!;
+
+      // Format notes
+      const noteLines: string[] = [];
+      if (item.address) noteLines.push(`Адрес: ${item.address}`);
+      if (item.schedule) noteLines.push(`График: ${item.schedule}`);
+      if (item.email) noteLines.push(`Email: ${item.email}`);
+      if (item.telegram) noteLines.push(`Telegram: ${item.telegram}`);
+      if (item.vk) noteLines.push(`VK: ${item.vk}`);
+      if (item.profileLink) noteLines.push(`2GIS: ${item.profileLink}`);
+      if (item.site) noteLines.push(`Сайт: ${item.site}`);
+      const notes = noteLines.join('\n');
+
+      // Upsert lead in CRM
+      const lead = await prisma.lead.upsert({
+        where: { userId_phone: { userId, phone: digits } },
+        update: {
+          companyName: item.name || maskPhone(digits),
+          whatsappUrl: item.whatsapp || buildWaLink(digits),
+          instagramUrl: item.instagram || undefined,
+          website: item.site || undefined,
+          city: body.city || undefined,
+          niche: body.niche || undefined,
+          notes: notes || undefined,
+          assignedAccountId: targetAccount.id,
+        },
+        create: {
+          userId,
+          companyName: item.name || maskPhone(digits),
+          phone: digits,
+          whatsappUrl: item.whatsapp || buildWaLink(digits),
+          instagramUrl: item.instagram || null,
+          website: item.site || null,
+          city: body.city || null,
+          niche: body.niche || null,
+          source: 'MANUAL' as LeadSource,
+          status: 'NEW' as LeadStatus,
+          notes: notes || null,
+          assignedAccountId: targetAccount.id,
+        },
+      });
+
+      // Compose outreach message
+      let messageText = '';
+      if (body.customMessageTemplate && body.customMessageTemplate.trim()) {
+        const company = (lead.companyName || 'Организация').replace(/^(ТОО|ИП|АО|ООО)\s+/i, '').trim();
+        messageText = body.customMessageTemplate
+          .replace(/\{Компания\}|\{name\}/gi, company)
+          .replace(/\{Город\}|\{city\}/gi, body.city || '')
+          .replace(/\{Ниша\}|\{niche\}/gi, body.niche || '');
+      } else {
+        messageText = generatePersonalizedOutreachMessage(lead, body.city);
+      }
+
+      // Send via WhatsApp
+      let opId: string | null = null;
+      try {
+        const res = await sendWaText(targetAccount.id, digits, messageText);
+        opId = res.opId;
+      } catch (waErr: any) {
+        logger.warn(`Failed to send WA batch message to ${digits}: ${waErr.message}`);
+        failedCount++;
+        const errMsg = `Ошибка отправки на «${lead.companyName}» (+${digits}): ${waErr.message}`;
+        errors.push(errMsg);
+
+        if (waErr.message === 'WA_SESSION_NOT_CONNECTED') {
+          errors.push(`Сессия аккаунта «${targetAccount.name}» прервана.`);
+          const idx = onlineAccounts.indexOf(targetAccount);
+          if (idx !== -1) onlineAccounts.splice(idx, 1);
+          if (onlineAccounts.length === 0) {
+            errors.push('Все активные сессии WhatsApp отключены. Подключите WhatsApp в разделе «Аккаунты».');
+            break;
+          }
+        }
+        continue;
+      }
+
+      // Upsert Conversation
+      const conv = await prisma.conversation.upsert({
+        where: { accountId_leadId: { accountId: targetAccount.id, leadId: lead.id } },
+        update: {
+          lastMessagePreview: messageText.slice(0, 100),
+          lastMessageAt: new Date(),
+        },
+        create: {
+          userId,
+          accountId: targetAccount.id,
+          leadId: lead.id,
+          channel: 'WHATSAPP',
+          status: 'NEW',
+          lastMessagePreview: messageText.slice(0, 100),
+          lastMessageAt: new Date(),
+          aiState: {
+            create: {
+              stage: 'CONTACTED',
+              isAiPaused: false,
+            },
+          },
+        },
+      });
+
+      // Outbound Message
+      await prisma.message.create({
+        data: {
+          conversationId: conv.id,
+          direction: 'OUTBOUND',
+          body: messageText,
+          opId,
+          recordedAt: new Date(),
+        },
+      });
+
+      // Update lead status
+      await prisma.lead.update({
+        where: { id: lead.id },
+        data: { status: 'CONTACTED' },
+      });
+
+      // Timeline event
+      await prisma.timelineEvent.create({
+        data: {
+          userId,
+          leadId: lead.id,
+          conversationId: conv.id,
+          eventType: 'MESSAGE_SENT',
+          title: `Отправлено сообщение в WhatsApp (+${digits})`,
+          description: `Парсер: отправлен оффер для «${lead.companyName}» через «${targetAccount.name}».`,
+          metadata: { phone: digits, accountId: targetAccount.id },
+        },
+      });
+
+      sentCount++;
+      emitToUser(userId, 'lead.updated', { id: lead.id, status: 'CONTACTED' });
+      emitToUser(userId, 'conversation.created', conv);
+
+      // Pacing delay between sends to avoid WhatsApp rate limits
+      if (i < uniqueItems.length - 1) {
+        await new Promise((r) => setTimeout(r, body.delayMs));
+      }
+    }
+
+    res.json({
+      total: uniqueItems.length,
+      sentCount,
+      skippedCount,
+      failedCount,
+      errors: errors.slice(0, 10),
+    });
+  }),
+);
+
 

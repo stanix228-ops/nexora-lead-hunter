@@ -8,6 +8,7 @@ import { parsePagination, paginate } from '../../common/pagination';
 import { recordActivity } from '../../common/activity/recorder';
 import { emitToUser } from '../../common/realtime/socket';
 import { sendViaGateway } from '../gateway/gateway.service';
+import { LeadScoringEngine } from '../ai/scoring.service';
 
 export const conversationRouter: import('express').Router = Router();
 export const messageRouter: import('express').Router = Router();
@@ -15,6 +16,13 @@ export const messageRouter: import('express').Router = Router();
 const CONVERSATION_STATUSES: ConversationStatus[] = [
   'NEW', 'UNREAD', 'REPLIED', 'INTERESTED', 'NEGOTIATION', 'CLIENT', 'NO_RESPONSE',
 ];
+
+const conversationLeadInclude = {
+  assignedAccount: { select: { id: true, name: true, phoneMasked: true } },
+  assignedInstagramAccount: { select: { id: true, name: true, username: true, status: true } },
+  tags: { include: { tag: true } },
+  campaigns: { include: { campaign: { select: { id: true, name: true } } } },
+};
 
 const createConversationSchema = z.object({
   accountId: z.string().min(1),
@@ -32,13 +40,49 @@ const updateConversationSchema = z.object({
   status: z.enum(CONVERSATION_STATUSES as [string, ...string[]]).optional(),
   unreadCount: z.number().int().min(0).optional(),
   markRead: z.boolean().optional(),
+  markUnread: z.boolean().optional(),
+});
+
+const updateLeadInConvSchema = z.object({
+  companyName: z.string().max(200).optional(),
+  phone: z.string().max(30).optional(),
+  notes: z.string().max(5000).optional().nullable(),
+  status: z.enum(['NEW', 'CONTACTED', 'REPLIED', 'INTERESTED', 'NEGOTIATION', 'CLIENT', 'NO_RESPONSE']).optional(),
+  city: z.string().max(100).optional().nullable(),
+  niche: z.string().max(100).optional().nullable(),
+  website: z.string().max(300).optional().nullable(),
+  addTagId: z.string().optional(),
+  removeTagId: z.string().optional(),
+  addCampaignId: z.string().optional(),
+  removeCampaignId: z.string().optional(),
 });
 
 conversationRouter.post('/open-by-phone', asyncHandler(async (req: Request, res: Response) => {
   const body = openByPhoneSchema.parse(req.body);
   const userId = req.user!.id;
-  const account = await prisma.whatsAppAccount.findFirst({ where: { id: body.accountId, userId } });
-  if (!account) throw new NotFoundError('Account not found.');
+  let account = body.accountId
+    ? await prisma.whatsAppAccount.findFirst({ where: { id: body.accountId, userId } })
+    : null;
+
+  if (!account) {
+    account = await prisma.whatsAppAccount.findFirst({
+      where: { userId },
+      orderBy: [{ position: 'asc' }, { createdAt: 'asc' }],
+    });
+  }
+
+  if (!account) {
+    account = await prisma.whatsAppAccount.create({
+      data: {
+        userId,
+        name: 'Основной WhatsApp',
+        phone: '',
+        phoneMasked: 'Не привязан',
+        status: 'OFFLINE',
+        position: 1,
+      },
+    });
+  }
 
   let cleaned = body.input.trim();
   const waMeMatch = cleaned.match(/wa\.me\/(?:phone\/)?(\+?\d+)/i);
@@ -73,16 +117,30 @@ conversationRouter.post('/open-by-phone', asyncHandler(async (req: Request, res:
 
   const conversation = await prisma.conversation.upsert({
     where: { accountId_leadId: { accountId: account.id, leadId: lead.id } },
-    update: {},
+    update: {
+      aiState: {
+        upsert: {
+          create: { stage: 'NEW', isAiPaused: true },
+          update: { isAiPaused: true },
+        },
+      },
+    },
     create: {
       userId,
       accountId: account.id,
       leadId: lead.id,
+      channel: 'WHATSAPP',
       status: 'NEW',
       unreadCount: 0,
+      aiState: {
+        create: {
+          stage: 'NEW',
+          isAiPaused: true,
+        },
+      },
     },
     include: {
-      lead: { include: { assignedAccount: { select: { id: true, name: true } } } },
+      lead: { include: conversationLeadInclude },
       account: { select: { id: true, name: true, phoneMasked: true } },
       messages: { include: { events: true }, orderBy: { recordedAt: 'asc' } },
     },
@@ -133,12 +191,38 @@ conversationRouter.get('/', asyncHandler(async (req: Request, res: Response) => 
     where.status = 'CLIENT';
   }
 
+  if (q.channel) where.channel = String(q.channel) as any;
   if (q.account) where.accountId = String(q.account);
+  if (q.instagramAccount) where.instagramAccountId = String(q.instagramAccount);
+
+  if (q.campaign) {
+    where.lead = {
+      ...(where.lead as object || {}),
+      campaigns: { some: { campaignId: String(q.campaign) } },
+    };
+  }
+
+  if (q.tag) {
+    where.lead = {
+      ...(where.lead as object || {}),
+      tags: { some: { tagId: String(q.tag) } },
+    };
+  }
+
+  if (q.leadStatus) {
+    where.lead = {
+      ...(where.lead as object || {}),
+      status: String(q.leadStatus) as never,
+    };
+  }
+
   if (q.search) {
     const searchStr = String(q.search);
     const searchFilter = [
       { lead: { companyName: { contains: searchStr, mode: 'insensitive' } } },
       { lead: { phone: { contains: searchStr, mode: 'insensitive' } } },
+      { lead: { instagramUsername: { contains: searchStr, mode: 'insensitive' } } },
+      { lead: { notes: { contains: searchStr, mode: 'insensitive' } } },
     ];
     if (where.OR) {
       where.AND = [{ OR: where.OR }, { OR: searchFilter }];
@@ -148,7 +232,11 @@ conversationRouter.get('/', asyncHandler(async (req: Request, res: Response) => 
     }
   }
 
-  const baseAccountFilter = q.account ? { accountId: String(q.account) } : {};
+  const baseAccountFilter = q.account
+    ? { accountId: String(q.account) }
+    : q.instagramAccount
+      ? { instagramAccountId: String(q.instagramAccount) }
+      : {};
 
   const [
     items,
@@ -159,12 +247,21 @@ conversationRouter.get('/', asyncHandler(async (req: Request, res: Response) => 
     countNew,
     countNoResponse,
     countClients,
+    countInterested,
+    countNegotiation,
   ] = await Promise.all([
     prisma.conversation.findMany({
       where,
       include: {
-        lead: { include: { assignedAccount: { select: { id: true, name: true } } } },
+        lead: { include: conversationLeadInclude },
         account: { select: { id: true, name: true, phoneMasked: true } },
+        instagramAccount: { select: { id: true, name: true, username: true, status: true, aiExecutionMode: true } },
+        aiState: true,
+        messages: {
+          include: { events: true },
+          take: 1,
+          orderBy: { recordedAt: 'desc' },
+        },
       },
       orderBy: [{ lastMessageAt: 'desc' }, { updatedAt: 'desc' }],
       skip: (page - 1) * pageSize,
@@ -212,7 +309,21 @@ conversationRouter.get('/', asyncHandler(async (req: Request, res: Response) => 
       where: {
         userId,
         ...baseAccountFilter,
-        status: { in: ['CLIENT', 'INTERESTED', 'NEGOTIATION'] },
+        status: 'CLIENT',
+      },
+    }),
+    prisma.conversation.count({
+      where: {
+        userId,
+        ...baseAccountFilter,
+        status: 'INTERESTED',
+      },
+    }),
+    prisma.conversation.count({
+      where: {
+        userId,
+        ...baseAccountFilter,
+        status: 'NEGOTIATION',
       },
     }),
   ]);
@@ -227,6 +338,8 @@ conversationRouter.get('/', asyncHandler(async (req: Request, res: Response) => 
       new: countNew,
       noResponse: countNoResponse,
       clients: countClients,
+      interested: countInterested,
+      negotiation: countNegotiation,
     },
   });
 }));
@@ -254,7 +367,10 @@ conversationRouter.post('/', asyncHandler(async (req: Request, res: Response) =>
       leadId: body.leadId,
       status: (body.status as ConversationStatus | undefined) ?? 'NEW',
     },
-    include: { lead: true, account: true },
+    include: {
+      lead: { include: conversationLeadInclude },
+      account: true,
+    },
   });
   await recordActivity({
     userId,
@@ -271,8 +387,10 @@ conversationRouter.get('/:id', asyncHandler(async (req: Request, res: Response) 
   const conversation = await prisma.conversation.findFirst({
     where: { id: String(req.params.id), userId: req.user!.id },
     include: {
-      lead: { include: { assignedAccount: { select: { id: true, name: true } } } },
-      account: { select: { id: true, name: true } },
+      lead: { include: conversationLeadInclude },
+      account: { select: { id: true, name: true, phoneMasked: true } },
+      instagramAccount: { select: { id: true, name: true, username: true, status: true, aiExecutionMode: true } },
+      aiState: true,
       messages: { include: { events: true }, orderBy: { recordedAt: 'asc' } },
     },
   });
@@ -290,13 +408,22 @@ conversationRouter.patch('/:id', asyncHandler(async (req: Request, res: Response
 
   const data: Record<string, unknown> = {};
   if (body.status !== undefined) data.status = body.status;
-  if (body.markRead) data.unreadCount = 0;
-  else if (body.unreadCount !== undefined) data.unreadCount = body.unreadCount;
+  if (body.markRead) {
+    data.unreadCount = 0;
+  } else if (body.markUnread) {
+    data.unreadCount = 1;
+    data.status = 'UNREAD';
+  } else if (body.unreadCount !== undefined) {
+    data.unreadCount = body.unreadCount;
+  }
 
   const updated = await prisma.conversation.update({
     where: { id: conversation.id },
     data,
-    include: { lead: true, account: true },
+    include: {
+      lead: { include: conversationLeadInclude },
+      account: true,
+    },
   });
   await recordActivity({
     userId,
@@ -307,6 +434,97 @@ conversationRouter.patch('/:id', asyncHandler(async (req: Request, res: Response
   });
   emitToUser(userId, 'conversation.updated', updated);
   res.json(updated);
+}));
+
+/**
+ * PATCH /api/conversations/:id/lead
+ * Directly update lead info, notes, status, tags, and campaigns from the dialog window!
+ */
+conversationRouter.patch('/:id/lead', asyncHandler(async (req: Request, res: Response) => {
+  const body = updateLeadInConvSchema.parse(req.body);
+  const userId = req.user!.id;
+  const conversation = await prisma.conversation.findFirst({
+    where: { id: String(req.params.id), userId },
+    include: { lead: true },
+  });
+  if (!conversation) throw new NotFoundError('Conversation not found.');
+
+  const leadId = conversation.leadId;
+
+  // Handle Tag toggle
+  if (body.addTagId) {
+    await prisma.leadTag.createMany({
+      data: [{ leadId, tagId: body.addTagId }],
+      skipDuplicates: true,
+    });
+  }
+  if (body.removeTagId) {
+    await prisma.leadTag.deleteMany({
+      where: { leadId, tagId: body.removeTagId },
+    });
+  }
+
+  // Handle Campaign toggle
+  if (body.addCampaignId) {
+    await prisma.campaignLead.createMany({
+      data: [{ leadId, campaignId: body.addCampaignId }],
+      skipDuplicates: true,
+    });
+  }
+  if (body.removeCampaignId) {
+    await prisma.campaignLead.deleteMany({
+      where: { leadId, campaignId: body.removeCampaignId },
+    });
+  }
+
+  const data: Record<string, unknown> = {};
+  if (body.companyName !== undefined) data.companyName = body.companyName.trim();
+  if (body.phone !== undefined) data.phone = body.phone.replace(/\D/g, '');
+  if (body.notes !== undefined) data.notes = body.notes;
+  if (body.status !== undefined) {
+    data.status = body.status;
+    await prisma.conversation.update({
+      where: { id: conversation.id },
+      data: { status: body.status as any },
+    });
+  }
+  if (body.city !== undefined) data.city = body.city;
+  if (body.niche !== undefined) data.niche = body.niche;
+  if (body.website !== undefined) data.website = body.website;
+
+  if (Object.keys(data).length > 0) {
+    await prisma.lead.update({
+      where: { id: leadId },
+      data,
+    });
+  }
+
+  const fullConversation = await prisma.conversation.findFirst({
+    where: { id: conversation.id },
+    include: {
+      lead: { include: conversationLeadInclude },
+      account: { select: { id: true, name: true, phoneMasked: true } },
+      messages: { include: { events: true }, orderBy: { recordedAt: 'asc' } },
+    },
+  });
+
+  emitToUser(userId, 'conversation.updated', fullConversation);
+  res.json(fullConversation);
+}));
+
+conversationRouter.post('/mark-all-read', asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.user!.id;
+  const { accountId } = req.body || {};
+  const where: Record<string, unknown> = { userId, unreadCount: { gt: 0 } };
+  if (accountId) where.accountId = String(accountId);
+
+  await prisma.conversation.updateMany({
+    where,
+    data: { unreadCount: 0 },
+  });
+
+  emitToUser(userId, 'conversation.updated', { allRead: true });
+  res.json({ success: true });
 }));
 
 /* ------------------------------------------------ messages */
@@ -331,88 +549,87 @@ messageRouter.get('/', asyncHandler(async (req: Request, res: Response) => {
   res.json({ items });
 }));
 
-/**
- * Record a message for a conversation.
- *
- * IMPORTANT: Nexora has no official WhatsApp message pipe, so message
- * writes are recorded with explicit provenance (default MANUAL) and a
- * MessageEvent chain (MESSAGE_CREATED в†’ вЂ¦). TRACKED is only used when a
- * real integrated source provides the fact.
- */
 messageRouter.post('/', asyncHandler(async (req: Request, res: Response) => {
   const body = createMessageSchema.parse(req.body);
   const userId = req.user!.id;
   const conversation = await prisma.conversation.findFirst({
     where: { id: body.conversationId, userId },
+    include: { lead: true, account: true },
   });
   if (!conversation) throw new NotFoundError('Conversation not found.');
 
-  const message = await prisma.$transaction(async (tx) => {
-    const created = await tx.message.create({
+  const created = await prisma.$transaction(async (tx) => {
+    const msg = await tx.message.create({
       data: {
-        conversationId: conversation.id,
-        direction: body.direction as MessageDirection,
+        conversationId: body.conversationId,
+        direction: body.direction,
         body: body.body,
         provenance: body.provenance,
       },
     });
     await tx.messageEvent.create({
       data: {
-        messageId: created.id,
-        type: body.eventType ?? (body.direction === 'INBOUND' ? 'MESSAGE_RECEIVED' : 'MESSAGE_CREATED'),
-        name: body.eventType ?? 'MESSAGE_CREATED',
+        messageId: msg.id,
+        type: body.eventType ?? (body.direction === 'OUTBOUND' ? 'MESSAGE_SENT' : 'MESSAGE_RECEIVED'),
+        name: body.direction === 'OUTBOUND' ? 'message.sent' : 'message.received',
         provenance: body.provenance,
       },
     });
-    return created;
-  });
 
-  const unreadDelta = body.direction === 'INBOUND' ? 1 : 0;
-  const updated = await prisma.conversation.update({
-    where: { id: conversation.id },
-    data: {
-      lastMessageAt: new Date(),
-      lastMessagePreview: body.body.slice(0, 120),
-      unreadCount:
-        unreadDelta > 0
-          ? { increment: unreadDelta }
-          : conversation.unreadCount,
-    },
-    include: {
-      lead: true,
-      account: { select: { id: true, name: true } },
-      messages: { include: { events: true }, orderBy: { recordedAt: 'asc' } },
-    },
+    const isOutbound = body.direction === 'OUTBOUND';
+    const nextStatus: ConversationStatus = isOutbound
+      ? (conversation.status === 'NEW' ? 'REPLIED' : conversation.status)
+      : 'UNREAD';
+
+    const conv = await tx.conversation.update({
+      where: { id: conversation.id },
+      data: {
+        status: nextStatus,
+        lastMessageAt: new Date(),
+        lastMessagePreview: body.body.slice(0, 160),
+        unreadCount: isOutbound ? conversation.unreadCount : { increment: 1 },
+      },
+      include: {
+        lead: { include: conversationLeadInclude },
+        account: true,
+        messages: { include: { events: true }, orderBy: { recordedAt: 'asc' } },
+      },
+    });
+    return { message: msg, conversation: conv };
   });
 
   await recordActivity({
     userId,
     action: 'MESSAGE_RECORDED',
     entity: 'MESSAGE',
-    entityId: message.id,
+    entityId: created.message.id,
     metadata: {
-      conversationId: conversation.id,
       direction: body.direction,
-      provenance: body.provenance,
+      conversationId: body.conversationId,
+      accountId: conversation.accountId,
+      leadId: conversation.leadId,
     },
   });
 
-  emitToUser(userId, 'message.created', message);
-  emitToUser(userId, 'conversation.updated', updated);
-  res.status(201).json({ message, conversation: updated });
+  emitToUser(userId, 'message.created', {
+    ...created.message,
+    conversation: created.conversation,
+  });
+
+  // Automatically recalculate AI Lead Score on new message event
+  void LeadScoringEngine.recalculateOnEvent(conversation.leadId, userId);
+
+  res.status(201).json(created);
 }));
 
-/**
- * POST /api/messages/send — send a real WhatsApp message through the
- * connected gateway provider. Records the message as TRACKED with a
- * MESSAGE_SENT event when the provider returns an internal id.
- */
+const sendSchema = z.object({
+  conversationId: z.string().min(1),
+  body: z.string().min(1).max(10000),
+});
+
 messageRouter.post('/send', asyncHandler(async (req: Request, res: Response) => {
-  const sendSchema = z.object({
-    conversationId: z.string().min(1),
-    body: z.string().min(1).max(10000),
-  });
-  const body = sendSchema.parse(req.body);
-  const result = await sendViaGateway(req.user!.id, body.conversationId, body.body);
+  const { conversationId, body } = sendSchema.parse(req.body);
+  const userId = req.user!.id;
+  const result = await sendViaGateway(userId, conversationId, body, 'TRACKED');
   res.status(201).json(result);
 }));

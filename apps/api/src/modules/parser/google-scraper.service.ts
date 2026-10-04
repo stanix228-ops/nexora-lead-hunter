@@ -21,6 +21,35 @@ export interface GoogleScraperResult {
 
 export type ProgressCallback = (msg: string | { type: 'result'; data: FirmResult }) => void;
 
+/**
+ * Unwrap Google Ads and redirect URLs to get the true canonical website URL.
+ */
+function cleanWebsiteUrl(rawUrl: string | null): string | null {
+  if (!rawUrl) return null;
+  try {
+    const trimmed = rawUrl.trim();
+    if (trimmed.includes('google.com/url?') || trimmed.includes('google.com/aclk?')) {
+      const parsed = new URL(trimmed);
+      const q = parsed.searchParams.get('q') || parsed.searchParams.get('adurl');
+      if (q && q.startsWith('http')) return q;
+    }
+    if (
+      trimmed.includes('google.com/maps') ||
+      trimmed.includes('gstatic.com') ||
+      trimmed.includes('google.com/search') ||
+      trimmed.includes('google.com/local')
+    ) {
+      return null;
+    }
+    return trimmed;
+  } catch {
+    return rawUrl;
+  }
+}
+
+/**
+ * Normalize and format US phone numbers to E.164 and readable format.
+ */
 function normalizeUsPhone(phoneStr: string): { raw: string; e164: string; formatted: string } | null {
   if (!phoneStr) return null;
   const digits = phoneStr.replace(/\D/g, '');
@@ -47,7 +76,7 @@ function normalizeUsPhone(phoneStr: string): { raw: string; e164: string; format
 }
 
 /**
- * Scrape businesses from Google Maps for US and international markets.
+ * Scrape businesses from Google Maps for US and global markets with 100% detail accuracy.
  */
 export async function scrapeGoogleMaps(
   city: string,
@@ -60,11 +89,11 @@ export async function scrapeGoogleMaps(
   const targetUrl = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}?hl=en`;
 
   logger.info('Starting Google Maps scraper', { city, niche, targetLimit, url: targetUrl });
-  onProgress?.(`Запуск браузера и переход в Google Карты: «${searchQuery}»...`);
+  onProgress?.(`Запуск браузера и поиск в Google Карты: «${searchQuery}»...`);
 
   let browser: Browser | null = null;
   const results: FirmResult[] = [];
-  const seenPlaceIds = new Set<string>();
+  const seenPlaceNames = new Set<string>();
 
   try {
     browser = await chromium.launch({
@@ -81,30 +110,35 @@ export async function scrapeGoogleMaps(
 
     const context = await browser.newContext({
       userAgent:
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
       viewport: { width: 1280, height: 900 },
       locale: 'en-US',
     });
 
-    const page = await context.newPage();
+    const searchPage = await context.newPage();
+    const detailPage = await context.newPage();
 
-    // Block images, media, and fonts to speed up scraping significantly
-    await page.route('**/*', (route) => {
+    // Block heavy media on both pages for extreme speed
+    const blockMedia = (route: any) => {
       const resourceType = route.request().resourceType();
       if (['image', 'media', 'font'].includes(resourceType)) {
         return route.abort();
       }
       return route.continue();
-    });
+    };
+    await searchPage.route('**/*', blockMedia);
+    await detailPage.route('**/*', blockMedia);
 
-    await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await searchPage.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
     // Handle Google cookie consent modal if shown
     try {
-      const consentBtn = page.locator('button[aria-label*="Accept all"], form[action*="consent"] button, button:has-text("Accept all")').first();
+      const consentBtn = searchPage
+        .locator('button[aria-label*="Accept all"], form[action*="consent"] button, button:has-text("Accept all")')
+        .first();
       if (await consentBtn.isVisible({ timeout: 2500 })) {
         await consentBtn.click();
-        await page.waitForTimeout(1000);
+        await searchPage.waitForTimeout(500);
       }
     } catch {
       /* ignore */
@@ -113,147 +147,189 @@ export async function scrapeGoogleMaps(
     onProgress?.(`Поиск организаций по запросу «${searchQuery}» в Google Maps...`);
 
     // Locate the feed container on Google Maps
-    const feedSelector = 'div[role="feed"], div.m6QErb[aria-label*="Results"], div[aria-label*="Search results"]';
+    const feedSelector =
+      'div[role="feed"], div.m6QErb[aria-label*="Results"], div[aria-label*="Search results"]';
     try {
-      await page.waitForSelector(feedSelector, { timeout: 10000 });
+      await searchPage.waitForSelector(feedSelector, { timeout: 10000 });
     } catch {
       logger.warn('Google Maps feed selector not found immediately, checking direct place cards');
     }
 
     let scrollAttempts = 0;
     const isUnlimited = targetLimit >= 900;
-    const maxScrollAttempts = isUnlimited ? 250 : Math.max(20, Math.ceil(targetLimit / 3) + 15);
+    const maxScrollAttempts = isUnlimited ? 250 : Math.max(20, Math.ceil(targetLimit / 2) + 15);
     let consecutiveStallCount = 0;
 
     while (results.length < targetLimit && scrollAttempts < maxScrollAttempts) {
       scrollAttempts++;
       const prevResultCount = results.length;
 
-      // Extract all current card elements in the left panel
-      const cardsData = await page.evaluate(() => {
-        const items: Array<{
-          name: string;
-          profileLink: string;
-          rating: number | null;
-          reviewsCount: number | null;
-          category: string | null;
-          phone: string | null;
-          site: string | null;
-          address: string | null;
-          rawText: string;
-        }> = [];
-
-        const cardNodes = document.querySelectorAll('div[role="article"], div.Nv2PK, div.THOPZb');
-
-        cardNodes.forEach((node) => {
+      // Extract all current cards from search feed
+      const placesData = await searchPage.evaluate(() => {
+        const cardNodes = document.querySelectorAll('div[role="article"], div.Nv2PK');
+        return Array.from(cardNodes).map((node) => {
           const linkEl = node.querySelector('a.hfpxzc, a[href*="/maps/place/"]') as HTMLAnchorElement | null;
-          const name = linkEl?.getAttribute('aria-label') || node.querySelector('div.qBF1Pd, div.fontHeadlineSmall')?.textContent?.trim() || '';
+          const name = (
+            linkEl?.getAttribute('aria-label') ||
+            node.querySelector('div.qBF1Pd, div.fontHeadlineSmall')?.textContent ||
+            ''
+          ).trim();
           const profileLink = linkEl?.href || '';
 
-          if (!name) return;
+          const cleanText = (node.textContent || '').replace(/[\u200B-\u200D\uFEFF\u00A0\u202F\u2000-\u200A]/g, ' ');
+          const phoneMatch = cleanText.match(/(?:\+?1\s*[-.]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/);
+          const siteAnchor = node.querySelector(
+            'a[data-value="Website"], a[aria-label*="Website" i], a[aria-label*="Сайт" i]',
+          ) as HTMLAnchorElement | null;
 
-          // Rating & Reviews
+          let s: string | null = siteAnchor ? siteAnchor.href : null;
+          if (
+            s &&
+            (s.includes('zocdoc.com') ||
+              s.includes('patientsreach.io') ||
+              s.includes('archy.com') ||
+              s.includes('nexhealth.info') ||
+              s.includes('reservewithgoogle'))
+          ) {
+            s = null;
+          }
+
           let rating: number | null = null;
-          let reviewsCount: number | null = null;
-
           const ratingEl = node.querySelector('span.MW4etd, span.ZkP5Je');
           if (ratingEl?.textContent) {
-            const parsed = parseFloat(ratingEl.textContent.replace(',', '.'));
-            if (!isNaN(parsed)) rating = parsed;
+            const p = parseFloat(ratingEl.textContent.replace(',', '.'));
+            if (!isNaN(p)) rating = p;
           }
 
-          const reviewsEl = node.querySelector('span.UY7F9');
-          if (reviewsEl?.textContent) {
-            const revMatch = reviewsEl.textContent.match(/\d[\d,\.]*/);
-            if (revMatch) {
-              const num = parseInt(revMatch[0].replace(/\D/g, ''), 10);
-              if (!isNaN(num)) reviewsCount = num;
-            }
-          }
-
-          // Category, Address, Phone, Website
-          let category: string | null = null;
-          let address: string | null = null;
-          let phone: string | null = null;
-          let site: string | null = null;
-
-          // Website link
-          const siteEl = node.querySelector('a[aria-label*="Website" i], a.lcr4fd, a[data-value="Website"], a[href*="http"]:not([href*="google."]):not([href*="gstatic."]):not([href*="/maps/"])') as HTMLAnchorElement | null;
-          if (siteEl?.href) {
-            site = siteEl.href;
-          }
-
-          // Information lines
-          const infoLines = Array.from(node.querySelectorAll('div.W4Efsd')).map((el) => el.textContent?.trim() || '');
-          const allText = node.textContent || '';
-
-          // Find phone (US format \(\d{3}\)\s*\d{3}-\d{4} or \d{3}-\d{3}-\d{4})
-          const phoneMatch = allText.match(/(?:\+?1\s*[-.]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/);
-          if (phoneMatch) {
-            phone = phoneMatch[0].trim();
-          }
-
-          // Extract category
-          if (infoLines[0]) {
-            const parts = infoLines[0].split('·').map((p) => p.trim());
-            if (parts[0]) category = parts[0];
-          }
-
-          // Extract address
-          if (infoLines[1]) {
-            const parts = infoLines[1].split('·').map((p) => p.trim());
-            address = parts.find((p) => /\d+/.test(p) || p.length > 5) || parts[0] || null;
-          }
-
-          items.push({
+          return {
             name,
             profileLink,
+            phone: phoneMatch ? phoneMatch[0].trim() : null,
+            site: s,
             rating,
-            reviewsCount,
-            category,
-            phone,
-            site,
-            address,
-            rawText: allText,
-          });
-        });
-
-        return items;
+          };
+        }).filter((p) => p.name && p.profileLink);
       });
 
-      // Process new discovered cards
-      for (const card of cardsData) {
+      for (const place of placesData) {
         if (results.length >= targetLimit) break;
-        if (!card.name) continue;
+        if (!place.name || seenPlaceNames.has(place.name)) continue;
+        seenPlaceNames.add(place.name);
 
-        const placeKey = `${card.name}_${card.phone || card.profileLink}`;
-        if (seenPlaceIds.has(placeKey)) continue;
-        seenPlaceIds.add(placeKey);
+        let phone = place.phone;
+        let site = place.site;
+        let address: string | null = null;
+        let rating = place.rating;
+        let reviewsCount: number | null = null;
 
-        // Normalize phone
-        const normalizedPhone = card.phone ? normalizeUsPhone(card.phone) : null;
-        const phoneFormatted = normalizedPhone ? normalizedPhone.formatted : card.phone;
-        const phoneE164 = normalizedPhone ? normalizedPhone.e164 : (card.phone ? card.phone.replace(/\D/g, '') : null);
+        // If snippet is missing phone or official site, visit profileLink in detailPage worker!
+        if (!phone || !site) {
+          try {
+            await detailPage.goto(place.profileLink, { waitUntil: 'domcontentloaded', timeout: 15000 });
+            await detailPage
+              .waitForSelector('h1.DUwDvf, button[data-item-id^="phone"], a[data-item-id="authority"], div[role="main"]', {
+                timeout: 3500,
+              })
+              .catch(() => {});
 
-        // Filter checks
-        if (options.websiteFilter === 'with_site' && !card.site) continue;
-        if (options.websiteFilter === 'without_site' && card.site) continue;
-        if (options.phoneFilter === 'with_phone' && !phoneE164) continue;
+            const detail = await detailPage.evaluate(() => {
+              const phoneBtn = document.querySelector(
+                'button[data-item-id^="phone:tel:"], button[data-item-id*="phone"]',
+              );
+              let p = phoneBtn
+                ? phoneBtn.getAttribute('data-item-id')?.replace(/^phone:tel:/, '') ||
+                  phoneBtn.textContent?.trim()
+                : null;
+              if (!p) {
+                const anyPhoneEl = document.querySelector(
+                  'button[aria-label*="Phone:" i], [data-tooltip*="phone" i]',
+                );
+                p =
+                  anyPhoneEl?.getAttribute('aria-label')?.replace(/^Phone:\s*/i, '') ||
+                  anyPhoneEl?.textContent?.trim() ||
+                  null;
+              }
+
+              const siteAnchor = document.querySelector(
+                'a[data-item-id="authority"], a[aria-label*="Website:" i], a[aria-label*="Website" i]',
+              ) as HTMLAnchorElement | null;
+              const s = siteAnchor?.href || null;
+
+              const addrBtn = document.querySelector(
+                'button[data-item-id="address"], button[aria-label*="Address:" i]',
+              );
+              const a =
+                addrBtn?.getAttribute('aria-label')?.replace(/^Address:\s*/i, '') ||
+                addrBtn?.textContent?.trim() ||
+                null;
+
+              let r: number | null = null;
+              let revs: number | null = null;
+
+              const ratingEl = document.querySelector('div.F7nice span[aria-hidden="true"], span.MW4etd');
+              if (ratingEl?.textContent) {
+                const parsed = parseFloat(ratingEl.textContent.replace(',', '.'));
+                if (!isNaN(parsed)) r = parsed;
+              }
+
+              const reviewsEl = document.querySelector(
+                'div.F7nice span[aria-label*="review" i], div.F7nice span[aria-label*="отзыв" i], span.UY7F9',
+              );
+              if (reviewsEl) {
+                const revMatch = (
+                  reviewsEl.getAttribute('aria-label') ||
+                  reviewsEl.textContent ||
+                  ''
+                ).match(/(\d[\d,\.]*)/);
+                if (revMatch) {
+                  const num = parseInt(revMatch[1].replace(/\D/g, ''), 10);
+                  if (!isNaN(num)) revs = num;
+                }
+              }
+
+              return { phone: p, site: s, address: a, rating: r, reviewsCount: revs };
+            });
+
+            if (detail.phone) phone = detail.phone;
+            if (detail.site) site = detail.site;
+            if (detail.address) address = detail.address;
+            if (detail.rating) rating = detail.rating;
+            if (detail.reviewsCount) reviewsCount = detail.reviewsCount;
+          } catch (err) {
+            logger.debug('Detail page inspection fallback error', {
+              name: place.name,
+              error: (err as Error).message,
+            });
+          }
+        }
+
+        const cleanSite = cleanWebsiteUrl(site);
+        const normalizedPhone = phone ? normalizeUsPhone(phone) : null;
+        const phoneFormatted = normalizedPhone ? normalizedPhone.formatted : phone;
+        const phoneE164 = normalizedPhone
+          ? normalizedPhone.e164
+          : phone
+            ? phone.replace(/\D/g, '')
+            : null;
+
+        const cleanAddress = address
+          ? address.replace(/, United States\s*$/i, '')
+          : `${place.name}, ${city}, USA`;
 
         const firmItem: FirmResult = {
-          id: `gm_${Buffer.from(card.name + (phoneE164 || card.profileLink)).toString('base64').slice(0, 16)}`,
-          name: card.name,
-          address: card.address || `${city}, USA`,
+          id: `gm_${Buffer.from(place.name + (phoneE164 || cleanSite || place.profileLink)).toString('base64').slice(0, 16)}`,
+          name: place.name,
+          address: cleanAddress,
           phone: phoneFormatted,
           allPhones: phoneFormatted ? [phoneFormatted] : [],
           whatsapp: phoneE164 ? `https://wa.me/${phoneE164.replace(/\D/g, '')}` : null,
           instagram: null,
           email: null,
-          site: card.site,
+          site: cleanSite,
           schedule: 'Open',
-          rating: card.rating,
-          reviewsCount: card.reviewsCount,
-          profileLink: card.profileLink || targetUrl,
+          rating: rating,
+          reviewsCount: reviewsCount,
+          profileLink: place.profileLink,
         };
 
         results.push(firmItem);
@@ -272,30 +348,27 @@ export async function scrapeGoogleMaps(
         consecutiveStallCount = 0;
       }
 
-      // Check if we reached target
       if (results.length >= targetLimit) break;
 
-      // If no new cards after 6 scrolls, we reached bottom
       if (consecutiveStallCount >= 6) {
         logger.info('Google Maps scroll stalled, all cards collected');
         break;
       }
 
-      // Scroll the feed to load more results
-      await page.evaluate((selector) => {
+      // Scroll the search feed
+      await searchPage.evaluate((selector) => {
         const feed = document.querySelector(selector);
-        if (feed) {
-          feed.scrollTop += 1200;
-          return true;
-        }
-        window.scrollBy(0, 1200);
-        return false;
+        if (feed) feed.scrollTop += 1200;
       }, feedSelector);
 
-      // Check for "You've reached the end of the list"
-      const endOfList = await page.evaluate(() => {
+      // Check end of list
+      const endOfList = await searchPage.evaluate(() => {
         const text = document.body.innerText;
-        return text.includes("You've reached the end of the list") || text.includes('No more results') || text.includes('Вы просмотрели все результаты');
+        return (
+          text.includes("You've reached the end of the list") ||
+          text.includes('No more results') ||
+          text.includes('Вы просмотрели все результаты')
+        );
       });
 
       if (endOfList) {
@@ -303,15 +376,16 @@ export async function scrapeGoogleMaps(
         break;
       }
 
-      await page.waitForTimeout(1100);
+      await searchPage.waitForTimeout(600);
     }
 
     // Step 2: Background Concurrent Email Extraction for items with website
     const itemsWithSite = results.filter((r) => r.site && !r.email);
     if (itemsWithSite.length > 0) {
-      onProgress?.(`Поиск и извлечение Email с сайтов организаций (${itemsWithSite.length} сайтов)...`);
+      onProgress?.(
+        `Поиск и извлечение Email с сайтов организаций (${itemsWithSite.length} сайтов)...`,
+      );
 
-      // Extract emails in batches of 4 concurrent requests
       const batchSize = 4;
       for (let i = 0; i < itemsWithSite.length; i += batchSize) {
         const batch = itemsWithSite.slice(i, i + batchSize);

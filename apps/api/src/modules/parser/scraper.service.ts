@@ -74,6 +74,7 @@ export interface FirmResult {
   phone: string | null;
   allPhones: string[];
   whatsapp: string | null;
+  max?: string | null;
   instagram: string | null;
   email: string | null;
   site: string | null;
@@ -92,6 +93,7 @@ export interface ParseSearchOptions {
   country?: string;
   websiteFilter?: 'all' | 'with_site' | 'without_site';
   whatsappFilter?: 'all' | 'with_wa';
+  maxFilter?: 'all' | 'with_max';
   phoneFilter?: 'all' | 'with_phone';
 }
 
@@ -137,6 +139,20 @@ function cleanUrl(rawUrl: string | null | undefined): string | null {
   }
 
   return url;
+}
+
+function cleanMax(rawMax: string | null | undefined): string | null {
+  if (!rawMax) return null;
+  const trimmed = rawMax.trim();
+  const m = trimmed.match(/(?:max\.ru\/|max\.me\/)([a-zA-Z0-9_\-\/]+)/i);
+  if (m && m[1]) {
+    const path = m[1].replace(/^\/+/, '');
+    return `https://max.ru/${path}`;
+  }
+  if (trimmed.includes('max.ru') || trimmed.includes('max.me')) {
+    return cleanUrl(trimmed);
+  }
+  return null;
 }
 
 function cleanWhatsApp(rawWa: string | null | undefined, phone?: string | null): string | null {
@@ -195,6 +211,7 @@ function extractFirmFromApiResponse(item: Record<string, any>, domain: string, s
 
   const phones: string[] = [];
   let rawWa: string | null = null;
+  let rawMax: string | null = null;
   let rawInsta: string | null = null;
   let rawTg: string | null = null;
   let rawVk: string | null = null;
@@ -220,6 +237,8 @@ function extractFirmFromApiResponse(item: Record<string, any>, domain: string, s
           if (formatted && !phones.includes(formatted)) phones.push(formatted);
         } else if (type === 'whatsapp') {
           if (!rawWa) rawWa = val || c.url;
+        } else if (type === 'max' || type === 'max_messenger' || val.includes('max.ru') || val.includes('max.me')) {
+          if (!rawMax) rawMax = val || c.url;
         } else if (type === 'instagram') {
           if (!rawInsta) rawInsta = val || c.url;
         } else if (type === 'telegram') {
@@ -245,6 +264,8 @@ function extractFirmFromApiResponse(item: Record<string, any>, domain: string, s
         if (formatted && !phones.includes(formatted)) phones.push(formatted);
       } else if (type.includes('wa') || type.includes('whatsapp')) {
         if (!rawWa) rawWa = val;
+      } else if (type.includes('max') || val.includes('max.ru') || val.includes('max.me')) {
+        if (!rawMax) rawMax = val;
       }
     }
   }
@@ -267,6 +288,9 @@ function extractFirmFromApiResponse(item: Record<string, any>, domain: string, s
         rawWa = val;
         break;
       }
+      if (val.includes('max.ru') || val.includes('max.me')) {
+        rawMax = val;
+      }
     }
   }
 
@@ -281,6 +305,9 @@ function extractFirmFromApiResponse(item: Record<string, any>, domain: string, s
   }
   if (!rawWa && item.links?.whatsapp) {
     rawWa = item.links.whatsapp;
+  }
+  if (!rawMax && (item.links?.max || item.links?.['max.ru'] || item.links?.['max.me'])) {
+    rawMax = item.links.max || item.links?.['max.ru'] || item.links?.['max.me'];
   }
   if (!rawTg && item.links?.telegram) {
     rawTg = item.links.telegram;
@@ -310,6 +337,7 @@ function extractFirmFromApiResponse(item: Record<string, any>, domain: string, s
 
   const primaryPhone = phones[0] || null;
   const whatsapp = cleanWhatsApp(rawWa, primaryPhone);
+  const max = cleanMax(rawMax);
   const site = cleanUrl(rawSite);
   const instagram = cleanUrl(rawInsta);
   const telegram = rawTg ? (rawTg.startsWith('http') ? rawTg : `https://t.me/${rawTg.replace('@', '')}`) : null;
@@ -322,6 +350,7 @@ function extractFirmFromApiResponse(item: Record<string, any>, domain: string, s
     phone: primaryPhone,
     allPhones: phones,
     whatsapp,
+    max,
     instagram,
     email: rawEmail || null,
     site,
@@ -560,6 +589,7 @@ export async function parseSearchPage(
 
                 // 3. Socials & messengers
                 const waLinks = Array.from(document.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp.com"]')).map((a) => (a as HTMLAnchorElement).href);
+                const maxLinks = Array.from(document.querySelectorAll('a[href*="max.ru"], a[href*="max.me"]')).map((a) => (a as HTMLAnchorElement).href);
                 const tgLinks = Array.from(document.querySelectorAll('a[href*="t.me/"]')).map((a) => (a as HTMLAnchorElement).href);
                 const instaLinks = Array.from(document.querySelectorAll('a[href*="instagram.com"]')).map((a) => (a as HTMLAnchorElement).href);
                 const vkLinks = Array.from(document.querySelectorAll('a[href*="vk.com/"]')).map((a) => (a as HTMLAnchorElement).href);
@@ -578,6 +608,8 @@ export async function parseSearchPage(
                       !h.includes('mail.ru') &&
                       !h.includes('google') &&
                       !h.includes('wa.me') &&
+                      !h.includes('max.ru') &&
+                      !h.includes('max.me') &&
                       !h.includes('tel:') &&
                       !h.includes('instagram.com') &&
                       !h.includes('t.me') &&
@@ -589,6 +621,7 @@ export async function parseSearchPage(
                   name: h1,
                   phones: Array.from(phonesFound),
                   whatsapp: waLinks[0] || null,
+                  max: maxLinks[0] || null,
                   instagram: instaLinks[0] || null,
                   telegram: tgLinks[0] || null,
                   vk: vkLinks[0] || null,
@@ -607,6 +640,7 @@ export async function parseSearchPage(
                 phone: primaryPh,
                 allPhones: formattedPhones,
                 whatsapp: cleanWhatsApp(domData.whatsapp, primaryPh),
+                max: cleanMax(domData.max),
                 instagram: cleanUrl(domData.instagram),
                 email: domData.email || null,
                 site: cleanUrl(domData.site),
@@ -624,12 +658,6 @@ export async function parseSearchPage(
           }
 
           if (!firmData) continue;
-
-          // Apply filters
-          if (options?.websiteFilter === 'with_site' && !firmData.site) continue;
-          if (options?.websiteFilter === 'without_site' && firmData.site) continue;
-          if (options?.whatsappFilter === 'with_wa' && !firmData.whatsapp) continue;
-          if (options?.phoneFilter === 'with_phone' && !firmData.phone) continue;
 
           results.push(firmData);
 
